@@ -2,6 +2,7 @@
 #define TEXTURE_H
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <string>
 
 class Texture
@@ -9,22 +10,24 @@ class Texture
 private:
 	SDL_Texture* m_texture;
 
-public:
-	SDL_Rect m_rectSource;
-	SDL_Rect m_rectDestination;
+	int m_iWidth;
+	int m_iHeight;
 
 //MEMBER FUNCTIONS
+public:
 	Texture();
 	~Texture();
 
+//GETTERS
+	int GetWidth() const;
+	int GetHeight() const;
+
 	void LoadFromFile(SDL_Renderer* renderer, std::string path);
-
-//SETTERS
-	void SetDestRect(int x, int y, int w, int h);
-
-	void Render(SDL_Renderer& renderer, SDL_Rect& source, SDL_Rect& destination);
+	void LoadFromRendererdText(SDL_Renderer* renderer, TTF_Font* font, \
+		std::string text, SDL_Color color);
+	void Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip = NULL);
 
 private:
 	void Free();
 };
-#endif;
+#endif

@@ -2,17 +2,9 @@
 #define GAME_H
 
 #include "Texture.h"
-#include "Engine.h"
-
+#include "Globals.h"
+#include "PaytableObject.h"
 #include <SDL.h>
-
-typedef enum
-{
-	INTRO,
-	PLAY,
-	OUTRO,
-	QUIT,
-} eGame_State;
 
 class Game
 {
@@ -20,25 +12,28 @@ private:
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 
-	Engine* m_engine;
-
-	Texture* m_texture;
-
+	//game components
+	Texture* m_tBackground;
+	PaytableObject* m_paytable;
 public:
-	eGame_State m_eGameState;
+	eGameState m_eGameState;
 	SDL_Event m_event;
 
-//MEMBER FUNCTIONS
+public:
 	Game();
 	~Game();
 
-//GETTERS
-	Texture* GetTexture();
-	SDL_Renderer* GetRenderer();
+	SDL_Renderer* GetRenderer() const;
+
+	void SetGameState(eGameState gs);
+
+	void RenderScreen();
+	void Update();
+	void ProcessInput();
 
 private:
 	void InitSDL();
-	void LoadMedia();
 	void Close();
+
 };
 #endif

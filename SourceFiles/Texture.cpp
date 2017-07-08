@@ -1,8 +1,11 @@
 #include "Texture.h"
+#include "Globals.h"
 #include <iostream>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
-Texture::Texture() : m_texture(nullptr)
+Texture::Texture() : 
+	m_texture(nullptr), m_iWidth(0), m_iHeight(0)
 {
 
 }
@@ -11,6 +14,16 @@ Texture::~Texture()
 {
 	Free();
 	std::cout << "Texture deleted.\n";
+}
+
+int Texture::GetWidth() const
+{
+	return this->m_iWidth;
+}
+
+int Texture::GetHeight() const
+{
+	return this->m_iHeight;
 }
 
 void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
@@ -29,39 +42,55 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 
 	m_texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-	m_rectSource.w = surface->w;
-	m_rectSource.h = surface->h;
+	m_iWidth = surface->w;
+	m_iHeight = surface->h;
 
 	SDL_FreeSurface(surface);
 	surface = nullptr;
 }
 
-void Texture::SetDestRect(int x, int y, int w, int h)
+void Texture::LoadFromRendererdText(SDL_Renderer * renderer, TTF_Font* font,\
+	std::string text, SDL_Color color)
 {
-	if(x < 0 || y < 0 || w < 0 || h < 0)
+	Free();
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+	if(textSurface == nullptr)
 	{
-		std::cout << "Rect dimentions cant be less than 0.";
+		std::cerr << "Unable to render text surface! SDL_ttf Error: " \
+			<< TTF_GetError();
 		return;
 	}
 
-	m_rectDestination.x = x;
-	m_rectDestination.y = y;
-	m_rectDestination.w = w;
-	m_rectDestination.y = h;
+	m_texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	if(m_texture == nullptr)
+	{
+		std::cerr << "Unable to create texture from rendered text! SDL Error:" \
+			<< SDL_GetError();
+		return;
+	}
+
+	m_iWidth = textSurface->w;
+	m_iHeight = textSurface->h;
+
+	SDL_FreeSurface(textSurface);
 }
 
-void Texture::Render(SDL_Renderer& renderer, SDL_Rect & source, SDL_Rect & destination)
+void Texture::Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip)
 {
-	SDL_RenderCopy(&renderer, m_texture, &source, &destination);
+	SDL_Rect dest;
+	dest.x = x;
+	dest.y = y;
+	dest.w = w;
+	dest.h = h;
+
+	SDL_RenderCopy(renderer, m_texture, clip, &dest);
 }
+
 
 void Texture::Free()
 {
 	SDL_DestroyTexture(m_texture);
 	m_texture = nullptr;
 
-	m_rectSource.x = m_rectDestination.x = 0;
-	m_rectSource.y = m_rectDestination.y = 0;
-	m_rectSource.w = m_rectDestination.w = 0;
-	m_rectSource.h = m_rectDestination.h = 0;
+	m_iWidth = m_iHeight = 0;
 }

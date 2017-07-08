@@ -12,9 +12,9 @@ int main(int args, char* argc[])
 	{
 		game.Update();
 
-		while(SDL_PollEvent(&game.m_event) > 0)
+ 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
-			switch(game.m_event.type)
+ 			switch(game.m_event.type)
 			{
 			case SDL_QUIT:
 				game.SetGameState(QUIT);

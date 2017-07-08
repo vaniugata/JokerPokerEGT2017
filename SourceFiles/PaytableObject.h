@@ -4,12 +4,6 @@
 #include <SDL_ttf.h>
 #include <vector>
 
-struct bet
-{
-	int value;
-	std::string text;
-};
-
 class PaytableObject
 {
 private:
@@ -33,22 +27,7 @@ private:
 		"Two pair",
 		"Kings or better"
 	};
-	std::vector<bet> m_vecBets
-	{
-		bet{ 800, "800" },
-		bet{ 130, "130" },
-		bet{ 100, "100" },
-		bet{ 50, "50" },
-		bet{ 20, "20" },
-		bet{ 7, "7" },
-		bet{ 5, "5" },
-		bet{ 3, "3" },
-		bet{ 2, "2" },
-		bet{ 1, "1123" },
-		bet{ 1, "1" },
-	};
-
-	int m_iBetCount;
+	std::vector<int> m_vecBets {800, 130, 100, 50, 20, 7, 5, 3, 2, 1, 1};
 
 public:
 	PaytableObject(SDL_Renderer* renderer);

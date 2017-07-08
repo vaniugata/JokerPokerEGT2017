@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include <iostream>
 using std::cerr;
+#include <sstream>
+using std::stringstream;
 
 PaytableObject::PaytableObject(SDL_Renderer * renderer) :
 	m_texture()
@@ -63,17 +65,39 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer)
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR 
 		+ X_BORDER_OFFSET + TEXT_BLANK_SPACE;
 
+	std::stringstream ss;
 	for(int i = 0; i < m_vecBets.size(); i++)
 	{
 		int y = Y_BORDER_OFFSET + m_tText.GetHeight() * i;
 
-		m_tText.LoadFromRendererdText(renderer, m_font, m_vecBets[i].text, color);
+		ss << m_vecBets[i];
+		m_tText.LoadFromRendererdText(renderer, m_font, ss.str(), color);
 		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight() );
+		ss.str("");
 	}
 }
 
 void PaytableObject::IncreaseBet()
 {
-	std::cerr << "Increase bet.\n";
+	static int oldCoef = 1;
+	static int coef = 2;
+
+	for(int i = 0; i < m_vecBets.size(); i++)
+		m_vecBets[i] /= oldCoef;
+	
+	for(int i = 0; i < m_vecBets.size(); i++)
+		m_vecBets[i] *= coef;
+
+	coef++;
+	oldCoef++;
+
+	if(coef == 12)
+	{
+		for(int i = 0; i < m_vecBets.size(); i++)
+			m_vecBets[i] /= oldCoef;
+		
+		oldCoef = 1;
+		coef = 2;
+	}
 }
 

@@ -1,8 +1,6 @@
 #include "Game.h"
 #include "Globals.h"
 #include "Texture.h"
-#include "GameObject.h"
-#include "PaytableObject.h"
 
 int main(int args, char* argc[])
 {
@@ -10,7 +8,7 @@ int main(int args, char* argc[])
 
 	while(game.m_eGameState != QUIT)
 	{
-		game.Update();
+		game.Render();
 
  		while(SDL_PollEvent(&game.m_event) > 0)
 		{
@@ -21,15 +19,16 @@ int main(int args, char* argc[])
 				break;
 
 			case SDL_KEYDOWN:
-				game.ProcessInput();
+				game.ProcessKeyInput();
+				break;
+
+			case SDL_MOUSEBUTTONDOWN:
+				game.ProcessMouseInput();
 				break;
 			}
-				
-
-			
-		}	
-		game.RenderScreen();
-	}
+		} //event loop	
+		game.Draw();
+	} // run loop
 		
 	
 	return 0;

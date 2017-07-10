@@ -5,16 +5,40 @@ using std::cerr;
 #include <sstream>
 using std::stringstream;
 
-PaytableObject::PaytableObject(SDL_Renderer * renderer) :
-	m_texture()
+int PaytableObject::coef = 2;
+int PaytableObject::oldCoef = 1;
+
+PaytableObject::PaytableObject(SDL_Renderer* renderer) :
+	m_texture(), 
+	m_btnBetOne(renderer, "../../Resources/betButtons.png", \
+		0, 0, S_BETBTN_W, S_BETBTN_H),
+	m_btnbetMax(renderer, "../../Resources/betButtons.png", \
+		0, 0, S_BETBTN_W, S_BETBTN_H)
 {
 	m_texture.LoadFromFile(renderer, "../../Resources/paytable2.png");
 	InitFont("../../Resources/font.ttf");
+
+	m_btnBetOne.SetPosition(SCREEN_WIDTH - m_btnBetOne.GetWidth(), \
+	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
+	m_btnbetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
+		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
+
+
 }
 
 PaytableObject::~PaytableObject()
 {
 	std::cerr << "PaytableObject deleted.\n";
+}
+
+ButtonObject& PaytableObject::GetBetOneBtn() 
+{
+	return m_btnBetOne;
+}
+
+ButtonObject & PaytableObject::GetBetMaxBtn()
+{
+	return m_btnbetMax;
 }
 
 void PaytableObject::InitFont(std::string path)
@@ -79,9 +103,6 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer)
 
 void PaytableObject::IncreaseBet()
 {
-	static int oldCoef = 1;
-	static int coef = 2;
-
 	for(int i = 0; i < m_vecBets.size(); i++)
 		m_vecBets[i] /= oldCoef;
 	
@@ -91,7 +112,7 @@ void PaytableObject::IncreaseBet()
 	coef++;
 	oldCoef++;
 
-	if(coef == 12)
+	if(coef >= 12)
 	{
 		for(int i = 0; i < m_vecBets.size(); i++)
 			m_vecBets[i] /= oldCoef;
@@ -99,5 +120,18 @@ void PaytableObject::IncreaseBet()
 		oldCoef = 1;
 		coef = 2;
 	}
+}
+
+void PaytableObject::SetMaxBet()
+{
+	int arrMaxBets[] { 8000, 1300, 1000, 500, 200, 70, 50, 30, 20, 10, 10 };
+
+	for(int i = 0; i < m_vecBets.size(); i++)
+	{
+		m_vecBets[i] = arrMaxBets[i];
+	}
+
+	coef = 11;
+	oldCoef = 10;
 }
 

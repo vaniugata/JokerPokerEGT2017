@@ -36,25 +36,43 @@ void Game::SetGameState(eGameState gs)
 	this->m_eGameState = gs;
 }
 
-void Game::RenderScreen()
+void Game::Draw()
 {
 	SDL_RenderPresent(m_renderer);
 	SDL_RenderClear(m_renderer);
 }
 
-void Game::Update()
+void Game::Render()
 {
 	//draw background
 	m_tBackground->Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	//draw paytable
 	m_paytable->Render(m_renderer);
+	//draw bet buttons
+	SDL_Rect clip1 {T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
+	m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, S_BETBTN_W, S_BETBTN_H);
+	SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
+	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, S_BETBTN_W, S_BETBTN_H);
 }
 
-void Game::ProcessInput()
+void Game::ProcessKeyInput()
 {
 	if(m_event.key.keysym.sym == SDLK_SPACE)
 	{
 		m_paytable->IncreaseBet();
+	}
+}
+
+void Game::ProcessMouseInput()
+{
+	if(m_paytable->GetBetOneBtn().IsPressed() )
+	{
+		m_paytable->IncreaseBet();
+	}
+
+	if(m_paytable->GetBetMaxBtn().IsPressed() )
+	{
+		m_paytable->SetMaxBet();
 	}
 }
 

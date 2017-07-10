@@ -27,9 +27,10 @@ public:
 
 	void SetGameState(eGameState gs);
 
-	void RenderScreen();
-	void Update();
-	void ProcessInput();
+	void Draw();
+	void Render();
+	void ProcessKeyInput();
+	void ProcessMouseInput();
 
 private:
 	void InitSDL();

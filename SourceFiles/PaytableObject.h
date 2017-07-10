@@ -1,18 +1,21 @@
 #ifndef PAYTABLE_OBJECT_H
 #define PAYTABLE_OBJECT_H
 #include "Texture.h"
+#include "ButtonObject.h"
 #include <SDL_ttf.h>
 #include <vector>
 
 class PaytableObject
 {
 private:
-	const int X_BORDER_OFFSET = 25;
-	const int Y_BORDER_OFFSET = 10;
-
 	Texture m_texture;
 	Texture m_tText;
 	TTF_Font* m_font;
+	ButtonObject m_btnBetOne;
+	ButtonObject m_btnbetMax;
+	static int oldCoef;
+	static int coef;
+
 	std::vector<std::string> m_vecHands
 	{
 		"Natural royal flush",
@@ -31,7 +34,11 @@ private:
 
 public:
 	PaytableObject(SDL_Renderer* renderer);
-	~PaytableObject();
+	virtual~PaytableObject();
+
+	//getters
+	ButtonObject& GetBetOneBtn();
+	ButtonObject& GetBetMaxBtn();
 
 	void InitFont(std::string path);
 	void Render(SDL_Renderer* renderer);
@@ -40,5 +47,6 @@ public:
 
 	//logic
 	void IncreaseBet();
+	void SetMaxBet();
 };
 #endif

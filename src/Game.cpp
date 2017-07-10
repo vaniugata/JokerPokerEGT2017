@@ -71,6 +71,7 @@ void Game::HandleEvent()
 		ProcessMouseInput();
 		break;
 	}
+
 }
 
 void Game::ProcessKeyInput()

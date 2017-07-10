@@ -37,6 +37,7 @@ void ButtonObject::Render(SDL_Renderer* renderer, SDL_Rect* clip, \
 {
 	m_pTopLeft.x = x;
 	m_pTopLeft.y = y;
+
 	m_texture.Render(renderer, m_pTopLeft.x, m_pTopLeft.y,
 		w, h, clip);
 }

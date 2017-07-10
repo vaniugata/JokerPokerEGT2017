@@ -4,7 +4,8 @@
 #include "Texture.h"
 #include "Globals.h"
 #include "PaytableObject.h"
-#include <SDL.h>
+#include "includesSDL2.h"
+
 
 class Game
 {

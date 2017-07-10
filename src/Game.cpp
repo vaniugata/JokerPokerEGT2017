@@ -2,8 +2,8 @@
 #include "Globals.h"
 #include <iostream>
 using std::cerr;
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include "includesSDL2.h"
+
 
 Game::Game() : 
 	m_window(nullptr), m_renderer(nullptr), 
@@ -12,7 +12,7 @@ Game::Game() :
 	InitSDL();
 
 	m_tBackground = new Texture;
-	m_tBackground->LoadFromFile(m_renderer, "../../Resources/back2.png");
+	m_tBackground->LoadFromFile(m_renderer, "Resources/back2.png");
 
 	m_paytable = new PaytableObject(m_renderer);
 }

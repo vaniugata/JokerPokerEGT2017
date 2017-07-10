@@ -2,7 +2,8 @@
 #define PAYTABLE_OBJECT_H
 #include "Texture.h"
 #include "ButtonObject.h"
-#include <SDL_ttf.h>
+#include "includesSDL2.h"
+
 #include <vector>
 
 class PaytableObject

@@ -1,8 +1,8 @@
 #include "Texture.h"
 #include "Globals.h"
 #include <iostream>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include "includesSDL2.h"
+
 
 Texture::Texture() : 
 	m_texture(nullptr), m_iWidth(0), m_iHeight(0)

@@ -7,6 +7,7 @@
 class ButtonObject
 {
 private:
+	//SDL_Renderer* renderer;
 	Texture m_texture;
 	SDL_Point m_pTopLeft;
 	int m_iWidth;

@@ -10,13 +10,13 @@ int PaytableObject::oldCoef = 1;
 
 PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	m_texture(), 
-	m_btnBetOne(renderer, "../../Resources/betButtons.png", \
+	m_btnBetOne(renderer, "Resources/betButtons.png", \
 		0, 0, S_BETBTN_W, S_BETBTN_H),
-	m_btnbetMax(renderer, "../../Resources/betButtons.png", \
+	m_btnbetMax(renderer, "Resources/betButtons.png", \
 		0, 0, S_BETBTN_W, S_BETBTN_H)
 {
-	m_texture.LoadFromFile(renderer, "../../Resources/paytable2.png");
-	InitFont("../../Resources/font.ttf");
+	m_texture.LoadFromFile(renderer, "Resources/paytable2.png");
+	InitFont("Resources/font.ttf");
 
 	m_btnBetOne.SetPosition(SCREEN_WIDTH - m_btnBetOne.GetWidth(), \
 	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
@@ -101,7 +101,7 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer)
 	}
 }
 
-void PaytableObject::IncreaseBet()
+void PaytableObject::IncreaseBet()//Увеличете залога
 {
 	for(int i = 0; i < m_vecBets.size(); i++)
 		m_vecBets[i] /= oldCoef;

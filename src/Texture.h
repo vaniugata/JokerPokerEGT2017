@@ -14,7 +14,7 @@ private:
 
 //MEMBER FUNCTIONS
 public:
-	Texture();
+	Texture(SDL_Renderer* renderer = nullptr, std::string path = "");
 	~Texture();
 
 //GETTERS

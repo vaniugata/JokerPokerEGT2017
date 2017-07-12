@@ -25,6 +25,13 @@ const int T_CARD_H = 249;
 const int T_CARD_COLS = 13;
 const int T_CARD_ROWS = 4;
 
+//-------------R------------
+const int S_BONUSBTN_W = 204;
+const int S_BONUSBTN_H = 104;
+
+//---------------------------
+
+
 typedef enum
 {
 	INTRO,

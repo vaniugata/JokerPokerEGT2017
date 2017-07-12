@@ -23,18 +23,17 @@ int main(int args, char* argc[])
 				break;
 
 			case PLAY:
+				game.RenderBonusGame();
+
 				game.Render();
 				game.HandleEvent();
 				game.Draw();
-				break;
-
-			default:
 				break;
 			}
 			
 		} //event loop	
 	} // run loop
-		
 	
+
 	return 0;
 }

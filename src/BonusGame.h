@@ -6,8 +6,6 @@
 #include "Globals.h"
 #include <string>
 
-
-
 class BonusGame
 
 {

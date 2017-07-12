@@ -27,9 +27,9 @@ BonusGame::BonusGame(SDL_Renderer* renderer) :m_texture(),
 	m_btnX5.SetPosition ( 50 , 270 );
 	m_btnX10.SetPosition( 50 , 420 );
 	//Load sound effects
-	ButtonPress = Mix_LoadWAV("ResourcesMusic/ButtonPress.wav");
-	RollDice = Mix_LoadWAV("ResourcesMusic/RollDice.wav");
-	Winning = Mix_LoadWAV("ResourcesMusic/Winning.wav");
+	ButtonPress = Mix_LoadWAV("ResoursesMusic/ButtonPress.wav");
+	RollDice = Mix_LoadWAV("ResoursesMusic/RollDice.wav");
+	Winning = Mix_LoadWAV("ResoursesMusic/Winning.wav");
 }
 
 BonusGame::~BonusGame()

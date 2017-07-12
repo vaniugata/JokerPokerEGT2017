@@ -8,12 +8,16 @@ eGameState gGameState;
 int main(int args, char* argc[])
 {
 	Game game;
+	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState );
 
 	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState );
 
 	while(game.m_eGameState != QUIT)
 	{
+<<<<<<< HEAD
 		game.RenderBonusGame();
+=======
+>>>>>>> origin/master
  		while(SDL_PollEvent(&game.m_event) > 0)
 		{
 			switch(game.m_eGameState)
@@ -25,9 +29,13 @@ int main(int args, char* argc[])
 				break;
 
 			case PLAY:
+<<<<<<< HEAD
 
 				game.Render();
 				game.RenderBonusGame();
+=======
+				game.Render();
+>>>>>>> origin/master
 				game.HandleEvent();
 				game.Draw();
 				break;

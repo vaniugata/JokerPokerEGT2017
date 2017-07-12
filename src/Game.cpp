@@ -63,6 +63,7 @@ void Game::Render()
 	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
 }
 
+<<<<<<< HEAD
 //------------------------------------R--------------------------------
 void Game::RenderBonusGame()
 {
@@ -86,6 +87,8 @@ void Game::RenderBonusWin()
 	m_bonus->RenderWin(m_renderer);
 }
 //-----------------------------------------------------------------------
+=======
+>>>>>>> origin/master
 void Game::HandleEvent()
 {
 	switch(this->m_event.type)
@@ -100,7 +103,10 @@ void Game::HandleEvent()
 
 	case SDL_MOUSEBUTTONDOWN:
 		ProcessMouseInput();
+<<<<<<< HEAD
 		ProcessMouseWin();
+=======
+>>>>>>> origin/master
 		break;
 	}
 

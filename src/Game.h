@@ -7,6 +7,8 @@
 #include "BonusGame.h"
 #include "includesSDL2.h"
 
+
+
 class Game
 {
 private:
@@ -16,9 +18,11 @@ private:
 	//game components
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
+
 	//--------R----------
 	BonusGame* m_bonus;
 	//---------------------
+
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;

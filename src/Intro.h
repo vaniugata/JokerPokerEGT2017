@@ -14,6 +14,7 @@ private:
 	eGameState* m_ptrGameState;
 
 	ButtonObject m_btnNewGame;
+	ButtonObject m_btnResumeGame;
 
 public:
 	Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState);
@@ -22,6 +23,5 @@ public:
 	void Draw();
 	void Render();
 	void HandleEvent();
-	void ProcessMouseInput();
 };
 #endif

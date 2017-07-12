@@ -4,7 +4,7 @@
 #include "includesSDL2.h"
 
 
-Texture::Texture() : 
+Texture::Texture(SDL_Renderer* renderer, std::string path) : 
 	m_texture(nullptr), m_iWidth(100), m_iHeight(100)
 {
 

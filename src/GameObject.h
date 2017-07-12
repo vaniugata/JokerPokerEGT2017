@@ -5,14 +5,14 @@
 
 class GameObject
 {
-private:
-	Texture m_texture;
+protected:
+	SDL_Renderer* m_renderer;
 
 public:
-	GameObject(SDL_Renderer* renderer, std::string path);
+	GameObject(SDL_Renderer* renderer);
 	virtual~GameObject();
 
-	void Update();
-	void Render(SDL_Renderer* renderer, int x, int y, int w, int h);
+	virtual void Render(SDL_Rect* clip, int x, int y, int w, int h)  = 0;
+	virtual void HandleEvent(SDL_Event* event) = 0;
 };
 #endif

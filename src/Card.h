@@ -5,9 +5,9 @@
 
 #include "includesSDL2.h"
 
-typedef enum
+typedef enum 
 {
-	EMPTY,
+	EMPTYVALUE,
 	DEUCE,
 	THREE,
 	FOUR,
@@ -21,27 +21,45 @@ typedef enum
 	QUEEN,
 	KING,
 	ACE,
-	JOKER
+	JOKERVALUE
 } eCardValue;
 
-typedef enum
+typedef enum 
 {
-	EMPTY,
+	EMPTYSUIT,
 	DIOMOND,
 	SPADE,
 	HEART,
 	CLUB,
-	JOKER
+	JOKERSUIT
 } eCardSuit;
+
 
 
 class Card
 {
 private:
-	eCardSuit cardSuit;
-	eCardValue cardValue;
+	eCardSuit m_cardSuit;
+	eCardValue m_cardValue;
+	SDL_Rect m_cardRect;
+	bool m_bIsHold;
 public:
-	Card(eCardSuit cardSuit ,eCardValue eCardValue);
+	Card& operator=(const Card& newcard);
+	Card();
+	Card(eCardSuit,eCardValue,SDL_Rect);
+	eCardSuit getCardSuit()const;
+	eCardValue getCardValue()const;
+	SDL_Rect getCardRect();
+	void setCardSuit(eCardSuit);
+	void setCardValue(eCardValue);
+	void setCardRect(SDL_Rect);
+	void setIsHold(bool);
+	bool getIsHold();
+    friend bool operator<(const Card& oldcard,const Card& newcard);
+	//friend bool operator==(eCardValue leftValue, eCardValue rightValue);
+	
+
+
 
 
 };

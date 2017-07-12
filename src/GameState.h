@@ -3,7 +3,6 @@
 
 #include "includesSDL2.h"
 
-
 class GameState
 {
 protected:
@@ -16,7 +15,6 @@ public:
 	virtual void Draw();
 	virtual void Render() = 0;
 	virtual void HandleEvent() = 0;
-	virtual void ProcessMouseInput() = 0;
 };
 
 #endif

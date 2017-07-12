@@ -86,7 +86,6 @@ void Game::RenderBonusWin()
 	m_bonus->RenderWin(m_renderer);
 }
 //-----------------------------------------------------------------------
-
 void Game::HandleEvent()
 {
 	switch(this->m_event.type)

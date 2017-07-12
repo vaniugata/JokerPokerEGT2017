@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Globals.h"
 
+
 class ButtonObject
 {
 private:
@@ -25,7 +26,7 @@ public:
 	void SetPosition(int x, int y);
 
 	void Render(SDL_Renderer* renderer, SDL_Rect* clip = NULL, 
-		int w = 100, int h = 100);
+		int x = 0, int y = 0, int w = 100, int h = 100);
 
 	bool IsPressed();
 

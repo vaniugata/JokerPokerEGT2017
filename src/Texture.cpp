@@ -5,7 +5,7 @@
 
 
 Texture::Texture() : 
-	m_texture(nullptr), m_iWidth(0), m_iHeight(0)
+	m_texture(nullptr), m_iWidth(100), m_iHeight(100)
 {
 
 }

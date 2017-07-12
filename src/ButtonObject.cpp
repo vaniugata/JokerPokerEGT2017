@@ -33,8 +33,11 @@ void ButtonObject::SetPosition(int x, int y)
 }
 
 void ButtonObject::Render(SDL_Renderer* renderer, SDL_Rect* clip, \
- int w, int h)
+ int x, int y, int w, int h)
 {
+	m_pTopLeft.x = x;
+	m_pTopLeft.y = y;
+
 	m_texture.Render(renderer, m_pTopLeft.x, m_pTopLeft.y,
 		w, h, clip);
 }

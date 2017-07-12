@@ -4,8 +4,8 @@
 #include "Texture.h"
 #include "Globals.h"
 #include "PaytableObject.h"
+#include "BonusGame.h"
 #include "includesSDL2.h"
-
 
 class Game
 {
@@ -16,6 +16,9 @@ private:
 	//game components
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
+	//--------R----------
+	BonusGame* m_bonus;
+	//---------------------
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;
@@ -30,9 +33,14 @@ public:
 
 	void Draw();
 	void Render();
+	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
-
+	//--------R---------
+	void RenderBonusGame();
+	void ProcessMouseWin();
+	void RenderBonusWin();
+		//---------------------
 private:
 	void InitSDL();
 	void Close();

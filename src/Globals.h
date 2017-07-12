@@ -17,6 +17,12 @@ const int T_BTN_H_BET = 480;
 const int S_BETBTN_W = 100;
 const int S_BETBTN_H = 100;
 
+//-------------R------------
+const int S_BONUSBTN_W = 204;
+const int S_BONUSBTN_H = 104;
+
+//---------------------------
+
 typedef enum
 {
 	INTRO,

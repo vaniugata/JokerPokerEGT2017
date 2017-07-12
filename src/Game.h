@@ -4,8 +4,7 @@
 #include "Texture.h"
 #include "Globals.h"
 #include "PaytableObject.h"
-#include "includesSDL2.h"
-
+#include "DeckOfCards.h"
 
 class Game
 {
@@ -16,6 +15,7 @@ private:
 	//game components
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
+		
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;

@@ -27,6 +27,7 @@ int main(int args, char* argc[])
 				game.HandleEvent();
 				game.Draw();
 				break;
+
 			default:
 				break;
 			}

@@ -3,10 +3,7 @@
 
 #include "includesSDL2.h"
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 class GameState
 {
 protected:
@@ -21,8 +18,6 @@ public:
 	virtual void HandleEvent() = 0;
 	virtual void ProcessMouseInput() = 0;
 };
-<<<<<<< HEAD
+
 #endif
-=======
-#endif
->>>>>>> origin/master
+

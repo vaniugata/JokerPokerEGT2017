@@ -31,6 +31,8 @@ const int S_BONUSBTN_H = 104;
 
 //---------------------------
 
+const int ENUM_COUNTS_VALUE = 13;
+const int ENUM_COUNTS_SUIT = 4;
 
 typedef enum
 {

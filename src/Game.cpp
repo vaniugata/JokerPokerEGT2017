@@ -100,8 +100,8 @@ void Game::HandleEvent()
 
 	case SDL_MOUSEBUTTONDOWN:
 		ProcessMouseInput();
-
 		ProcessMouseWin();
+
 		break;
 	}
 
@@ -126,6 +126,8 @@ void Game::ProcessMouseInput()
 	{
 		m_paytable->SetMaxBet();
 	}
+
+	
 }
 //-----------------------R-----------------------
 void Game::ProcessMouseWin() {

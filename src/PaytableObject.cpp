@@ -85,7 +85,7 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 void PaytableObject::RenderBetList(SDL_Renderer * renderer)
 {
 	SDL_Color color { 255, 255, 255 };
-
+	                                    
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR 
 		+ X_BORDER_OFFSET + TEXT_BLANK_SPACE;
 

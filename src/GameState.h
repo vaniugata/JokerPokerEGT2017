@@ -16,4 +16,6 @@ public:
 	virtual void Render() = 0;
 	virtual void HandleEvent() = 0;
 };
+
 #endif
+

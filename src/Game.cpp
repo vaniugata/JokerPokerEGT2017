@@ -18,6 +18,7 @@ Game::Game() :
 	m_tBackground->LoadFromFile(m_renderer, "Resources/back2.png");
 
 	m_paytable = new PaytableObject(m_renderer);
+	deck = new Deck(m_renderer);
 //	-----------------R---------------------
 	m_bonus = new BonusGame(m_renderer);
 //	-----------------------------------------
@@ -27,6 +28,7 @@ Game::~Game()
 {
 	delete m_tBackground;
 	delete m_paytable;
+	delete deck;
 	//-------R------------
 		delete m_bonus;
 	//------------------------
@@ -61,6 +63,8 @@ void Game::Render()
 	m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, 750, 500);
 	SDL_Rect clip2 { 0, 0, T_BTN_W_BET, T_BTN_H_BET };
 	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
+
+	deck->RenderHand(m_renderer);
 }
 
 //------------------------------------R--------------------------------
@@ -113,7 +117,14 @@ void Game::ProcessKeyInput()
 	{
 		m_paytable->IncreaseBet();
 	}
+	else if(m_event.key.keysym.sym == SDLK_d)
+	{
+		deck->deal();
+		m_paytable->RenderBetList(m_renderer, deck->evaluateHand());
+		
+	}
 }
+
 
 void Game::ProcessMouseInput()
 {

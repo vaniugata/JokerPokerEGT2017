@@ -63,7 +63,7 @@ void PaytableObject::Render(SDL_Renderer * renderer)
 	//render the text
 	RenderCardCombinations(renderer);
 	//render the bet
-	RenderBetList(renderer);
+	RenderBetList(renderer,-1);
 }
 
 void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
@@ -82,24 +82,30 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 	
 }
 
-void PaytableObject::RenderBetList(SDL_Renderer * renderer)
+void PaytableObject::RenderBetList(SDL_Renderer * renderer,int index)
 {
-	SDL_Color color { 255, 255, 255 };
-	                                    
-	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR 
+     static SDL_Color color{ 255, 255, 255 };
+
+	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR
 		+ X_BORDER_OFFSET + TEXT_BLANK_SPACE;
 
 	std::stringstream ss;
-	for(int i = 0; i < m_vecBets.size(); i++)
+	for (int i = 0; i < m_vecBets.size(); i++)
 	{
 		int y = Y_BORDER_OFFSET + m_tText.GetHeight() * i;
-
+		
 		ss << m_vecBets[i];
 		m_tText.LoadFromRendererdText(renderer, m_font, ss.str(), color);
-		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight() );
+		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		ss.str("");
 	}
+	m_tText.LoadFromRendererdText(renderer, m_font, ss.str(), { 0,255,0 });
+
+	
+
 }
+
+
 
 void PaytableObject::IncreaseBet()//Увеличете залога
 {

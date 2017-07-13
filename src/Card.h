@@ -52,7 +52,7 @@ public:
 	SDL_Rect getCardRect();
 	void setCardSuit(eCardSuit);
 	void setCardValue(eCardValue);
-	void setCardRect(SDL_Rect);
+	void setCardRect(int,int,int,int);
 	void setIsHold(bool);
 	bool getIsHold();
     friend bool operator<(const Card& oldcard,const Card& newcard);

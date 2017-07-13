@@ -6,6 +6,7 @@
 #include "PaytableObject.h"
 #include "BonusGame.h"
 #include "includesSDL2.h"
+#include "Deck.h"
 
 
 
@@ -18,7 +19,7 @@ private:
 	//game components
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
-
+	Deck* deck;
 	//--------R----------
 	BonusGame* m_bonus;
 	//---------------------

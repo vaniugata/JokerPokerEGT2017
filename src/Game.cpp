@@ -10,7 +10,7 @@ bool isClickWin = false;
 
 Game::Game() : 
 	m_window(nullptr), m_renderer(nullptr), 
-	m_eGameState(INTRO), m_event()
+	m_eGameState(PLAY), m_event()
 {
 	InitSDL();
 
@@ -76,7 +76,7 @@ void Game::RenderBonusGame()
 		SDL_Rect clip3{ 0, 400, S_BONUSBTN_W, S_BONUSBTN_H};
 		m_bonus->GetWinX10().Render(m_renderer, &clip3, S_BONUSBTN_W, S_BONUSBTN_H);
 		SDL_Rect clip4 {0, 0, 540 ,80};
-		m_bonus->GetChoiceWin().Render(m_renderer, &clip4, 540, 80);
+		m_bonus->GetChoiceWin().Render(m_renderer, &clip4, 0, 0, 540, 80);
 //		SDL_Rect clip5 {0, 0, 545 ,85};
 //		m_bonus->GetChoiceWin().Render(m_renderer, &clip5, 545, 85);
 

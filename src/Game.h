@@ -44,7 +44,8 @@ public:
 	void RenderBonusGame();
 	void ProcessMouseWin();
 	void RenderBonusWin();
-		//---------------------
+	//---------------------
+
 private:
 	void InitSDL();
 	void Close();

@@ -79,6 +79,11 @@ bool operator<(const Card & oldcard, const Card & newcard)
  	return (oldcard.getCardValue() < newcard.getCardValue());
 }
 
+bool operator==(const Card & leftValue, const Card & rightValue)
+{
+	return leftValue.getCardValue() ==rightValue.getCardValue() && leftValue.getCardSuit() == rightValue.getCardSuit();
+}
+
 //bool operator==(eCardValue leftValue, eCardValue rightValue)
 //{
 //	return (int) leftValue == (int) rightValue;

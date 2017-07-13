@@ -28,28 +28,36 @@ Deck::Deck()
 }
 
 void Deck::deal()
-{
-	
+{/*
+	hand[0].setCardValue(TEN);
+	hand[0].setCardSuit(SPADE);
+	hand[0].setIsHold(true);
+
+	hand[4].setCardValue(TEN);
+	hand[4].setCardSuit(SPADE);
+	*/
+
 	//for(int i =0;i<5;i++)
 	//{ 
-	//	if (!(hand[i].getIsHold())) {		
+	//	if (!(hand[i].getIsHold()) || !isCardInHand())
+	//{
 	//	//	std::cout << " sada";
 	//		hand[i] = deckOfCards[rand() % 52];
 	//	}
-	//}
-	hand[0].setCardValue(TEN);
+ //   }
+	hand[0].setCardValue(DEUCE);
 	hand[0].setCardSuit(SPADE);
-
-	hand[1].setCardValue(JACK);
-	hand[1].setCardSuit(SPADE);
-
-	hand[2].setCardValue(QUEEN);
+	 
+	hand[1].setCardValue(ACE);
+	hand[1].setCardSuit(DIOMOND);
+	
+	hand[2].setCardValue(FIVE);
 	hand[2].setCardSuit(SPADE);
 	
-	hand[3].setCardValue(KING);
-	hand[3].setCardSuit(SPADE);
+	hand[3].setCardValue(JOKERVALUE);
+	hand[3].setCardSuit(JOKERSUIT);
 
-	hand[4].setCardValue(ACE);
+    hand[4].setCardValue(THREE);
 	hand[4].setCardSuit(SPADE);
 
 		
@@ -85,18 +93,31 @@ int Deck::evaluateHand()
 	sortHand();
 	int royalFlush, full,fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter;
 	fourOfAKind=royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter = 0;
-	int k = 0;
-
+	k = 0;
 	//checks for flush
 	while (k < 4 && hand[k].getCardSuit() == hand[k + 1].getCardSuit())
 		k++;
+	isJokerHand();
 	if (k == 4)
 		flush = 1;
 
 	//checks for straight
 	k = 0;
 	while (k < 4 && hand[k].getCardValue() == hand[k + 1].getCardValue() - 1)
+	{
+		if (hand[0].getCardValue() == DEUCE && hand[4].getCardValue() == ACE && k == 2)
+		{
+			k++;
+		}
 		k++;
+	}
+	//check for 2 3 5 A Joker
+	if (hand[0].getCardValue() == DEUCE && hand[3].getCardValue() == ACE && k == 1)
+	{
+		if (hand[2].getCardValue() == FIVE)
+			k+=2;
+		isJokerHand();
+	}
 	if (k == 4)
 		straight = 1;
 	//chech for four of a kind
@@ -105,10 +126,11 @@ int Deck::evaluateHand()
 		k = i;
 		while (k < i+3 && hand[k].getCardValue() == hand[k + 1].getCardValue())
 			k++;
+		isJokerHand();
 		if (k == i+3)
 			fourOfAKind = 1;
 	}
-	//check for three
+	//check for three and full
 	if (!fourOfAKind) {
 		for (int i = 0; i < 3; i++)
 		{
@@ -117,6 +139,7 @@ int Deck::evaluateHand()
 			{
 				k++;
 			}
+			isJokerHand();
 			if (k == i + 2)
 			{
 				threeOfKind = 1;
@@ -139,7 +162,7 @@ int Deck::evaluateHand()
 		
 				}
 			}
-	if (straight && flush &&hand[0].getCardValue() == TEN) {
+	if (straight && flush && hand[0].getCardValue() == TEN) {
 		return 10;
 	}
 if (straight && flush)
@@ -168,8 +191,33 @@ for (k = 0; k < 4; k++) {
 if (pair == 2) {
 	return 3;
 }
-else if (pair) {
+else if (pair || isJokerHand()) {
 	return 2;
 }
 else return 1;
+}
+
+bool Deck::isCardInHand()
+{
+	for (int i = 0; i < hand.size(); i++)
+	{
+		for (int j = 0; j < hand.size(); j++)
+		{
+			if (hand[i] == hand[j])
+			{
+				return true;
+			}
+		}
+		
+	}
+	return false;
+}
+
+bool Deck::isJokerHand()
+{
+	if (hand[4].getCardValue() == JOKERVALUE) {
+		k++;
+		return true;
+	}
+	return false;
 }

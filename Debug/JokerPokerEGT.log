@@ -1,0 +1,7 @@
+﻿  Deck.cpp
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\deck.cpp(26): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\deck.cpp(12): warning C4101: 'suit': unreferenced local variable
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\deck.cpp(201): warning C4018: '<': signed/unsigned mismatch
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\deck.cpp(203): warning C4018: '<': signed/unsigned mismatch
+  JokerPokerEGT.vcxproj -> D:\JokerPoker\JokerPokerEGT\Debug\JokerPokerEGT.exe
+  JokerPokerEGT.vcxproj -> D:\JokerPoker\JokerPokerEGT\Debug\JokerPokerEGT.pdb (Partial PDB)

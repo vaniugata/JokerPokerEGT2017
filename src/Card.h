@@ -56,7 +56,7 @@ public:
 	void setIsHold(bool);
 	bool getIsHold();
     friend bool operator<(const Card& oldcard,const Card& newcard);
-	//friend bool operator==(eCardValue leftValue, eCardValue rightValue);
+	friend bool operator==(const Card& leftValue,const Card& rightValue);
 	
 
 

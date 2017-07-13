@@ -5,9 +5,7 @@
 #include "includesSDL2.h"
 #include "Globals.h"
 #include <string>
-
 class BonusGame
-
 {
 private:
 	Texture m_texture;
@@ -24,9 +22,9 @@ public:
 	BonusGame(SDL_Renderer* renderer);
 	virtual~BonusGame();
 	//The music that will be played
-	Mix_Chunk *ButtonPress;
-	Mix_Chunk *RollDice;
-	Mix_Chunk *Winning;
+	Mix_Chunk *ButtonPress = nullptr;
+	Mix_Chunk *RollDice = nullptr;
+	Mix_Chunk *Winning = nullptr;
 	//getters
 	ButtonObject& GetChoiceWin();
 	ButtonObject& GetWinX2();
@@ -37,11 +35,11 @@ public:
 	void Render(SDL_Renderer* renderer);
 	void RenderWin(SDL_Renderer* renderer);
 	void RenderCalculateWin(SDL_Renderer * renderer);
-
+	void LoadMusicFiles();
 	//logic
 	int ResultDice();
-	double calculateWin(double credits,int x);
-
+	double calculateWin(double credits, int x);
+	void Close();
 
 
 };

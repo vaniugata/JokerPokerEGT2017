@@ -38,8 +38,9 @@ typedef enum
 {
 	INTRO,
 	PLAY,
+	BONUS,
 	OUTRO,
-	QUIT,
+	QUIT
 } eGameState;
 
 #endif

@@ -16,7 +16,10 @@ private:
 	ButtonObject m_btnbetMax;
 	static int oldCoef;
 	static int coef;
-
+	SDL_Color color{ 255, 255, 255 };
+public:
+	int index = -1;
+private:
 	std::vector<std::string> m_vecHands
 	{
 		"Natural royal flush",
@@ -44,7 +47,8 @@ public:
 	void InitFont(std::string path);
 	void Render(SDL_Renderer* renderer);
 	void RenderCardCombinations(SDL_Renderer* renderer);
-	void RenderBetList(SDL_Renderer* renderer);
+	void RenderBetList(SDL_Renderer* renderer,int index);
+	
 
 	//logic
 	void IncreaseBet();

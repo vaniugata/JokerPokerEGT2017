@@ -3,16 +3,24 @@
 
 
 
-Deck::Deck()
+Deck::Deck(SDL_Renderer* renderer)
+	:m_texture(renderer)
 {
+	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
 	for (int i = 0; i < 52; i++)
 	{
-		//int suit = rand() % 4;
-		//std::cout << suit << std::endl;
-		eCardSuit suit;
-		deckOfCards[i].setCardSuit(static_cast<eCardSuit> ((i/13)+1));
-		deckOfCards[i].setCardValue(static_cast<eCardValue>((i % 13) + 1));	
-		
+			eCardSuit suit;
+			deckOfCards[i].setCardSuit(static_cast<eCardSuit> ((i / 13) + 1));
+			deckOfCards[i].setCardValue(static_cast<eCardValue>((i % 13) + 1));
+	}
+	int counter=0;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 13; j++, counter++)
+		{
+			deckOfCards[counter].setCardRect(j * 168, i * 243, 168, 243);
+		}
+			
 	}
 	Card cardForVector;
 	for (int i = 0; i < 5; i++)
@@ -22,35 +30,42 @@ Deck::Deck()
 	//Joker
 	deckOfCards[52].setCardSuit(static_cast<eCardSuit>(5));
 	deckOfCards[52].setCardValue(static_cast<eCardValue>(15));
-	
+
 	srand(time(0));
 		//BackCard
 }
 
 void Deck::deal()
-{
-	
-	//for(int i =0;i<5;i++)
-	//{ 
-	//	if (!(hand[i].getIsHold())) {		
-	//	//	std::cout << " sada";
-	//		hand[i] = deckOfCards[rand() % 52];
-	//	}
-	//}
+{/*
 	hand[0].setCardValue(TEN);
 	hand[0].setCardSuit(SPADE);
+	hand[0].setIsHold(true);
 
-	hand[1].setCardValue(JACK);
-	hand[1].setCardSuit(SPADE);
-
-	hand[2].setCardValue(QUEEN);
-	hand[2].setCardSuit(SPADE);
-	
-	hand[3].setCardValue(KING);
-	hand[3].setCardSuit(SPADE);
-
-	hand[4].setCardValue(ACE);
+	hand[4].setCardValue(TEN);
 	hand[4].setCardSuit(SPADE);
+	*/
+
+	for(int i =0;i<5;i++)
+	{ 
+		if (!(hand[i].getIsHold()) || !isCardInHand())
+	{
+		hand[i] = deckOfCards[rand() % 52];
+	}
+    }
+	//hand[0].setCardValue(DEUCE);
+	//hand[0].setCardSuit(SPADE);
+	// 
+	//hand[1].setCardValue(ACE);
+	//hand[1].setCardSuit(DIOMOND);
+	//
+	//hand[2].setCardValue(FIVE);
+	//hand[2].setCardSuit(SPADE);
+	//
+	//hand[3].setCardValue(JOKERVALUE);
+	//hand[3].setCardSuit(JOKERSUIT);
+
+ //   hand[4].setCardValue(THREE);
+	//hand[4].setCardSuit(SPADE);
 
 		
 }
@@ -83,20 +98,33 @@ void Deck::sortHand()
 int Deck::evaluateHand()
 {
 	sortHand();
-	int royalFlush, full,fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter;
-	fourOfAKind=royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter = 0;
-	int k = 0;
-
+	int royalFlush, full,fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter,fiveOfAKind;
+	fourOfAKind=royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter=fiveOfAKind= 0;
+	k = 0;
 	//checks for flush
 	while (k < 4 && hand[k].getCardSuit() == hand[k + 1].getCardSuit())
 		k++;
+	isJokerHand();
 	if (k == 4)
 		flush = 1;
 
 	//checks for straight
 	k = 0;
 	while (k < 4 && hand[k].getCardValue() == hand[k + 1].getCardValue() - 1)
+	{
+		if (hand[0].getCardValue() == DEUCE && hand[4].getCardValue() == ACE && k == 2)
+		{
+			k++;
+		}
 		k++;
+	}
+	//check for 2 3 5 A Joker
+	if (hand[0].getCardValue() == DEUCE && hand[3].getCardValue() == ACE && k == 1)
+	{
+		if (hand[2].getCardValue() == FIVE)
+			k+=2;
+		isJokerHand();
+	}
 	if (k == 4)
 		straight = 1;
 	//chech for four of a kind
@@ -105,10 +133,13 @@ int Deck::evaluateHand()
 		k = i;
 		while (k < i+3 && hand[k].getCardValue() == hand[k + 1].getCardValue())
 			k++;
+		isJokerHand();
 		if (k == i+3)
 			fourOfAKind = 1;
+		if (k == i + 4)
+			fiveOfAKind = 1;
 	}
-	//check for three
+	//check for three and full
 	if (!fourOfAKind) {
 		for (int i = 0; i < 3; i++)
 		{
@@ -117,6 +148,7 @@ int Deck::evaluateHand()
 			{
 				k++;
 			}
+			isJokerHand();
 			if (k == i + 2)
 			{
 				threeOfKind = 1;
@@ -139,37 +171,87 @@ int Deck::evaluateHand()
 		
 				}
 			}
-	if (straight && flush &&hand[0].getCardValue() == TEN) {
-		return 10;
+	if (straight && flush && hand[0].getCardValue() == TEN) {
+		return 0;
 	}
-if (straight && flush)
+	else if (fiveOfAKind)
+	{
+		return 1;
+	}
+else if (straight && flush && isJokerHand() && hand[0].getCardValue() == TEN)
 {
-	return 9;
+	return 2;
+}
+else if (straight && flush)
+{
+	return 3;
 }
 else if (fourOfAKind) {
-	return 8;
+	return 4;
 }
 else if (full) {
-	return 7;
-}
-else if (flush) {
-	return 6;
-}
-else if (straight) {
 	return 5;
 }
+else if (flush) {
+	return 6 ;
+}
+else if (straight) {
+	return 7;
+}
 else if (threeOfKind) {
-	return 4;
+	return 8;
 }
 for (k = 0; k < 4; k++) {
 	if (hand[k].getCardValue() == hand[k + 1].getCardValue())
 		pair++;
 }
 if (pair == 2) {
-	return 3;
+	return 8;
 }
-else if (pair) {
-	return 2;
+else if ((pair=1 && hand[3].getCardValue()>=KING ) || (hand[3].getCardValue() >= KING &&  isJokerHand())) 
+{
+	return 9;
 }
-else return 1;
+else return 10;
+}
+
+bool Deck::isCardInHand()
+{
+	for (int i = 0; i < hand.size(); i++)
+	{
+		for (int j = 0; j < hand.size(); j++)
+		{
+			if (hand[i] == hand[j])
+			{
+				return true;
+			}
+		}
+		
+	}
+	return false;
+}
+
+bool Deck::isJokerHand()
+{
+	if (hand[4].getCardValue() == JOKERVALUE) {
+		k++;
+		return true;
+	}
+	return false;
+}
+
+void Deck::RenderCard(SDL_Renderer * renderer,SDL_Rect* rect,SDL_Rect* destination)
+{
+	m_texture.Render(renderer, destination->x, destination->y, destination->w, destination->h,rect);
+
+}
+
+void Deck::RenderHand(SDL_Renderer * renderer)
+{
+	SDL_Rect cardPlace{ 50,420,170,240 };
+	for (int i = 0; i < 5; i++)
+	{
+		RenderCard(renderer, &hand[i].getCardRect(),&cardPlace);
+		cardPlace.x += cardPlace.w;
+	}
 }

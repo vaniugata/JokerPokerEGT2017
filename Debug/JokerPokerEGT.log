@@ -1,0 +1,14 @@
+﻿  PaytableObject.cpp
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(57): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(59): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(60): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(73): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(74): warning C4018: '<': signed/unsigned mismatch
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(90): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(93): warning C4018: '<': signed/unsigned mismatch
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(112): warning C4018: '<': signed/unsigned mismatch
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(115): warning C4018: '<': signed/unsigned mismatch
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(123): warning C4018: '<': signed/unsigned mismatch
+d:\jokerpoker\jokerpokeregt\jokerpokeregt\src\paytableobject.cpp(135): warning C4018: '<': signed/unsigned mismatch
+  JokerPokerEGT.vcxproj -> D:\JokerPoker\JokerPokerEGT\Debug\JokerPokerEGT.exe
+  JokerPokerEGT.vcxproj -> D:\JokerPoker\JokerPokerEGT\Debug\JokerPokerEGT.pdb (Partial PDB)

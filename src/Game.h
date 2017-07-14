@@ -5,10 +5,9 @@
 #include "Globals.h"
 #include "PaytableObject.h"
 #include "BonusGame.h"
+#include "WinBonus.h"
 #include "includesSDL2.h"
 #include "Deck.h"
-
-
 
 class Game
 {
@@ -21,8 +20,6 @@ private:
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
 	Deck* deck;
-	BonusGame* m_bonus;
-
 
 public:
 	eGameState m_eGameState;
@@ -42,11 +39,6 @@ public:
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
-	//--------R---------
-	void RenderBonusGame();
-	void ProcessMouseWin();
-	void RenderBonusWin();
-	//---------------------
 
 private:
 	void InitSDL();

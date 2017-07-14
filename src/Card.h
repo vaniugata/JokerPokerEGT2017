@@ -2,7 +2,6 @@
 #define CARD_H
 
 #include<iostream>
-
 #include "includesSDL2.h"
 
 typedef enum 
@@ -49,7 +48,7 @@ public:
 	Card(eCardSuit,eCardValue,SDL_Rect);
 	eCardSuit getCardSuit()const;
 	eCardValue getCardValue()const;
-	SDL_Rect getCardRect();
+	SDL_Rect* getCardRect();
 	void setCardSuit(eCardSuit);
 	void setCardValue(eCardValue);
 	void setCardRect(int,int,int,int);

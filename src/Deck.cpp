@@ -223,7 +223,7 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 	SDL_Rect cardPlace{ 50,420,170,240 };
 	for(int i = 0; i < 5; i++)
 	{
-		RenderCard(renderer, &hand[i].getCardRect(), &cardPlace);
+		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
 		cardPlace.x += cardPlace.w;
 	}
 }

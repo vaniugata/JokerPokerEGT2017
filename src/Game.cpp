@@ -3,13 +3,9 @@
 #include <iostream>
 using std::cerr;
 #include "includesSDL2.h"
-//--------------R----------
-double credits = 123456;
-bool isClickWin = false;
-//------------------------
 
 Game::Game() :
-	m_dCredit(-1), m_window(nullptr), m_renderer(nullptr),
+		m_dCredit(-1),m_window(nullptr), m_renderer(nullptr),
 	m_eGameState(INTRO), m_event()
 {
 	InitSDL();
@@ -19,9 +15,6 @@ Game::Game() :
 
 	m_paytable = new PaytableObject(m_renderer);
 	deck = new Deck(m_renderer);
-	//	-----------------R---------------------
-	m_bonus = new BonusGame(m_renderer);
-	//	-----------------------------------------
 }
 
 Game::~Game()
@@ -29,9 +22,6 @@ Game::~Game()
 	delete m_tBackground;
 	delete m_paytable;
 	delete deck;
-	//-------R------------
-	delete m_bonus;
-	//------------------------
 	std::cout << "Game deleted.\n";
 	Close();
 }
@@ -40,8 +30,7 @@ SDL_Renderer* Game::GetRenderer() const
 {
 	return  m_renderer;
 }
-
-double* Game::GetCredit() 
+double* Game::GetCredit()
 {
 	return &m_dCredit;
 }
@@ -60,41 +49,19 @@ void Game::Draw()
 void Game::Render()
 {
 	//draw background
-	m_tBackground->Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	//draw paytable
-	m_paytable->Render(m_renderer);
-	//draw bet buttons
-	SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
-	m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, 750, 500);
-	SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
-	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
+		m_tBackground->Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		//draw paytable
+		m_paytable->Render(m_renderer);
+		//draw bet buttons
+		SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
+		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, 750, 500);
+		SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
+		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
 
-	deck->RenderHand(m_renderer);
+		deck->RenderHand(m_renderer);
 }
 
-//------------------------------------R--------------------------------
-void Game::RenderBonusGame()
-{
-	//draw Bonus
-	m_bonus->Render(m_renderer);
-	//draw bet buttons
-	SDL_Rect clip1{ 0, 100, S_BONUSBTN_W, S_BONUSBTN_H };
-	m_bonus->GetWinX2().Render(m_renderer, &clip1, S_BONUSBTN_W, S_BONUSBTN_H);
-	SDL_Rect clip2{ 0, 250, S_BONUSBTN_W, S_BONUSBTN_H };
-	m_bonus->GetWinX5().Render(m_renderer, &clip2, S_BONUSBTN_W, S_BONUSBTN_H);
-	SDL_Rect clip3{ 0, 400, S_BONUSBTN_W, S_BONUSBTN_H };
-	m_bonus->GetWinX10().Render(m_renderer, &clip3, S_BONUSBTN_W, S_BONUSBTN_H);
-	SDL_Rect clip4{ 0, 0, 540 ,80 };
-	m_bonus->GetChoiceWin().Render(m_renderer, &clip4, 540, 80);
-	//		SDL_Rect clip5 {0, 0, 545 ,85};
-	//		m_bonus->GetChoiceWin().Render(m_renderer, &clip5, 545, 85);
 
-}
-void Game::RenderBonusWin()
-{
-	m_bonus->RenderWin(m_renderer);
-}
-//-----------------------------------------------------------------------
 void Game::HandleEvent()
 {
 	switch(this->m_event.type)
@@ -109,7 +76,6 @@ void Game::HandleEvent()
 
 	case SDL_MOUSEBUTTONDOWN:
 		ProcessMouseInput();
-		ProcessMouseWin();
 
 		break;
 	}
@@ -119,95 +85,39 @@ void Game::HandleEvent()
 void Game::ProcessKeyInput()
 {
 	if(m_event.key.keysym.sym == SDLK_SPACE)
-	{
-		m_paytable->IncreaseBet();
-	}
-	else if(m_event.key.keysym.sym == SDLK_d)
-	{
-		deck->deal();
-		m_paytable->SetWinnerIndex(deck->evaluateHand());
-		std::cout << "Hand value: "<< deck->evaluateHand() << "\n";
-		std::cout << "Credit:" << m_dCredit << "\n";
+		{
+			m_paytable->IncreaseBet();
+		}
+		else if(m_event.key.keysym.sym == SDLK_d)
+		{
+			deck->deal();
+			m_paytable->SetWinnerIndex(deck->evaluateHand());
+			std::cout << "Hand value: "<< deck->evaluateHand() << "\n";
+			std::cout << "Credit:" << m_dCredit << "\n";
 
-	}
-	else if(m_event.key.keysym.sym == SDLK_d)
-	{
-		m_eGameState = BONUS;
-	}
+		}
+		else if(m_event.key.keysym.sym == SDLK_d)
+		{
+			m_eGameState = BONUS;
+		}
 }
 
 
 void Game::ProcessMouseInput()
 {
 	if(m_paytable->GetBetOneBtn().IsPressed())
-	{
-		m_paytable->IncreaseBet();
-	}
+		{
+			m_paytable->IncreaseBet();
+		}
 
-	if(m_paytable->GetBetMaxBtn().IsPressed())
-	{
-		m_paytable->SetMaxBet();
-	}
+		if(m_paytable->GetBetMaxBtn().IsPressed())
+		{
+			m_paytable->SetMaxBet();
+		}
 
 
 }
-//-----------------------R-----------------------
-void Game::ProcessMouseWin() {
 
-	if(m_bonus->GetWinX2().IsPressed())
-	{
-		Mix_PlayChannel(-1, m_bonus->ButtonPress, 0);
-		Mix_PlayChannel(-1, m_bonus->RollDice, 0);
-		int ResultDice = m_bonus->ResultDice();
-		if(ResultDice < 5) {
-			credits = m_bonus->calculateWin(credits, 2);
-			RenderBonusWin();
-			Mix_PlayChannel(-1, m_bonus->Winning, 0);
-			SDL_Delay(2000);
-			isClickWin = true;
-		}
-		else {
-			//?
-		}
-	}
-
-	if(m_bonus->GetWinX5().IsPressed())
-	{
-		Mix_PlayChannel(-1, m_bonus->ButtonPress, 0);
-		Mix_PlayChannel(-1, m_bonus->RollDice, 0);
-		int ResultDice = m_bonus->ResultDice();
-		if(ResultDice > 4 && ResultDice < 10)
-		{
-			credits = m_bonus->calculateWin(credits, 5);
-			RenderBonusWin();
-			Mix_PlayChannel(-1, m_bonus->Winning, 0);
-			SDL_Delay(2000);
-			isClickWin = true;
-		}
-		else {
-			//?
-		}
-
-	}
-	if(m_bonus->GetWinX10().IsPressed())
-	{
-		Mix_PlayChannel(-1, m_bonus->ButtonPress, 0);
-		Mix_PlayChannel(-1, m_bonus->RollDice, 0);
-		int ResultDice = m_bonus->ResultDice();
-		if(ResultDice > 9 && ResultDice < 13)
-		{
-			credits = m_bonus->calculateWin(credits, 10);
-			RenderBonusWin();
-			Mix_PlayChannel(-1, m_bonus->Winning, 0);
-			SDL_Delay(2000);
-			isClickWin = true;
-		}
-		else {
-			//?
-		}
-	}
-}
-//---------------------------------------------------
 void Game::InitSDL()
 {
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)

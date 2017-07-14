@@ -9,7 +9,7 @@ eGameState gGameState;
 int main(int args, char* argc[])
 {
 	Game game;
-	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState );
+	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit());
 
 	while(game.m_eGameState != QUIT)
 	{

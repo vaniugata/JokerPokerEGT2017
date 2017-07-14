@@ -8,6 +8,7 @@ class Texture
 {
 private:
 	SDL_Texture* m_texture;
+	TTF_Font* m_font;
 
 	int m_iWidth;
 	int m_iHeight;
@@ -22,9 +23,11 @@ public:
 	int GetHeight() const;
 
 	void LoadFromFile(SDL_Renderer* renderer, std::string path);
-	void LoadFromRendererdText(SDL_Renderer* renderer, TTF_Font* font, \
+	void LoadFromRendererdText(SDL_Renderer* renderer, \
 		std::string text, SDL_Color color);
 	void Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip = NULL);
+
+	void InitFont(std::string path);
 
 private:
 	void Free();

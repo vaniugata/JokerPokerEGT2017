@@ -23,7 +23,7 @@ public:
 	Card getRandomCard();
 	void sortHand();
 	int evaluateHand();
-	bool isCardInHand();
+	bool isCardInHand(Card& card);
 	bool isJokerHand();
 	void RenderCard(SDL_Renderer*,SDL_Rect*,SDL_Rect*);
 	void RenderHand(SDL_Renderer*);

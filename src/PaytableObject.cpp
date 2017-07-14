@@ -13,7 +13,8 @@ PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	m_btnBetOne(renderer, "Resources/betButtons.png", \
 		0, 0, S_BETBTN_W, S_BETBTN_H),
 	m_btnbetMax(renderer, "Resources/betButtons.png", \
-		0, 0, S_BETBTN_W, S_BETBTN_H)
+		0, 0, S_BETBTN_W, S_BETBTN_H),
+	m_iWinnerIndex(-1)
 {
 	m_texture.LoadFromFile(renderer, "Resources/paytable2.png");
 	InitFont("Resources/font.ttf");
@@ -22,8 +23,7 @@ PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
 	m_btnbetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
 		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
-
-
+	m_tText.InitFont("Resources/font.ttf");
 }
 
 PaytableObject::~PaytableObject()
@@ -39,6 +39,11 @@ ButtonObject& PaytableObject::GetBetOneBtn()
 ButtonObject & PaytableObject::GetBetMaxBtn()
 {
 	return m_btnbetMax;
+}
+
+void PaytableObject::SetWinnerIndex(int index)
+{
+	this->m_iWinnerIndex = index;
 }
 
 void PaytableObject::InitFont(std::string path)
@@ -63,12 +68,13 @@ void PaytableObject::Render(SDL_Renderer * renderer)
 	//render the text
 	RenderCardCombinations(renderer);
 	//render the bet
-	RenderBetList(renderer, index);
+	RenderBetList(renderer, m_iWinnerIndex);
 }
 
 void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 {
 	SDL_Color color{ 255, 255, 255 };
+	SDL_Color colorWin{ 0, 255, 0 };
 
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR + X_BORDER_OFFSET;
 	for(int i = 0; i < m_vecHands.size(); i++)
@@ -76,8 +82,14 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 		
 		int y = Y_BORDER_OFFSET + m_tText.GetHeight() * i;
 		
-		m_tText.LoadFromRendererdText(renderer, m_font, m_vecHands[i], color);
+		m_tText.LoadFromRendererdText(renderer, m_vecHands[i], color);
 		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight() );
+
+		if(m_iWinnerIndex == i)
+		{
+			m_tText.LoadFromRendererdText(renderer, m_vecHands[i], colorWin);
+			m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
+		}
 	}
 	
 }
@@ -87,32 +99,27 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer, int winnerIndx)
 	SDL_Color color{ 255, 255, 255 };
 	SDL_Color colorWin{ 0, 255, 0 };
 
-
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR
 		+ X_BORDER_OFFSET + TEXT_BLANK_SPACE;
 
 	std::stringstream ss;
 	for (int i = 0; i < m_vecBets.size(); i++)
 	{
-
 		int y = Y_BORDER_OFFSET + m_tText.GetHeight() * i;
 
 		ss << m_vecBets[i];
-		m_tText.LoadFromRendererdText(renderer, m_font, ss.str(), color);
+		m_tText.LoadFromRendererdText(renderer, ss.str(), color);
 		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		ss.str("");
 
 		if(winnerIndx == i)
 		{
-
 			ss << m_vecBets[i];
-			m_tText.LoadFromRendererdText(renderer, m_font, ss.str(), colorWin);
+			m_tText.LoadFromRendererdText(renderer, ss.str(), colorWin);
 			m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 			ss.str("");
 		}
-		
 	}
-
 }
 
 
@@ -120,10 +127,13 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer, int winnerIndx)
 void PaytableObject::IncreaseBet()//Увеличете залога
 {
 	for(int i = 0; i < m_vecBets.size(); i++)
+	{
 		m_vecBets[i] /= oldCoef;
-	
-	for(int i = 0; i < m_vecBets.size(); i++)
 		m_vecBets[i] *= coef;
+	}
+	
+//	for(int i = 0; i < m_vecBets.size(); i++)
+	//	m_vecBets[i] *= coef;
 
 	coef++;
 	oldCoef++;

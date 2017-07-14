@@ -5,7 +5,7 @@
 
 
 Texture::Texture(SDL_Renderer* renderer, std::string path) : 
-	m_texture(nullptr), m_iWidth(100), m_iHeight(100)
+	m_texture(nullptr), m_font(nullptr), m_iWidth(100), m_iHeight(100)
 {
 
 }
@@ -49,11 +49,11 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 	surface = nullptr;
 }
 
-void Texture::LoadFromRendererdText(SDL_Renderer * renderer, TTF_Font* font,\
-	std::string text, SDL_Color color)
+void Texture::LoadFromRendererdText(SDL_Renderer * renderer, std::string text, SDL_Color color)
 {
-	Free();
-	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+	//Free();
+
+	SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), color);
 	if(textSurface == nullptr)
 	{
 		std::cerr << "Unable to render text surface! SDL_ttf Error: " \
@@ -86,11 +86,24 @@ void Texture::Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rec
 	SDL_RenderCopy(renderer, m_texture, clip, &dest);
 }
 
+void Texture::InitFont(std::string path)
+{
+	m_font = TTF_OpenFont(path.c_str(), 18);
+	if(m_font == nullptr)
+	{
+		std::cerr << "Failed to load " << path << " font! SDL_ttf Error:" << TTF_GetError();
+		return;
+	}
+}
+
 
 void Texture::Free()
 {
 	SDL_DestroyTexture(m_texture);
 	m_texture = nullptr;
+
+	TTF_CloseFont(m_font);
+	m_font = nullptr;
 
 	m_iWidth = m_iHeight = 0;
 }

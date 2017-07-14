@@ -9,7 +9,7 @@ bool isClickWin = false;
 //------------------------
 
 Game::Game() :
-	m_window(nullptr), m_renderer(nullptr),
+	m_dCredit(-1), m_window(nullptr), m_renderer(nullptr),
 	m_eGameState(INTRO), m_event()
 {
 	InitSDL();
@@ -39,6 +39,11 @@ Game::~Game()
 SDL_Renderer* Game::GetRenderer() const
 {
 	return  m_renderer;
+}
+
+double* Game::GetCredit() 
+{
+	return &m_dCredit;
 }
 
 void Game::SetGameState(eGameState gs)
@@ -120,8 +125,9 @@ void Game::ProcessKeyInput()
 	else if(m_event.key.keysym.sym == SDLK_d)
 	{
 		deck->deal();
-		m_paytable->index = deck->evaluateHand();
-		std::cout << deck->evaluateHand() << "\n";
+		m_paytable->SetWinnerIndex(deck->evaluateHand());
+		std::cout << "Hand value: "<< deck->evaluateHand() << "\n";
+		std::cout << "Credit:" << m_dCredit << "\n";
 
 	}
 	else if(m_event.key.keysym.sym == SDLK_d)

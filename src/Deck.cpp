@@ -39,9 +39,11 @@ void Deck::deal()
 {
 	for(int i = 0;i < 5;i++)
 	{
-		if(!(hand[i].getIsHold()) || !isCardInHand())
+		Card currentCard = deckOfCards[rand() % 52];
+
+		if(hand[i].getIsHold() == false && isCardInHand(currentCard) == false)
 		{
-			hand[i] = deckOfCards[rand() % 52];
+			hand[i] = currentCard;
 		}
 	}
 }
@@ -182,28 +184,22 @@ int Deck::evaluateHand()
 			pair++;
 	}
 	if(pair == 2) {
-		return 8;
+		return 9;
 	}
 	else if((pair = 1 && hand[3].getCardValue() >= KING) || (hand[3].getCardValue() >= KING &&  isJokerHand()))
 	{
-		return 9;
+		return 10;
 	}
-	else return 10;
+	else return -1;
 }
 
-bool Deck::isCardInHand()
+bool Deck::isCardInHand(Card& card)
 {
 	for(int i = 0; i < hand.size(); i++)
 	{
-		for(int j = 0; j < hand.size(); j++)
-		{
-			if(hand[i] == hand[j])
-			{
-				return true;
-			}
-		}
-
+		if(hand[i] == card) { return true; }
 	}
+
 	return false;
 }
 

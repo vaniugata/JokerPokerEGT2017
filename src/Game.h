@@ -13,6 +13,7 @@
 class Game
 {
 private:
+	double m_dCredit;
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 
@@ -20,9 +21,8 @@ private:
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
 	Deck* deck;
-	//--------R----------
 	BonusGame* m_bonus;
-	//---------------------
+
 
 public:
 	eGameState m_eGameState;
@@ -33,6 +33,7 @@ public:
 	~Game();
 
 	SDL_Renderer* GetRenderer() const;
+	double* GetCredit();
 
 	void SetGameState(eGameState gs);
 

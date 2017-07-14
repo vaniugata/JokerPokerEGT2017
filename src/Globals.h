@@ -17,6 +17,12 @@ const int T_BTN_H_BET = 480;
 const int S_BETBTN_W = 100;
 const int S_BETBTN_H = 100;
 
+//----INTRO-----------
+const int INTRO_BTN_W = 214;
+const int INTRO_BTN_H = 53;
+
+//----INTRO-----------
+
 const int NUM_OF_CARDS = 54;
 
 const int T_CARD_W = 172;

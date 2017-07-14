@@ -77,7 +77,7 @@ void BonusGame::RenderCalculateWin(SDL_Renderer * renderer) {
 	//ss<<credits;
 	//std::string credits(ss.str());
 	//newWin = calculateWin(4.5,2);
-	m_tText.LoadFromRendererdText(renderer, m_font, newWin, color);
+	//m_tText.LoadFromRendererdText(renderer, newWin, color);
 	m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 
 }

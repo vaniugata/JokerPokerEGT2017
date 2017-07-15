@@ -1,8 +1,6 @@
 #include "Deck.h"
 #include<iostream>
 
-
-
 Deck::Deck(SDL_Renderer* renderer)
 	:m_texture(renderer)
 {
@@ -46,6 +44,8 @@ void Deck::deal()
 			hand[i] = currentCard;
 		}
 	}
+
+	printDeck();
 }
 
 

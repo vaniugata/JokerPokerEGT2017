@@ -27,10 +27,10 @@ typedef enum
 typedef enum 
 {
 	EMPTYSUIT,
-	DIOMOND,
-	SPADE,
-	HEART,
-	CLUB,
+	CLUBS,
+	DIAMONDS,
+	HEARTS,
+	SPADES,
 	JOKERSUIT
 } eCardSuit;
 

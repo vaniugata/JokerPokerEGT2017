@@ -12,7 +12,7 @@ const int X_BORDER_OFFSET = 25;
 const int Y_BORDER_OFFSET = 10;
 
 const int T_BTN_W_BET = 480;
-const int T_BTN_H_BET = 480;
+const int T_BTN_H_BET = 443;
 
 const int S_BETBTN_W = 100;
 const int S_BETBTN_H = 100;

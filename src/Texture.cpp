@@ -51,8 +51,6 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 
 void Texture::LoadFromRendererdText(SDL_Renderer * renderer, std::string text, SDL_Color color)
 {
-	//Free();
-
 	SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), color);
 	if(textSurface == nullptr)
 	{

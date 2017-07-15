@@ -18,6 +18,7 @@ public:
 	virtual~ButtonObject();
 
 	//getters
+	//On screen dimentions
 	int GetWidth() const;
 	int GetHeight() const;
 
@@ -27,7 +28,7 @@ public:
 	void Render(SDL_Renderer* renderer, SDL_Rect* clip = NULL, 
 		int x = 0, int y = 0, int w = 100, int h = 100);
 
-	bool IsPressed();
+	bool IsSelected();
 
 };
 #endif

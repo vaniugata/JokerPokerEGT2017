@@ -105,12 +105,12 @@ void Game::ProcessKeyInput()
 
 void Game::ProcessMouseInput()
 {
-	if(m_paytable->GetBetOneBtn().IsPressed())
+	if(m_paytable->GetBetOneBtn().IsSelected())
 		{
 			m_paytable->IncreaseBet();
 		}
 
-		if(m_paytable->GetBetMaxBtn().IsPressed())
+		if(m_paytable->GetBetMaxBtn().IsSelected())
 		{
 			m_paytable->SetMaxBet();
 		}

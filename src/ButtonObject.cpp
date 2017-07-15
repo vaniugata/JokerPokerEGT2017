@@ -69,11 +69,3 @@ bool ButtonObject::IsSelected()
 	return false;
 }
 
-//ButtonObject & ButtonObject::operator=(const ButtonObject & right)
-//{
-//	this->m_iHeight = right.m_iHeight;
-//	this->m_iWidth = right.m_iWidth;
-//	this->m_pTopLeft = right.m_pTopLeft;
-//	this->m_texture = right.m_texture;
-//	return *this;
-//}

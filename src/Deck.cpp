@@ -42,6 +42,7 @@ Deck::Deck(SDL_Renderer* renderer)
 
 	initHoldBtns();
 	
+
 }
 
 void Deck::deal()
@@ -50,16 +51,19 @@ void Deck::deal()
 	for(int i = 0;i < 5;i++)
 	{
 		Card currentCard = deckOfCards[rand() % 53];
+
 		if(hand[i].getIsHold() == false && isCardInHand(currentCard) == false)
 		{
 			hand[i] = currentCard;
 		}
+
 		if (hand[i].getIsHold() == true)
 		{
 			hand[i].setIsHold(false);
 		}
 	}
 	std::cout << "--------------------------------------" << std::endl;
+
 	printDeck();
 }
 
@@ -83,6 +87,7 @@ Card Deck::getRandomCard()
 	return randomCard;
 }
 
+
 ButtonObject* Deck::GetHeldCardsButtons()
 {
 	return m_vecCardHold;
@@ -93,22 +98,26 @@ std::vector<Card>& Deck::GetHand()
 	return this->hand;
 }
 
+
 std::vector<Card> Deck::sortHand()
 {
 	std::vector<Card> sorted = hand;
 	
 	std::sort(sorted.begin(), sorted.begin() + 5);
 	return sorted;
+
 }
 
 int Deck::evaluateHand()
 {
 	std::vector<Card> sorted = sortHand();
+
 	int royalFlush, full, fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter, fiveOfAKind;
 	fourOfAKind = royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter = fiveOfAKind = 0;
 	k = 0;
 	//checks for flush
 	while(k < 4 && sorted[k].getCardSuit() == sorted[k + 1].getCardSuit())
+
 		k++;
 	isJokerHand();
 	if(k == 4)
@@ -116,18 +125,22 @@ int Deck::evaluateHand()
 
 	//checks for straight
 	k = 0;
+
 	while(k < 4 && sorted[k].getCardValue() == sorted[k + 1].getCardValue() - 1)
 	{
 		if(sorted[0].getCardValue() == DEUCE && sorted[4].getCardValue() == ACE && k == 2)
+
 		{
 			k++;
 		}
 		k++;
 	}
 	//check for 2 3 5 A Joker
+
 	if(sorted[0].getCardValue() == DEUCE && sorted[3].getCardValue() == ACE && k == 1)
 	{
 		if(sorted[2].getCardValue() == FIVE)
+
 			k += 2;
 		isJokerHand();
 	}
@@ -137,7 +150,9 @@ int Deck::evaluateHand()
 	for(int i = 0; i < 2; i++)
 	{
 		k = i;
+
 		while(k < i + 3 && sorted[k].getCardValue() == sorted[k + 1].getCardValue())
+
 			k++;
 		isJokerHand();
 		if(k == i + 3)
@@ -150,7 +165,9 @@ int Deck::evaluateHand()
 		for(int i = 0; i < 3; i++)
 		{
 			k = i;
+
 			while(k < i + 2 && sorted[k].getCardValue() == sorted[k + 1].getCardValue())
+
 			{
 				k++;
 			}
@@ -160,31 +177,41 @@ int Deck::evaluateHand()
 				threeOfKind = 1;
 				if(i == 0)
 				{
+
 					if(sorted[3].getCardValue() == sorted[4].getCardValue()) {
+
 						full = 1;
 					}
 				}
 				else if(i == 1) {
+
 					if(sorted[0].getCardValue() == sorted[4].getCardValue()) {
+
 						full = 1;
 					}
 				}
 				else {
+
 					if(sorted[0].getCardValue() == sorted[1].getCardValue())
+
 						full = 1;
 				}
 			}
 
 		}
 	}
+
 	if(straight && flush && sorted[0].getCardValue() == TEN) {
+
 		return 0;
 	}
 	else if(fiveOfAKind)
 	{
 		return 1;
 	}
+
 	else if(straight && flush && isJokerHand() && sorted[0].getCardValue() == TEN)
+
 	{
 		return 2;
 	}
@@ -208,12 +235,15 @@ int Deck::evaluateHand()
 		return 8;
 	}
 	for(k = 0; k < 4; k++) {
+
 		if(sorted[k].getCardValue() == sorted[k + 1].getCardValue())
+
 			pair++;
 	}
 	if(pair == 2) {
 		return 9;
 	}
+
 	else if (sorted[3].getCardValue() >= KING)
 	{
 		if (isJokerHand())
@@ -221,6 +251,7 @@ int Deck::evaluateHand()
 		if (sorted[3].getCardValue() == sorted[4].getCardValue())
 			return 10;
 		return -1;
+
 	}
 	else return -1;
 }
@@ -256,6 +287,7 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 	for(int i = 0; i < 5; i++)
 	{
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
+
 		//m_currentBtn.Render(renderer, hand.at(i).getCardRect());
 		cardPlace.x += cardPlace.w;
 	}

@@ -16,10 +16,12 @@ private:
 	Texture m_texture;
 	Card deckOfCards[54];
 	std::vector<Card> hand;
+
 	
 public:
 	ButtonObject m_currentBtn;
 	ButtonObject m_vecCardHold[5];
+
 public:
 	int k = 0;
 	Deck(SDL_Renderer*);
@@ -28,10 +30,12 @@ public:
 
 	//getters
 	Card getRandomCard();
+
 	ButtonObject* GetHeldCardsButtons();
 	std::vector<Card>& GetHand();
 
 	std::vector<Card> sortHand();
+
 	int evaluateHand();
 	bool isCardInHand(Card& card);
 	bool isJokerHand();
@@ -41,6 +45,7 @@ public:
 	void initHoldBtns();
 	//void isBtnCardClicked();
 	
+
 
 
 };

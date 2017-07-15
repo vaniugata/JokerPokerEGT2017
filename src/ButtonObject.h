@@ -31,7 +31,7 @@ public:
 
 	bool IsSelected();
 
-	//ButtonObject& operator=(const ButtonObject& right);
+
 
 };
 #endif

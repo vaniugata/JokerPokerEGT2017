@@ -32,6 +32,12 @@ void ButtonObject::SetPosition(int x, int y)
 	m_pTopLeft.y = y;
 }
 
+void ButtonObject::SetDimentions(int w, int h)
+{
+	this->m_iWidth = w;
+	this->m_iHeight = h;
+}
+
 void ButtonObject::Render(SDL_Renderer* renderer, SDL_Rect* clip, \
  int x, int y, int w, int h)
 {

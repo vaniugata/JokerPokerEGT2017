@@ -2,7 +2,8 @@
 #include<iostream>
 
 Deck::Deck(SDL_Renderer* renderer)
-	:m_texture(renderer)
+	:m_texture(renderer), 
+	m_currentBtn(renderer, "Resources/hold-button.png")
 {
 	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
 	for(int i = 0; i < 52; i++)
@@ -11,15 +12,17 @@ Deck::Deck(SDL_Renderer* renderer)
 		deckOfCards[i].setCardSuit(static_cast<eCardSuit> ((i / 13) + 1));
 		deckOfCards[i].setCardValue(static_cast<eCardValue>((i % 13) + 1));
 	}
+
 	int counter = 0;
 	for(int i = 0; i < 4; i++)
 	{
 		for(int j = 0; j < 13; j++, counter++)
 		{
-			deckOfCards[counter].setCardRect(j * 168, i * 243, 168, 243);
+			deckOfCards[counter].setCardRect(j * T_CARD_HEIGHT, i * T_CARD_WIDTH, 
+				T_CARD_HEIGHT, T_CARD_WIDTH);
 		}
-
 	}
+
 	Card cardForVector;
 	for(int i = 0; i < 5; i++)
 	{
@@ -31,6 +34,8 @@ Deck::Deck(SDL_Renderer* renderer)
 
 	srand(time(0));
 	//BackCard
+
+	CreateHoldButtons();
 }
 
 void Deck::deal()
@@ -66,6 +71,16 @@ Card Deck::getRandomCard()
 	int randomIndex = rand() % 53;
 	randomCard = deckOfCards[randomIndex];
 	return randomCard;
+}
+
+std::vector<ButtonObject>& Deck::GetHeldCardsButtons()
+{
+	return m_vecCardHold;
+}
+
+std::vector<Card>& Deck::GetHand()
+{
+	return this->hand;
 }
 
 void Deck::sortHand()
@@ -225,5 +240,27 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 	{
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
 		cardPlace.x += cardPlace.w;
+	}
+
+	RenderHoldButtons(renderer);
+}
+
+void Deck::RenderHoldButtons(SDL_Renderer * renderer)
+{
+	for(int i = 0; i < m_vecCardHold.size(); i++)
+	{
+		m_vecCardHold.at(i).Render(renderer, hand.at(i).getCardRect() );
+	}
+}
+
+void Deck::CreateHoldButtons()
+{
+	m_currentBtn.SetDimentions(T_CARD_WIDTH, T_CARD_HEIGHT);
+
+	for(int i = 0; i < 5; i++)
+	{
+		int x = hand[i].getCardRect()->x;
+		m_currentBtn.SetPosition(x, 420);
+		m_vecCardHold.push_back(m_currentBtn);
 	}
 }

@@ -59,6 +59,7 @@ void Game::Render()
 		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
 
 		deck->RenderHand(m_renderer);
+		deck->RenderHoldButtons(m_renderer);
 }
 
 
@@ -106,16 +107,24 @@ void Game::ProcessKeyInput()
 void Game::ProcessMouseInput()
 {
 	if(m_paytable->GetBetOneBtn().IsSelected())
+	{
+		m_paytable->IncreaseBet();
+	}
+
+	if(m_paytable->GetBetMaxBtn().IsSelected())
+	{
+		m_paytable->SetMaxBet();
+	}
+
+	for(int i = 0; i < deck->GetHeldCardsButtons().size(); i++)
+	{
+		if(deck->GetHeldCardsButtons().at(i).IsSelected())
 		{
-			m_paytable->IncreaseBet();
+			deck->GetHand().at(i).setIsHold(true);
 		}
 
-		if(m_paytable->GetBetMaxBtn().IsSelected())
-		{
-			m_paytable->SetMaxBet();
-		}
-
-
+		std::cout << std::boolalpha << deck->GetHand().at(i).getIsHold() << "\n"; 
+	}
 }
 
 void Game::InitSDL()

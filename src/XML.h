@@ -4,7 +4,6 @@
 #include "pugixml.hpp"
 #include <fstream>
 
-
 class XML {
 	public:
 		//Constructor

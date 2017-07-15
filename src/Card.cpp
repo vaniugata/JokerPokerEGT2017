@@ -26,13 +26,9 @@ Card::Card(eCardSuit cardSuit,eCardValue cardValue,SDL_Rect rect)
 	    this->m_cardSuit = cardSuit;
 		this->m_cardValue = cardValue;
 		this->m_cardRect = rect;
-		
+		m_bIsHold = false;
 
 }
-
-
-
-
 
 eCardSuit Card::getCardSuit()const
 {
@@ -44,9 +40,9 @@ eCardValue Card::getCardValue()const
 	return this->m_cardValue;
 }
 
-SDL_Rect Card::getCardRect()
+SDL_Rect* Card::getCardRect()
 {
-	return this->m_cardRect;
+	return &m_cardRect;
 }
 
 void Card::setCardSuit(eCardSuit suit)

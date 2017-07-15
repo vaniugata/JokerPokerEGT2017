@@ -45,6 +45,7 @@ typedef enum
 	INTRO,
 	PLAY,
 	BONUS,
+	WIN,
 	OUTRO,
 	QUIT
 } eGameState;

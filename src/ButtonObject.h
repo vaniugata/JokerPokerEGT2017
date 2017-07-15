@@ -4,7 +4,6 @@
 #include "Texture.h"
 #include "Globals.h"
 
-
 class ButtonObject
 {
 private:

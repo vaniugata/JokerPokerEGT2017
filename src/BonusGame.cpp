@@ -75,7 +75,7 @@ void BonusGame::HandleEvent() {
 		break;
 
 	case SDL_MOUSEBUTTONDOWN: {
-		if (m_btnX2.IsPressed()) {
+		if (m_btnX2.IsSelected()) {
 			std::cout << "m_btnX2.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			SDL_Delay(1000);
@@ -86,7 +86,7 @@ void BonusGame::HandleEvent() {
 				 *m_ptrGameState = WIN;
 				winsABonus = true;
 			}
-		} else if (m_btnX5.IsPressed()) {
+		} else if (m_btnX5.IsSelected()) {
 			std::cout << "m_btnX5.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			SDL_Delay(1000);
@@ -98,7 +98,7 @@ void BonusGame::HandleEvent() {
 				 *m_ptrGameState = WIN;
 				winsABonus = true;
 			}
-		} else if (m_btnX10.IsPressed()) {
+		} else if (m_btnX10.IsSelected()) {
 			std::cout << "m_btnX10.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			SDL_Delay(1000);

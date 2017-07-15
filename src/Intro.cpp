@@ -45,10 +45,14 @@ void Intro::Render()
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	//Render buttons
-	SDL_Rect r{0,0, 214, 53};
-	m_btnNewGame.Render(m_renderer, &r, 20, 250, r.w, r.h);
-	m_btnResumeGame.Render(m_renderer, &r, 20, 350, r.w, r.h);
-	m_btnCashIn.Render(m_renderer, &r, 20, 450, r.w, r.h);
+	SDL_Rect rectOnScreen{0,0, 214, 53};
+
+	m_btnNewGame.Render(m_renderer, &rectOnScreen, 20, 250, rectOnScreen.w, rectOnScreen.h);
+
+	m_btnResumeGame.Render(m_renderer, &rectOnScreen, 20, 350, rectOnScreen.w, rectOnScreen.h);
+
+	m_btnCashIn.Render(m_renderer, &rectOnScreen, 20, 450, rectOnScreen.w, rectOnScreen.h);
+
 	//Render credit
 	std::stringstream creditText;
 	creditText << "Credit: " << *m_ptrCredit;
@@ -65,13 +69,13 @@ void Intro::HandleEvent()
 		break;
 
 	case SDL_MOUSEBUTTONDOWN:
-		if(m_btnNewGame.IsPressed())
+		if(m_btnNewGame.IsSelected())
 			*m_ptrGameState = PLAY;
 
-		else if(m_btnResumeGame.IsPressed())
+		else if(m_btnResumeGame.IsSelected())
 			*m_ptrGameState = PLAY;
 
-		else if(m_btnCashIn.IsPressed())
+		else if(m_btnCashIn.IsSelected())
 			CashIn(10);
 		std::cout << *m_ptrCredit;
 		break;

@@ -57,8 +57,12 @@ void Game::Render()
 		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, 750, 500);
 		SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
 		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
-
+		SDL_Rect clip3{ 0,0,200,100 };
 		deck->RenderHand(m_renderer);
+		deck->RenderHoldBtns(m_renderer);
+		//deck->m_currentBtn.Render(m_renderer, &clip3,100,100,200,100);
+		
+	  //deck->RenderHoldButtons(m_renderer);
 }
 
 
@@ -94,35 +98,36 @@ void Game::ProcessKeyInput()
 			m_paytable->SetWinnerIndex(deck->evaluateHand());
 			std::cout << "Hand value: "<< deck->evaluateHand() << "\n";
 			std::cout << "Credit:" << m_dCredit << "\n";
-			deck->printDeck();
 
 		}
 		else if(m_event.key.keysym.sym == SDLK_d)
 		{
 			m_eGameState = BONUS;
 		}
-		
 }
 
 
 void Game::ProcessMouseInput()
 {
-	if(m_paytable->GetBetOneBtn().IsPressed())
-		{
-			m_paytable->IncreaseBet();
-		}
+	if(m_paytable->GetBetOneBtn().IsSelected())
+	{
+		m_paytable->IncreaseBet();
+	}
 
-		if(m_paytable->GetBetMaxBtn().IsPressed())
+	if(m_paytable->GetBetMaxBtn().IsSelected())
+	{
+		m_paytable->SetMaxBet();
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (deck->m_vecCardHold[i].IsSelected())
 		{
-			m_paytable->SetMaxBet();
+			deck->GetHand().at(i).setIsHold(true);
 		}
-		for (int i = 0; i < 5; i++)
-		{
-			if (deck->GetCardBtn[i].isPressed())
-			{
-				deck->setCardHold();
-			}
-		}
+		std::cout << deck->GetHand().at(i).getIsHold();
+	}
+	
+	//
 }
 
 void Game::InitSDL()

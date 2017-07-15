@@ -4,9 +4,10 @@
 
 
 Deck::Deck(SDL_Renderer* renderer)
-	:m_texture(renderer)
+	:m_texture(renderer),
 {
 	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
+	
 	for(int i = 0; i < 52; i++)
 	{
 		eCardSuit suit;
@@ -22,6 +23,7 @@ Deck::Deck(SDL_Renderer* renderer)
 		}
 
 	}
+	//m_card0.SetPosition
 	Card cardForVector;
 	for(int i = 0; i < 5; i++)
 	{
@@ -232,4 +234,9 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
 		cardPlace.x += cardPlace.w;
 	}
+}
+
+ButtonObject & Deck::getCardBtnState()
+{
+	return m_card0;
 }

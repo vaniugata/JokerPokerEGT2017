@@ -101,6 +101,7 @@ void Game::ProcessKeyInput()
 		{
 			m_eGameState = BONUS;
 		}
+		
 }
 
 
@@ -115,8 +116,13 @@ void Game::ProcessMouseInput()
 		{
 			m_paytable->SetMaxBet();
 		}
-
-
+		for (int i = 0; i < 5; i++)
+		{
+			if (deck->GetCardBtn[i].isPressed())
+			{
+				deck->setCardHold();
+			}
+		}
 }
 
 void Game::InitSDL()

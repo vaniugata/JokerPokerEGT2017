@@ -8,11 +8,17 @@
 class BonusGame: public GameState
 {
 private:
-	Texture m_tBackgorund;//	Texture m_texture;
-	SDL_Event* m_event;
-	eGameState* m_ptrGameState;
+	double m_dCredit;
+	Texture m_tBackgorund;
+	Texture m_tChoiceWin;
+	Texture m_spriteDieTexture;
+	SDL_Event* m_event= nullptr;
+	eGameState* m_ptrGameState= nullptr;
 
-	ButtonObject m_ChoiceWin;
+
+	SDL_Rect m_spriteDie[6];
+	SDL_Rect m_ChoiceWin[3];
+
 	ButtonObject m_btnX2;
 	ButtonObject m_btnX5;
 	ButtonObject m_btnX10;
@@ -24,17 +30,20 @@ public:
 	//The music that will be played
 	Mix_Chunk* ButtonPress = nullptr;
 	Mix_Chunk* RollDice = nullptr;
-
+	double* GetCredit();
+	void LoadMusicFiles();
+	void LoadDieFiles();
+	void RenderDice();
+	void RenderChoiceWin();
+	void LoadChoiceWinFiles();
 
 	void Draw();
 	void Render();
 	void HandleEvent();
 
-	void LoadMusicFiles();
 
 	//logic
 	int ResultDice();
-	void ProcessMouseWin();
 	double calculateWin(double credits,int x);
 	void Close();
 

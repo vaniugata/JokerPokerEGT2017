@@ -9,12 +9,14 @@
 #include <iostream>
 using std::cerr;
 
+
 WinBonus::WinBonus(SDL_Renderer* renderer,SDL_Event& event ,eGameState& eGameState) :
 		GameState(renderer),  m_tBackgorund(), m_event(&event), m_ptrGameState(&eGameState)
 {
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/win.png");
-	InitFont("Resources/font.ttf");
+	m_tText.InitFont("Resources/font.ttf");
+	LoadMusicFiles();
 }
 
 WinBonus::~WinBonus()
@@ -33,23 +35,18 @@ void WinBonus::Render()
 		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		//render the text
 		SDL_Color color { 255, 255, 255 };
+		std::cout<<"I am Render WinBonus2"<<std::endl;
+		m_tText.LoadFromRendererdText(m_renderer,"11111111111", color);
+		std::cout<<"I am Render WinBonus3"<<std::endl;
 		int x = SCREEN_WIDTH / 3;
 		int y = SCREEN_HEIGHT - 100;
-		std::string credits = "123456";
-		//m_tText.LoadFromRendererdText(m_renderer, m_font, credits, color);
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
-
+		Mix_PlayChannel(-1, winning, 0);
+		SDL_Delay(2000);
+		*m_ptrGameState = PLAY;
 
 }
 
-void WinBonus::InitFont(std::string path) {
-	m_font = TTF_OpenFont(path.c_str(), 50);
-	if (m_font == nullptr) {
-		std::cerr << "Failed to load " << path << " font! SDL_ttf Error:"
-				<< TTF_GetError();
-		return;
-	}
-}
 void WinBonus::LoadMusicFiles() {
 
 	winning = Mix_LoadWAV("ResourcesMusic/Winning.wav");
@@ -63,8 +60,18 @@ void WinBonus::LoadMusicFiles() {
 
 void WinBonus::HandleEvent()
 {
-
+	switch (m_event->type) {
+		case SDL_QUIT:
+			*m_ptrGameState = QUIT;
+			break;
+	}
 }
+std::string WinBonus::DoubleToString(double x) const {
+		std::stringstream ss;
+		ss << x;
+		std::string res = ss.str();
+		return res;
+	}
 
 void WinBonus::Close() {	//Free the sound effects
 

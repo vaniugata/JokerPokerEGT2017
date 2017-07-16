@@ -17,33 +17,40 @@ using std::stringstream;
 using std::cout;
 
 //--------------R----------
-double credits = 123456;
+
 bool winsABonus = false;
 //------------------------
 
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState) :
-		GameState(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
-				&eGameState), m_ChoiceWin(renderer,
-				"Resources/DoubleUpDice.png", 0, 0, 530, 75), m_btnX2(renderer,
-				"Resources/DoubleUpDice.png", 0, 0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX5(
+		 GameState(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
+				&eGameState),m_dCredit(-1), m_btnX2(renderer, "Resources/DoubleUpDice.png", 0,
+				0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX5(renderer,
+				"Resources/DoubleUpDice.png", 0, 0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX10(
 				renderer, "Resources/DoubleUpDice.png", 0, 0, S_BONUSBTN_W,
-				S_BONUSBTN_H), m_btnX10(renderer, "Resources/DoubleUpDice.png",
-				0, 0, S_BONUSBTN_W, S_BONUSBTN_H) {
+				S_BONUSBTN_H)
+
+{
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/DoubleUpDice2.jpg");
-
-	m_ChoiceWin.SetPosition(0, 0);
 	m_btnX2.SetPosition(50, 120);
 	m_btnX5.SetPosition(50, 270);
 	m_btnX10.SetPosition(50, 420);
 	LoadMusicFiles();
+	LoadDieFiles();
+	LoadChoiceWinFiles();
+
 }
 
 BonusGame::~BonusGame() {
 	std::cerr << "BonusGame Object deleted.\n";
 	Close();
 }
+
+double* BonusGame::GetCredit() {
+	return &m_dCredit;
+}
+
 void BonusGame::Draw() {
 	GameState::Draw();
 }
@@ -57,14 +64,9 @@ void BonusGame::Render() {
 	m_btnX5.Render(m_renderer, &clip2, 30, 250, S_BONUSBTN_W, S_BONUSBTN_H);
 	SDL_Rect clip3 { 0, 400, S_BONUSBTN_W, S_BONUSBTN_H };
 	m_btnX10.Render(m_renderer, &clip3, 30, 400, S_BONUSBTN_W, S_BONUSBTN_H);
-	//SDL_Rect clip[2];
-	SDL_Rect clip4 { 0, 0, 540, 80 };
-	//SDL_Rect clip5 {0, 0, 545 ,85};
-	//clip[0]=clip4;
-	//clip[1]=clip5;
-	m_ChoiceWin.Render(m_renderer, &clip4, 0, 0, 540, 80);
-	//SDL_Delay(1000);
-	//m_bonus->GetChoiceWin().Render(m_renderer, &clip5, 0, 0, 555, 95);
+	RenderChoiceWin();
+	m_spriteDieTexture.Render(m_renderer, 400, 200, 200, 191, &m_spriteDie[0]);
+	m_spriteDieTexture.Render(m_renderer, 600, 200, 200, 191, &m_spriteDie[5]);
 
 }
 
@@ -78,37 +80,34 @@ void BonusGame::HandleEvent() {
 		if (m_btnX2.IsSelected()) {
 			std::cout << "m_btnX2.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
-			SDL_Delay(1000);
 			Mix_PlayChannel(-1, RollDice, 0);
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice < 5) {
-				credits = calculateWin(credits, 2);
-				 *m_ptrGameState = WIN;
+				m_dCredit = calculateWin(m_dCredit, 2);
+				SDL_Delay(1000);
+				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
 		} else if (m_btnX5.IsSelected()) {
 			std::cout << "m_btnX5.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
-			SDL_Delay(1000);
 			Mix_PlayChannel(-1, RollDice, 0);
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice > 4 && ResultDice < 10) {
-				credits = calculateWin(credits, 5);
-				SDL_Delay(1500);
-				 *m_ptrGameState = WIN;
+				m_dCredit = calculateWin(m_dCredit, 5);
+				SDL_Delay(1000);
+				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
 		} else if (m_btnX10.IsSelected()) {
 			std::cout << "m_btnX10.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
-			SDL_Delay(1000);
 			Mix_PlayChannel(-1, RollDice, 0);
-
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice > 9 && ResultDice < 13) {
-				credits = calculateWin(credits, 10);
-				SDL_Delay(1500);
-				 *m_ptrGameState = WIN;
+				m_dCredit = calculateWin(m_dCredit, 10);
+				SDL_Delay(1000);
+				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
 		}
@@ -156,9 +155,60 @@ void BonusGame::LoadMusicFiles() {
 
 }
 
+void BonusGame::LoadDieFiles() {
+	m_spriteDieTexture.LoadFromFile(m_renderer, "Resources/Die.png");
+	//Load sprite sheet texture
+	int offsetX = 200;
+	int offsetY = 0;
+	int coef[6] = { 0, 1, 2, 0, 1, 2 };
+	for (int i = 0; i < 6; i++) {
+		if (i == 3) {
+			offsetY = 191;
+		}
+		m_spriteDie[i].x = coef[i] * offsetX;
+		m_spriteDie[i].y = offsetY;
+		m_spriteDie[i].w = 200;
+		m_spriteDie[i].h = 191;
+	}
+}
+void BonusGame::RenderDice() {
+	for (int i = 0; i < 6; i++) {
+		m_spriteDieTexture.Render(m_renderer, 400, 200, 200, 191,
+				&m_spriteDie[i * rand() % 6 + 1]);
+		m_spriteDieTexture.Render(m_renderer, 600, 200, 200, 191,
+				&m_spriteDie[i * rand() % 6 + 1]);
+	}
+}
+
+void BonusGame::LoadChoiceWinFiles() {
+	m_tChoiceWin.LoadFromFile(m_renderer, "Resources/DoubleUpDice.png");
+	//Load sprite sheet texture
+	int position = 0;
+	int w = 540;
+	int h = 80;
+	for (int i = 0; i < 3; i++) {
+		if (i == 1) {
+			position = 5;
+		}
+		m_ChoiceWin[i].x = position;
+		m_ChoiceWin[i].y = position;
+		m_ChoiceWin[i].w = w;
+		m_ChoiceWin[i].h = h;
+		position = 0;
+	}
+}
+
+void BonusGame::RenderChoiceWin() {
+	int w = 540;
+	int h = 80;
+	SDL_Rect rect[3] { 0, 0, w, h };
+	for (int i = 0; i < 3; i++) {
+		m_tChoiceWin.Render(m_renderer, 0, 0, w, h, &rect[i]);
+	}
+}
+
 void BonusGame::Close() {	//Free the sound effects
 	Mix_FreeChunk(RollDice);
 	Mix_FreeChunk(ButtonPress);
-
 
 }

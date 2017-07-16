@@ -14,6 +14,7 @@ class Deck
 {
 private:
 	Texture m_texture;
+	Texture m_tHold;
 	Card deckOfCards[54];
 	std::vector<Card> hand;
 
@@ -42,6 +43,7 @@ public:
 	void RenderCard(SDL_Renderer*,SDL_Rect*,SDL_Rect*);
 	void RenderHand(SDL_Renderer*);
 	void RenderHoldBtns(SDL_Renderer*);
+	void RenderHoldStamps(SDL_Renderer* renderer);
 	void initHoldBtns();
 	//void isBtnCardClicked();
 	

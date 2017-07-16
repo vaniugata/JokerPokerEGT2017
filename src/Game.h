@@ -6,7 +6,6 @@
 #include "PaytableObject.h"
 #include "BonusGame.h"
 #include "WinBonus.h"
-#include "includesSDL2.h"
 #include "Deck.h"
 
 class Game

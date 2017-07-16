@@ -1,11 +1,14 @@
 #include "Deck.h"
 #include<iostream>
 
-Deck::Deck(SDL_Renderer* renderer)
-	:m_texture(renderer), 
+Deck::Deck(SDL_Renderer* renderer) :
+	m_texture(renderer),
+	m_tHold(renderer),
 	m_currentBtn(renderer, "Resources/hold-button.png")
 {
 	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
+	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
+
 	for(int i = 0; i < 52; i++)
 	{
 		eCardSuit suit;
@@ -287,8 +290,6 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 	for(int i = 0; i < 5; i++)
 	{
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
-
-		//m_currentBtn.Render(renderer, hand.at(i).getCardRect());
 		cardPlace.x += cardPlace.w;
 	}
 
@@ -297,12 +298,34 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 
 void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 {
-	SDL_Rect  clip{0,0,200,100};
+	SDL_Rect  clipVisible {0,0,HOLD_W, HOLD_H/2 };
 	int x=50;
+	int y = 420;
 	for (int i = 0; i <5; i++)
 	{
-		m_vecCardHold[i].Render(renderer, &clip,x,460,T_CARD_WIDTH/2,T_CARD_HEIGHT);
-		x += T_CARD_WIDTH/2;
+		m_vecCardHold[i].SetDimentions(HOLD_W, HOLD_H /2);
+		m_vecCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
+		//render the picture
+		if(hand[i].getIsHold())
+		{
+			m_tHold.Render(renderer, x, y + 50, m_tHold.GetWidth() / 2, m_tHold.GetHeight() / 2);
+		}
+		x += HOLD_W + 2;
+	}
+}
+
+void Deck::RenderHoldStamps(SDL_Renderer * renderer)
+{
+	int x = 50;
+	int y = 460;
+
+	for(int i = 0; i < 5; i++)
+	{
+		if(hand[i].getIsHold())
+		{
+			
+			x += HOLD_W + 2;
+		}
 	}
 }
 

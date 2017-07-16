@@ -61,10 +61,7 @@ void Game::Render()
 		SDL_Rect clip3{ 0,0,200,100 };
 		deck->RenderHand(m_renderer);
 		deck->RenderHoldBtns(m_renderer);
-		//deck->m_currentBtn.Render(m_renderer, &clip3,100,100,200,100);
-		
-	  //deck->RenderHoldButtons(m_renderer);
-
+		deck->RenderHoldStamps(m_renderer);
 }
 
 
@@ -129,6 +126,7 @@ void Game::ProcessMouseInput()
 		}
 		std::cout << deck->GetHand().at(i).getIsHold();
 	}
+	std::cout << std::endl;
 
 }
 

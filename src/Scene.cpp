@@ -1,19 +1,19 @@
-#include "GameState.h"
+#include "Scene.h"
 #include <iostream>
 using std::cout;
 
-GameState::GameState(SDL_Renderer* renderer) :
+Scene::Scene(SDL_Renderer* renderer) :
 	m_renderer(renderer)
 {
 
 }
 
-GameState::~GameState()
+Scene::~Scene()
 {
 	std::cout << "GameState deleted.\n";
 }
 
-void GameState::Draw()
+void Scene::Draw()
 {
 	SDL_RenderPresent(m_renderer);
 	SDL_RenderClear(m_renderer);

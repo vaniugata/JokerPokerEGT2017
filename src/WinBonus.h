@@ -8,14 +8,14 @@
 #ifndef SRC_WINBONUS_H_
 #define SRC_WINBONUS_H_
 
-#include "GameState.h"
+#include "Scene.h"
 #include "Texture.h"
 #include "Globals.h"
 #include <fstream>
 #include <string>
 #include <sstream>
 
-class WinBonus: public GameState {
+class WinBonus: public Scene {
 	Texture m_tBackgorund;
 	Texture m_tText;
 

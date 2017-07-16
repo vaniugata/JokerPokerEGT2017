@@ -1,11 +1,11 @@
 #ifndef BONUSGAME_H_
 #define BONUSGAME_H_
-#include "GameState.h"
+#include "Scene.h"
 #include "Texture.h"
 #include "Globals.h"
 #include "ButtonObject.h"
 
-class BonusGame: public GameState
+class BonusGame: public Scene
 {
 private:
 	double m_dCredit;

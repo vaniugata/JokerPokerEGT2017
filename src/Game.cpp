@@ -54,9 +54,13 @@ void Game::Render()
 		m_paytable->Render(m_renderer);
 		//draw bet buttons
 		SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
-		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, 750, 500);
+		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1,
+			SCREEN_WIDTH - BET_BTN_W -10, SCREEN_HEIGHT - BET_BTN_H - 5,
+			BET_BTN_W, BET_BTN_H);
 		SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
-		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
+		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2,
+			SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
+			BET_BTN_W, BET_BTN_H);
 
 		SDL_Rect clip3{ 0,0,200,100 };
 		deck->RenderHand(m_renderer);

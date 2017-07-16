@@ -9,7 +9,7 @@ int main(int args, char* argc[])
 {
 	Game game;
 	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit());
-	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState = BONUS );
+	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState);
 	WinBonus win = WinBonus(game.GetRenderer(),game.m_event, game.m_eGameState );
 	while(game.m_eGameState != QUIT)
 	{

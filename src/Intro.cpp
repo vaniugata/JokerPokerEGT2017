@@ -8,7 +8,7 @@ using std::stringstream;
 Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit) :
 	m_ptrCredit(credit),
-	GameState(renderer), 
+	Scene(renderer), 
 	m_tBackgorund(),
 	m_event(&event),
 	m_ptrGameState(&eGameState), 
@@ -36,7 +36,7 @@ Intro::~Intro()
 
 void Intro::Draw()
 {
-	GameState::Draw();
+	Scene::Draw();
 }
 
 void Intro::Render()

@@ -286,7 +286,7 @@ void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destina
 
 void Deck::RenderHand(SDL_Renderer * renderer)
 {
-	SDL_Rect cardPlace{ 50,420,170,240 };
+	SDL_Rect cardPlace{ (SCREEN_WIDTH - 5 * CARD_W)/2,350,CARD_W,CARD_H_ };
 	for(int i = 0; i < 5; i++)
 	{
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
@@ -298,9 +298,9 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 
 void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 {
-	SDL_Rect  clipVisible {0,0,HOLD_W, HOLD_H/2 };
-	int x=50;
-	int y = 420;
+	SDL_Rect  clipVisible {0,0, HOLD_W, HOLD_H / 2 };
+	int x= (SCREEN_WIDTH - 5 * CARD_W) / 2;
+	int y = 350;
 	for (int i = 0; i <5; i++)
 	{
 		m_vecCardHold[i].SetDimentions(HOLD_W, HOLD_H /2);

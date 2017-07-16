@@ -1,13 +1,13 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "GameState.h"
+#include "Scene.h"
 #include "Texture.h"
 #include "Globals.h"
 #include "ButtonObject.h"
 
 
-class Intro : public GameState
+class Intro : public Scene
 {
 private:
 	double* m_ptrCredit;

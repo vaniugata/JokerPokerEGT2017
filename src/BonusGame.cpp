@@ -23,7 +23,7 @@ bool winsABonus = false;
 
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState) :
-		 GameState(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
+		 Scene(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
 				&eGameState),m_dCredit(-1), m_btnX2(renderer, "Resources/DoubleUpDice.png", 0,
 				0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX5(renderer,
 				"Resources/DoubleUpDice.png", 0, 0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX10(
@@ -52,7 +52,7 @@ double* BonusGame::GetCredit() {
 }
 
 void BonusGame::Draw() {
-	GameState::Draw();
+	Scene::Draw();
 }
 
 void BonusGame::Render() {

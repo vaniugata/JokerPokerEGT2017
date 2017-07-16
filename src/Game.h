@@ -19,6 +19,7 @@ private:
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
 	Deck* deck;
+	Deck* m_ptrDeckTest;
 
 public:
 	eGameState m_eGameState;
@@ -35,6 +36,7 @@ public:
 
 	void Draw();
 	void Render();
+	void RenderRound(Deck* deck);
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();

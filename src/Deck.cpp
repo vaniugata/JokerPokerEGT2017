@@ -48,6 +48,11 @@ Deck::Deck(SDL_Renderer* renderer) :
 
 }
 
+Deck::~Deck()
+{
+	std::cout << "Deck deleted.\n";
+}
+
 void Deck::deal()
 {
 	printDeck();
@@ -68,6 +73,7 @@ void Deck::deal()
 	std::cout << "--------------------------------------" << std::endl;
 
 	printDeck();
+	m_iKillCount++;
 }
 
 
@@ -91,14 +97,19 @@ Card Deck::getRandomCard()
 }
 
 
-ButtonObject* Deck::GetHeldCardsButtons()
+const ButtonObject* Deck::GetHeldCardsButtons() const
 {
 	return m_vecCardHold;
 }
 
-std::vector<Card>& Deck::GetHand()
+const std::vector<Card>& Deck::GetHand() const
 {
 	return this->hand;
+}
+
+int Deck::GetKillCount() const
+{
+	return this->m_iKillCount;
 }
 
 
@@ -334,6 +345,18 @@ void Deck::initHoldBtns()
 	for (int i = 0; i < 5; i++)
 	{
 		m_vecCardHold[i] = m_currentBtn;
+	}
+}
+
+void Deck::HoldSelectedCards()
+{
+	for(int i = 0; i < 5; i++)
+	{
+		if(m_vecCardHold[i].IsSelected())
+		{
+			hand[i].setIsHold(true);
+		}
+		std::cout << hand[i].getIsHold();
 	}
 }
 

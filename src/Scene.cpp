@@ -10,7 +10,7 @@ Scene::Scene(SDL_Renderer* renderer) :
 
 Scene::~Scene()
 {
-	std::cout << "GameState deleted.\n";
+	std::cout << "Scene deleted.\n";
 }
 
 void Scene::Draw()

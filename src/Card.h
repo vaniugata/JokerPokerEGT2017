@@ -4,6 +4,7 @@
 #include<iostream>
 #include "includesSDL2.h"
 
+
 typedef enum 
 {
 	EMPTYVALUE,

@@ -84,9 +84,9 @@ void Texture::Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rec
 	SDL_RenderCopy(renderer, m_texture, clip, &dest);
 }
 
-void Texture::InitFont(std::string path)
+void Texture::InitFont(std::string path, int fontSize)
 {
-	m_font = TTF_OpenFont(path.c_str(), 18);
+	m_font = TTF_OpenFont(path.c_str(), fontSize);
 	if(m_font == nullptr)
 	{
 		std::cerr << "Failed to load " << path << " font! SDL_ttf Error:" << TTF_GetError();

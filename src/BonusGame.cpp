@@ -16,12 +16,11 @@ using std::stringstream;
 #include <iostream>
 using std::cout;
 
+
 bool winsABonus = false;
-
-
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState, double* credit) :
-		m_ptrCredit(credit), GameState(renderer), m_tBackgorund(), m_event(
+		m_ptrCredit(credit), Scene(renderer), m_tBackgorund(), m_event(
 				&event), m_ptrGameState(&eGameState), m_buttonX2(renderer,
 				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
 				BONUSBTN_H), m_buttonX5(renderer,
@@ -41,8 +40,9 @@ BonusGame::~BonusGame() {
 	std::cerr << "BonusGame Object deleted.\n";
 	Close();
 }
+
 void BonusGame::Draw() {
-	GameState::Draw();
+	Scene::Draw();
 }
 
 void BonusGame::Render() {
@@ -73,6 +73,7 @@ void BonusGame::HandleEvent() {
 		break;
 
 	case SDL_MOUSEBUTTONDOWN: {
+
 		if (m_buttonX2.IsSelected()) {
 			std::cout << "m_btnX2.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
@@ -103,6 +104,7 @@ void BonusGame::HandleEvent() {
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice > 9 && ResultDice < 13) {
 				*m_ptrCredit = calculateWin(*m_ptrCredit, 10);
+
 				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
@@ -154,6 +156,7 @@ void BonusGame::LoadMusicFiles() {
 void BonusGame::LoadDieFiles() {
 	m_spriteDieTexture.LoadFromFile(m_renderer, "Resources/Die.png");
 	//Load sprite sheet texture
+
 	for (int i = 0; i < 6; i++) {
 		m_spriteDie[i].x = i * 163;
 		m_spriteDie[i].y = 0;
@@ -171,10 +174,12 @@ void BonusGame::RenderDice() {
 				&m_spriteDie[i * rand() % 6 + 1]);
 		}
 
+
 	}
 }
 
 void BonusGame::LoadChoiceWinFiles() {
+
 	m_tChoiceWin.LoadFromFile(m_renderer, "Resources/ChoiseWin.png");
 	//Load sprite sheet texture
 	int w = 280;
@@ -185,10 +190,12 @@ void BonusGame::LoadChoiceWinFiles() {
 		m_ChoiceWin[i].w = w;
 		m_ChoiceWin[i].h = h;
 
+
 	}
 }
 
 void BonusGame::RenderChoiceWin() {
+
 	int w = 280;
 	int h = 35;
 	SDL_Rect rect[3] { 0, 0, w, h };
@@ -267,6 +274,8 @@ void BonusGame::TimerBonus() {
 //
 //	//Update screen
 }
+
+
 
 void BonusGame::Close() {	//Free the sound effects
 	Mix_FreeChunk(RollDice);

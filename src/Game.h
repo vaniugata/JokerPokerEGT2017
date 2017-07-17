@@ -20,6 +20,9 @@ private:
 	PaytableObject* m_paytable;
 	Deck* deck;
 
+	Deck* m_ptrDeckTest;
+
+
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;
@@ -35,6 +38,9 @@ public:
 
 	void Draw();
 	void Render();
+
+	void RenderRound(Deck* deck);
+
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();

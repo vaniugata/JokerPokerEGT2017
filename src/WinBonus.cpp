@@ -11,11 +11,11 @@ using std::cerr;
 
 
 WinBonus::WinBonus(SDL_Renderer* renderer,SDL_Event& event ,eGameState& eGameState) :
-		GameState(renderer),  m_tBackgorund(), m_event(&event), m_ptrGameState(&eGameState)
+		Scene(renderer),  m_tBackgorund(), m_event(&event), m_ptrGameState(&eGameState)
 {
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/win.png");
-	m_tText.InitFont("Resources/font.ttf");
+	m_tText.InitFont("Resources/font.ttf", 18);
 	LoadMusicFiles();
 }
 
@@ -27,7 +27,7 @@ WinBonus::~WinBonus()
 
 void WinBonus::Draw()
 {
-	GameState::Draw();
+	Scene::Draw();
 }
 
 void WinBonus::Render()

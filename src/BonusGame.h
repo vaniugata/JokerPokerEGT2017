@@ -1,11 +1,14 @@
 #ifndef BONUSGAME_H_
 #define BONUSGAME_H_
-#include "GameState.h"
+
+#include "Scene.h"
+
 #include "Texture.h"
 #include "Globals.h"
 #include "ButtonObject.h"
 
-class BonusGame: public GameState
+
+class BonusGame: public Scene
 {
 private:
 	double* m_ptrCredit;
@@ -23,6 +26,7 @@ private:
 
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit);
+
 	virtual~BonusGame();
 
 	//The music that will be played
@@ -34,8 +38,10 @@ public:
 	void RenderDice();
 	void RenderChoiceWin();
 	void LoadChoiceWinFiles();
+
 	void DoAnimation();
 	void TimerBonus();
+
 
 	void Draw();
 	void Render();

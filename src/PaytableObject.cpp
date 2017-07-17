@@ -23,7 +23,7 @@ PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
 	m_btnbetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
 		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
-	m_tText.InitFont("Resources/font.ttf");
+	m_tText.InitFont("Resources/font.ttf", 18);
 }
 
 PaytableObject::~PaytableObject()
@@ -131,10 +131,6 @@ void PaytableObject::IncreaseBet()//Увеличете залога
 		m_vecBets[i] /= oldCoef;
 		m_vecBets[i] *= coef;
 	}
-	
-//	for(int i = 0; i < m_vecBets.size(); i++)
-	//	m_vecBets[i] *= coef;
-
 	coef++;
 	oldCoef++;
 

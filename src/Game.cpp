@@ -6,7 +6,7 @@ using std::cerr;
 
 Game::Game() :
 		m_dCredit(-1),m_window(nullptr), m_renderer(nullptr),
-	m_eGameState(INTRO), m_event()
+	m_eGameState(INTRO), m_event(), m_ptrDeckTest(nullptr)
 {
 	InitSDL();
 
@@ -54,16 +54,28 @@ void Game::Render()
 		m_paytable->Render(m_renderer);
 		//draw bet buttons
 		SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
-		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1, 750, 500);
-		SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
-		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2, 650, 500);
 
-		SDL_Rect clip3{ 0,0,200,100 };
-		deck->RenderHand(m_renderer);
-		deck->RenderHoldBtns(m_renderer);
-		deck->RenderHoldStamps(m_renderer);
+		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1,
+			SCREEN_WIDTH - BET_BTN_W -10, SCREEN_HEIGHT - BET_BTN_H - 5,
+			BET_BTN_W, BET_BTN_H);
+		SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
+		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2,
+			SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
+			BET_BTN_W, BET_BTN_H);
+
+		//deck->RenderHand(m_renderer);
+		//deck->RenderHoldBtns(m_renderer);
+		//deck->RenderHoldStamps(m_renderer);
+		if (m_ptrDeckTest != nullptr) 
+			RenderRound(m_ptrDeckTest);
 }
 
+void Game::RenderRound(Deck* deck)
+{
+	deck->RenderHand(m_renderer);
+	deck->RenderHoldBtns(m_renderer);
+	deck->RenderHoldStamps(m_renderer);
+}
 
 void Game::HandleEvent()
 {
@@ -79,10 +91,8 @@ void Game::HandleEvent()
 
 	case SDL_MOUSEBUTTONDOWN:
 		ProcessMouseInput();
-
 		break;
 	}
-
 }
 
 void Game::ProcessKeyInput()
@@ -91,24 +101,31 @@ void Game::ProcessKeyInput()
 		{
 			m_paytable->IncreaseBet();
 		}
-		else if(m_event.key.keysym.sym == SDLK_d)
-		{
-			deck->deal();
-			m_paytable->SetWinnerIndex(deck->evaluateHand());
-			std::cout << "Hand value: "<< deck->evaluateHand() << "\n";
-			std::cout << "Credit:" << m_dCredit << "\n";
 
-		}
-		else if(m_event.key.keysym.sym == SDLK_b)
+	else if(m_event.key.keysym.sym == SDLK_d)
+	{
+		if(m_ptrDeckTest == nullptr)
 		{
+			m_ptrDeckTest = new Deck(m_renderer);
+		}
+		m_ptrDeckTest->deal();
+
+		if(m_ptrDeckTest->GetKillCount() > 1)	
+		{
+			m_paytable->SetWinnerIndex(m_ptrDeckTest->evaluateHand());
+		}
+		if(m_ptrDeckTest->GetKillCount() > 2)
+		{
+			m_paytable->SetWinnerIndex(-1);
+			delete m_ptrDeckTest;
+			m_ptrDeckTest = nullptr;
+		}
+	}//sdlk d
+	
+	else if(m_event.key.keysym.sym == SDLK_b)
+	{
 			m_eGameState = BONUS;
-		}
-		else if(m_event.key.keysym.sym == SDLK_w)
-		{
-			m_eGameState = WIN;
-		}
-}
-
+	}}
 
 void Game::ProcessMouseInput()
 {
@@ -117,20 +134,15 @@ void Game::ProcessMouseInput()
 		m_paytable->IncreaseBet();
 	}
 
-	if(m_paytable->GetBetMaxBtn().IsSelected())
+	else if(m_paytable->GetBetMaxBtn().IsSelected())
+
 	{
 		m_paytable->SetMaxBet();
 	}
-
-	for (int i = 0; i < 5; i++)
+	else if(m_ptrDeckTest != nullptr) 
 	{
-		if (deck->m_vecCardHold[i].IsSelected())
-		{
-			deck->GetHand().at(i).setIsHold(true);
-		}
-		std::cout << deck->GetHand().at(i).getIsHold();
+		m_ptrDeckTest->HoldSelectedCards(); 
 	}
-	std::cout << std::endl;
 
 }
 

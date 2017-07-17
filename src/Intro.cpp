@@ -8,7 +8,7 @@ using std::stringstream;
 Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit) :
 	m_ptrCredit(credit),
-	GameState(renderer), 
+	Scene(renderer), 
 	m_tBackgorund(),
 	m_event(&event),
 	m_ptrGameState(&eGameState), 
@@ -21,9 +21,7 @@ Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 {
 
 	m_tBackgorund.LoadFromFile(renderer, "Resources/intro.png");
-	m_tCredit.InitFont("Resources/font.ttf");
-//	m_tCredit.LoadFromFile(renderer, "Resources/credit-field.png");
-
+	m_tCredit.InitFont("Resources/font.ttf", 72);
 }
 
 Intro::~Intro()
@@ -36,7 +34,7 @@ Intro::~Intro()
 
 void Intro::Draw()
 {
-	GameState::Draw();
+	Scene::Draw();
 }
 
 void Intro::Render()

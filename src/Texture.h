@@ -27,7 +27,7 @@ public:
 		std::string text, SDL_Color color);
 	void Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip = NULL);
 
-	void InitFont(std::string path);
+	void InitFont(std::string path, int fontSize);
 
 private:
 	void Free();

@@ -350,6 +350,8 @@ void Deck::initHoldBtns()
 
 void Deck::HoldSelectedCards()
 {
+	if(m_iKillCount >= 2) {	return; }
+
 	for(int i = 0; i < 5; i++)
 	{
 		if(m_vecCardHold[i].IsSelected())

@@ -15,7 +15,7 @@ WinBonus::WinBonus(SDL_Renderer* renderer,SDL_Event& event ,eGameState& eGameSta
 {
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/win.png");
-	m_tText.InitFont("Resources/font.ttf");
+	m_tText.InitFont("Resources/font.ttf", 18);
 	LoadMusicFiles();
 }
 

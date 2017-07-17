@@ -110,14 +110,15 @@ void Game::ProcessKeyInput()
 			m_ptrDeckTest = new Deck(m_renderer);
 		}
 		m_ptrDeckTest->deal();
-		m_paytable->SetWinnerIndex(m_ptrDeckTest->evaluateHand());
-		std::cout << "Hand value: " << m_ptrDeckTest->evaluateHand() << "\n";
-		std::cout << "Credit:" << m_dCredit << "\n";
+
+		if(m_ptrDeckTest->GetKillCount() > 1)	
+		{
+			m_paytable->SetWinnerIndex(m_ptrDeckTest->evaluateHand());
+		}
 
 		if(m_ptrDeckTest->GetKillCount() > 2)
 		{
-			std::cout << "Kill count " << m_ptrDeckTest->GetKillCount() << "\n";
-			std::cout << "Game Over.\n";
+			m_paytable->SetWinnerIndex(-1);
 			delete m_ptrDeckTest;
 			m_ptrDeckTest = nullptr;
 		}
@@ -142,7 +143,7 @@ void Game::ProcessMouseInput()
 		m_paytable->SetMaxBet();
 	}
 
-	else if(m_ptrDeckTest != nullptr && m_ptrDeckTest->GetKillCount() < 2) 
+	else if(m_ptrDeckTest != nullptr) 
 	{
 		m_ptrDeckTest->HoldSelectedCards(); 
 	}

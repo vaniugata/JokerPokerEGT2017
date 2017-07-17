@@ -21,7 +21,7 @@ Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 {
 
 	m_tBackgorund.LoadFromFile(renderer, "Resources/intro.png");
-	m_tCredit.InitFont("Resources/font.ttf");
+	m_tCredit.InitFont("Resources/font.ttf", 72);
 //	m_tCredit.LoadFromFile(renderer, "Resources/credit-field.png");
 
 }

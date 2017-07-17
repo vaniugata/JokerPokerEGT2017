@@ -131,7 +131,6 @@ void PaytableObject::IncreaseBet()//Увеличете залога
 		m_vecBets[i] /= oldCoef;
 		m_vecBets[i] *= coef;
 	}
-
 	coef++;
 	oldCoef++;
 
@@ -157,3 +156,4 @@ void PaytableObject::SetMaxBet()
 	coef = 11;
 	oldCoef = 10;
 }
+

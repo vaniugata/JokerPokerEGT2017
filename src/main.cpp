@@ -9,8 +9,10 @@ int main(int args, char* argc[])
 {
 	Game game;
 	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit());
-	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState);
+	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(),game.m_event, game.m_eGameState );
+	//Current animation frame
+	int frame = 0;
 	while(game.m_eGameState != QUIT)
 	{
  		while(SDL_PollEvent(&game.m_event) > 0)
@@ -33,6 +35,8 @@ int main(int args, char* argc[])
 				bonus.Render();
 				bonus.HandleEvent();
 				bonus.Draw();
+				bonus.DoAnimation();
+
 				break;
 			case WIN:
 				win.Render();

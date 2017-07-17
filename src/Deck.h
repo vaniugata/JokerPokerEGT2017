@@ -9,7 +9,6 @@
 #include "Texture.h"
 #include "ButtonObject.h"
 
-
 class Deck
 {
 private:
@@ -18,7 +17,6 @@ private:
 	Texture m_tHold;
 	Card deckOfCards[54];
 	std::vector<Card> hand;
-
 public:
 	ButtonObject m_currentBtn;
 	ButtonObject m_vecCardHold[5];
@@ -26,18 +24,20 @@ public:
 public:
 	int k = 0;
 	Deck(SDL_Renderer*);
+
 	~Deck();
+
 	void deal();
 	void printDeck();
 
 	//getters
 	Card getRandomCard();
+
 	const ButtonObject* GetHeldCardsButtons() const;
 	const std::vector<Card>& GetHand() const;
 	int GetKillCount() const;
 
 	std::vector<Card> GetSortedHand();
-
 	int evaluateHand();
 
 	bool isCardInHand(Card& card);
@@ -47,12 +47,10 @@ public:
 	void RenderHoldBtns(SDL_Renderer*);
 	void RenderHoldStamps(SDL_Renderer* renderer);
 	void initHoldBtns();
+
 	void HoldSelectedCards();
 
 	void render_card_from_deck(SDL_Renderer* renderer, int i);
 };
-
-
-
 #endif 
 

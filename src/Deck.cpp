@@ -48,10 +48,12 @@ Deck::Deck(SDL_Renderer* renderer) :
 
 }
 
+
 Deck::~Deck()
 {
 	std::cout << "Deck deleted.\n";
 }
+
 
 void Deck::deal()
 {
@@ -75,6 +77,7 @@ void Deck::deal()
 	printDeck();
 
 	m_iKillCount++;
+
 }
 
 
@@ -97,7 +100,6 @@ Card Deck::getRandomCard()
 	return randomCard;
 }
 
-
 const ButtonObject* Deck::GetHeldCardsButtons() const
 {
 	return m_vecCardHold;
@@ -108,13 +110,17 @@ const std::vector<Card>& Deck::GetHand() const
 	return this->hand;
 }
 
+
+
 int Deck::GetKillCount() const
 {
 	return this->m_iKillCount;
 }
 
 
+
 std::vector<Card> Deck::GetSortedHand()
+
 {
 	std::vector<Card> sorted = hand;
 	
@@ -298,7 +304,9 @@ void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destina
 
 void Deck::RenderHand(SDL_Renderer * renderer)
 {
+
 	SDL_Rect cardPlace{ (SCREEN_WIDTH - 5 * CARD_W)/2,350,CARD_W,CARD_H_ };
+
 	for(int i = 0; i < 5; i++)
 	{
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
@@ -310,9 +318,11 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 
 void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 {
+
 	SDL_Rect  clipVisible {0,0, HOLD_W, HOLD_H / 2 };
 	int x= (SCREEN_WIDTH - 5 * CARD_W) / 2;
 	int y = 350;
+
 	for (int i = 0; i <5; i++)
 	{
 		m_vecCardHold[i].SetDimentions(HOLD_W, HOLD_H /2);

@@ -16,26 +16,20 @@ using std::stringstream;
 #include <iostream>
 using std::cout;
 
-//--------------R----------
 
 bool winsABonus = false;
-//------------------------
-
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
-		eGameState& eGameState) :
-		 Scene(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
-				&eGameState),m_dCredit(-1), m_btnX2(renderer, "Resources/DoubleUpDice.png", 0,
-				0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX5(renderer,
-				"Resources/DoubleUpDice.png", 0, 0, S_BONUSBTN_W, S_BONUSBTN_H), m_btnX10(
-				renderer, "Resources/DoubleUpDice.png", 0, 0, S_BONUSBTN_W,
-				S_BONUSBTN_H)
-
-{
+		eGameState& eGameState, double* credit) :
+		m_ptrCredit(credit), Scene(renderer), m_tBackgorund(), m_event(
+				&event), m_ptrGameState(&eGameState), m_buttonX2(renderer,
+				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
+				BONUSBTN_H), m_buttonX5(renderer,
+				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
+				BONUSBTN_H), m_buttonX10(renderer,
+				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W, BONUSBTN_H) {
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/DoubleUpDice2.jpg");
-	m_btnX2.SetPosition(50, 120);
-	m_btnX5.SetPosition(50, 270);
-	m_btnX10.SetPosition(50, 420);
+
 	LoadMusicFiles();
 	LoadDieFiles();
 	LoadChoiceWinFiles();
@@ -47,26 +41,28 @@ BonusGame::~BonusGame() {
 	Close();
 }
 
-double* BonusGame::GetCredit() {
-	return &m_dCredit;
-}
-
 void BonusGame::Draw() {
 	Scene::Draw();
 }
 
 void BonusGame::Render() {
+	//render background
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	SDL_Rect clip1 { 0, 100, S_BONUSBTN_W, S_BONUSBTN_H };
-	m_btnX2.Render(m_renderer, &clip1, 30, 100, S_BONUSBTN_W, S_BONUSBTN_H);
-	SDL_Rect clip2 { 0, 250, S_BONUSBTN_W, S_BONUSBTN_H };
-	m_btnX5.Render(m_renderer, &clip2, 30, 250, S_BONUSBTN_W, S_BONUSBTN_H);
-	SDL_Rect clip3 { 0, 400, S_BONUSBTN_W, S_BONUSBTN_H };
-	m_btnX10.Render(m_renderer, &clip3, 30, 400, S_BONUSBTN_W, S_BONUSBTN_H);
+	//Render buttons
+	SDL_Rect rectOnScreen1 { 0, 0, BONUSBTN_W, BONUSBTN_H };
+	m_buttonX2.Render(m_renderer, &rectOnScreen1, 50, 150, BONUSBTN_W,
+			BONUSBTN_H);
+	SDL_Rect rectOnScreen2 { BONUSBTN_W, 0, BONUSBTN_W, BONUSBTN_H };
+	m_buttonX5.Render(m_renderer, &rectOnScreen2, 50, 320, BONUSBTN_W,
+			BONUSBTN_H);
+	SDL_Rect rectOnScreen3 { BONUSBTN_W * 2, 0, BONUSBTN_W, BONUSBTN_H };
+	m_buttonX10.Render(m_renderer, &rectOnScreen3, 50, 490, BONUSBTN_W,
+			BONUSBTN_H);
+
 	RenderChoiceWin();
-	m_spriteDieTexture.Render(m_renderer, 400, 200, 200, 191, &m_spriteDie[0]);
-	m_spriteDieTexture.Render(m_renderer, 600, 200, 200, 191, &m_spriteDie[5]);
+//	m_spriteDieTexture.Render(m_renderer, 480, 450, 163, 168, &m_spriteDie[0]);
+//	m_spriteDieTexture.Render(m_renderer, 700, 400, 163, 168, &m_spriteDie[5]);
 
 }
 
@@ -77,36 +73,38 @@ void BonusGame::HandleEvent() {
 		break;
 
 	case SDL_MOUSEBUTTONDOWN: {
-		if (m_btnX2.IsSelected()) {
+
+		if (m_buttonX2.IsSelected()) {
 			std::cout << "m_btnX2.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			Mix_PlayChannel(-1, RollDice, 0);
+			RenderDice();
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice < 5) {
-				m_dCredit = calculateWin(m_dCredit, 2);
-				SDL_Delay(1000);
+				*m_ptrCredit = calculateWin(*m_ptrCredit, 2);
 				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
-		} else if (m_btnX5.IsSelected()) {
+		} else if (m_buttonX5.IsSelected()) {
 			std::cout << "m_btnX5.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			Mix_PlayChannel(-1, RollDice, 0);
+			RenderDice();
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice > 4 && ResultDice < 10) {
-				m_dCredit = calculateWin(m_dCredit, 5);
-				SDL_Delay(1000);
+				*m_ptrCredit = calculateWin(*m_ptrCredit, 5);
 				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
-		} else if (m_btnX10.IsSelected()) {
+		} else if (m_buttonX10.IsSelected()) {
 			std::cout << "m_btnX10.IsPressed()" << std::endl;
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			Mix_PlayChannel(-1, RollDice, 0);
+			RenderDice();
 			int ResultDice = BonusGame::ResultDice();
 			if (ResultDice > 9 && ResultDice < 13) {
-				m_dCredit = calculateWin(m_dCredit, 10);
-				SDL_Delay(1000);
+				*m_ptrCredit = calculateWin(*m_ptrCredit, 10);
+
 				*m_ptrGameState = WIN;
 				winsABonus = true;
 			}
@@ -158,54 +156,126 @@ void BonusGame::LoadMusicFiles() {
 void BonusGame::LoadDieFiles() {
 	m_spriteDieTexture.LoadFromFile(m_renderer, "Resources/Die.png");
 	//Load sprite sheet texture
-	int offsetX = 200;
-	int offsetY = 0;
-	int coef[6] = { 0, 1, 2, 0, 1, 2 };
+
 	for (int i = 0; i < 6; i++) {
-		if (i == 3) {
-			offsetY = 191;
-		}
-		m_spriteDie[i].x = coef[i] * offsetX;
-		m_spriteDie[i].y = offsetY;
-		m_spriteDie[i].w = 200;
-		m_spriteDie[i].h = 191;
+		m_spriteDie[i].x = i * 163;
+		m_spriteDie[i].y = 0;
+		m_spriteDie[i].w = 163;
+		m_spriteDie[i].h = 168;
 	}
 }
 void BonusGame::RenderDice() {
-	for (int i = 0; i < 6; i++) {
-		m_spriteDieTexture.Render(m_renderer, 400, 200, 200, 191,
+	for (int i = 0; i <= 60000000; i++) {
+		if(i%1000000==0){
+	std::cout<<":RenderDice()"<<std::endl;
+		m_spriteDieTexture.Render(m_renderer, 480, 450, 163, 168,
 				&m_spriteDie[i * rand() % 6 + 1]);
-		m_spriteDieTexture.Render(m_renderer, 600, 200, 200, 191,
+		m_spriteDieTexture.Render(m_renderer, 680, 400, 163, 168,
 				&m_spriteDie[i * rand() % 6 + 1]);
+		}
+
+
 	}
 }
 
 void BonusGame::LoadChoiceWinFiles() {
-	m_tChoiceWin.LoadFromFile(m_renderer, "Resources/DoubleUpDice.png");
+
+	m_tChoiceWin.LoadFromFile(m_renderer, "Resources/ChoiseWin.png");
 	//Load sprite sheet texture
-	int position = 0;
-	int w = 540;
-	int h = 80;
+	int w = 280;
+	int h = 35;
 	for (int i = 0; i < 3; i++) {
-		if (i == 1) {
-			position = 5;
-		}
-		m_ChoiceWin[i].x = position;
-		m_ChoiceWin[i].y = position;
+		m_ChoiceWin[i].x = 0;
+		m_ChoiceWin[i].y = i * h;
 		m_ChoiceWin[i].w = w;
 		m_ChoiceWin[i].h = h;
-		position = 0;
+
+
 	}
 }
 
 void BonusGame::RenderChoiceWin() {
-	int w = 540;
-	int h = 80;
+
+	int w = 280;
+	int h = 35;
 	SDL_Rect rect[3] { 0, 0, w, h };
 	for (int i = 0; i < 3; i++) {
-		m_tChoiceWin.Render(m_renderer, 0, 0, w, h, &rect[i]);
+		m_tChoiceWin.Render(m_renderer, 50, 70, 350, 50, &rect[i]);
 	}
 }
+
+void BonusGame::DoAnimation() {
+//	bool quit = false;
+//	while (*m_ptrGameState == BONUS) {
+////	//Clear screen
+////	SDL_SetRenderDrawColor(m_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+////	SDL_RenderClear(m_renderer);
+//		//Current animation frame
+//		int frame = 0;
+//		//Render current frame/Изтриване на текущата рамка
+//		SDL_Rect* currentClip = &m_ChoiceWin[frame * 3];
+//		m_tChoiceWin.Render(m_renderer, 50, 70, 350, 50, currentClip);
+//		//Update screen
+//		//SDL_RenderPresent(m_renderer);
+//		//Go to next frame/Отидете на следващия кадър
+//		++frame;
+//
+//		//Cycle animation
+//		if (frame * 3 <= 3) {
+//			frame = 0;
+//		}
+//	}
+}
+
+void BonusGame::TimerBonus() {
+//	//Reset start time on return keypress
+//	SDL_Event e;
+//	if (e.type == SDL_KEYDOWN) {
+//		//Start/stop
+//		if (e.key.keysym.sym == SDLK_s) {
+//			if (timer.isStarted()) {
+//				timer.stop();
+//			} else {
+//				timer.start();
+//			}
+//		}
+//		//Pause/unpause
+//		else if (e.key.keysym.sym == SDLK_p) {
+//			if (timer.isPaused()) {
+//				timer.unpause();
+//			} else {
+//				timer.pause();
+//			}
+//		}
+//	}
+//
+//	//Set text to be rendered
+//	timeText.str("");
+//	timeText << "Seconds since start time " << (timer.getTicks() / 1000.f);
+
+//	//Render text
+//	if (!gTimeTextTexture.loadFromRenderedText(timeText.str().c_str(),
+//			textColor)) {
+//		printf("Unable to render time texture!\n");
+//	}
+//
+//	//Clear screen
+//	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+//	SDL_RenderClear (gRenderer);
+//
+//	//Render textures
+//	gStartPromptTexture.render(
+//			(SCREEN_WIDTH - gStartPromptTexture.getWidth()) / 2, 0);
+//	gPausePromptTexture.render(
+//			(SCREEN_WIDTH - gPausePromptTexture.getWidth()) / 2,
+//			gStartPromptTexture.getHeight());
+//	gTimeTextTexture.render((SCREEN_WIDTH - gTimeTextTexture.getWidth()) / 2,
+//			(SCREEN_HEIGHT - gTimeTextTexture.getHeight()) / 2);
+//
+//	//Update screen
+}
+
+
 
 void BonusGame::Close() {	//Free the sound effects
 	Mix_FreeChunk(RollDice);

@@ -2,15 +2,14 @@
 #define GAME_STATE_H
 #include "includesSDL2.h"
 
-
-class Scene
+class GameState
 {
 protected:
 	SDL_Renderer* m_renderer;
 
 public:
-	Scene(SDL_Renderer* renderer);
-	virtual~Scene();
+	GameState(SDL_Renderer* renderer);
+	virtual~GameState();
 
 	virtual void Draw();
 	virtual void Render() = 0;

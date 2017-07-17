@@ -20,8 +20,9 @@ private:
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
 	Deck* m_ptrDeck;
-
 	std::vector<Evaluation*> m_vecEvaluations;
+
+
 
 public:
 	eGameState m_eGameState;
@@ -38,7 +39,9 @@ public:
 
 	void Draw();
 	void Render();
+
 	void RenderRound(Deck* deck);
+
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();

@@ -1,30 +1,32 @@
 #ifndef BONUSGAME_H_
 #define BONUSGAME_H_
+
 #include "Scene.h"
+
 #include "Texture.h"
 #include "Globals.h"
 #include "ButtonObject.h"
 
+
 class BonusGame: public Scene
 {
 private:
-	double m_dCredit;
+	double* m_ptrCredit;
 	Texture m_tBackgorund;
 	Texture m_tChoiceWin;
 	Texture m_spriteDieTexture;
-	SDL_Event* m_event= nullptr;
-	eGameState* m_ptrGameState= nullptr;
-
+	SDL_Event* m_event;
+	eGameState* m_ptrGameState;
 
 	SDL_Rect m_spriteDie[6];
 	SDL_Rect m_ChoiceWin[3];
-
-	ButtonObject m_btnX2;
-	ButtonObject m_btnX5;
-	ButtonObject m_btnX10;
+	ButtonObject m_buttonX2;
+	ButtonObject m_buttonX5;
+	ButtonObject m_buttonX10;
 
 public:
-	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState);
+	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit);
+
 	virtual~BonusGame();
 
 	//The music that will be played
@@ -36,6 +38,10 @@ public:
 	void RenderDice();
 	void RenderChoiceWin();
 	void LoadChoiceWinFiles();
+
+	void DoAnimation();
+	void TimerBonus();
+
 
 	void Draw();
 	void Render();

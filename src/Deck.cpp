@@ -21,8 +21,8 @@ Deck::Deck(SDL_Renderer* renderer) :
 	{
 		for(int j = 0; j < 13; j++, counter++)
 		{
-			deckOfCards[counter].setCardRect(j * T_CARD_HEIGHT, i * T_CARD_WIDTH, 
-				T_CARD_HEIGHT, T_CARD_WIDTH);
+			deckOfCards[counter].setCardRect(j * T_CARD_WIDTH, i * T_CARD_HEIGHT,
+				T_CARD_WIDTH, T_CARD_HEIGHT);
 		}
 	}
 
@@ -32,13 +32,13 @@ Deck::Deck(SDL_Renderer* renderer) :
 		hand.push_back(cardForVector);
 	}
 	//Joker
-	deckOfCards[52].setCardSuit(static_cast<eCardSuit>(5));
-	deckOfCards[52].setCardValue(static_cast<eCardValue>(15));
-	deckOfCards[52].setCardRect(0, 4 * T_CARD_WIDTH, T_CARD_HEIGHT,T_CARD_WIDTH);
+	deckOfCards[52].setCardSuit(JOKERSUIT);
+	deckOfCards[52].setCardValue(JOKERVALUE);
+	deckOfCards[52].setCardRect(0, 4 * T_CARD_HEIGHT, T_CARD_WIDTH, T_CARD_HEIGHT);
 
 	deckOfCards[53].setCardSuit(static_cast<eCardSuit>(0));
 	deckOfCards[53].setCardValue(static_cast<eCardValue>(0));
-	deckOfCards[53].setCardRect(166, 4 * T_CARD_WIDTH, T_CARD_HEIGHT, T_CARD_WIDTH);
+	deckOfCards[53].setCardRect(T_CARD_WIDTH, 4 * T_CARD_HEIGHT, T_CARD_WIDTH, T_CARD_HEIGHT);
 	
 	srand(time(0));
 	//BackCard
@@ -59,7 +59,7 @@ void Deck::deal()
 	for(int i = 0;i < 5;i++)
 	{
 		Card currentCard = deckOfCards[rand() % 53];
-
+		
 		if(hand[i].getIsHold() == false && isCardInHand(currentCard) == false)
 		{
 			hand[i] = currentCard;
@@ -73,6 +73,7 @@ void Deck::deal()
 	std::cout << "--------------------------------------" << std::endl;
 
 	printDeck();
+
 	m_iKillCount++;
 }
 
@@ -113,7 +114,7 @@ int Deck::GetKillCount() const
 }
 
 
-std::vector<Card> Deck::sortHand()
+std::vector<Card> Deck::GetSortedHand()
 {
 	std::vector<Card> sorted = hand;
 	
@@ -124,7 +125,7 @@ std::vector<Card> Deck::sortHand()
 
 int Deck::evaluateHand()
 {
-	std::vector<Card> sorted = sortHand();
+	std::vector<Card> sorted = GetSortedHand();
 
 	int royalFlush, full, fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter, fiveOfAKind;
 	fourOfAKind = royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter = fiveOfAKind = 0;
@@ -360,5 +361,12 @@ void Deck::HoldSelectedCards()
 		}
 		std::cout << hand[i].getIsHold();
 	}
+}
+
+void Deck::render_card_from_deck(SDL_Renderer* renderer, int i)
+{
+	SDL_Rect onscreen{ 0,0, T_CARD_WIDTH , T_CARD_HEIGHT };
+	RenderCard(renderer, deckOfCards[i].getCardRect(), &onscreen);
+	std::cout << "CURENT CARD: " << deckOfCards[i].getCardSuit() << " " << deckOfCards[i].getCardValue() << "\n";
 }
 

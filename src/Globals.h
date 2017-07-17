@@ -33,8 +33,8 @@ const int NUM_OF_CARDS = 54;
 const int T_CARD_COLS = 13;
 const int T_CARD_ROWS = 4;
 
-const int T_CARD_WIDTH = 243;
-const int T_CARD_HEIGHT = 168;
+const int T_CARD_WIDTH = 168;
+const int T_CARD_HEIGHT = 243;
 
 const int CARD_W = 170;
 const int CARD_H_ = 240;
@@ -47,6 +47,8 @@ const int HOLD_H = 486;//316
 //----BONUS--------------------------------------------------------------------
 const int S_BONUSBTN_W = 204;
 const int S_BONUSBTN_H = 104;
+//---EVALUATION----------------------------------------------------------------
+const int HAND_SIZE = 5;
 
 typedef enum
 {

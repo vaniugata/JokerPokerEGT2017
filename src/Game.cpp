@@ -3,10 +3,21 @@
 #include <iostream>
 using std::cerr;
 #include "includesSDL2.h"
+#include "Evaluation\EvalKingsOrBetter.h"
+#include "Evaluation\EvalTwoPair.h"
+#include "Evaluation\EvalThreeOfKind.h"
+#include "Evaluation\EvalStraight.h"
+#include "Evaluation\EvalFlush.h"
+#include "Evaluation\EvalFullHouse.h"
+#include "Evaluation\EvalFourOfAKind.h"
+#include "Evaluation\EvalStraightFlush.h"
+#include "Evaluation\EvalWildRoyalFlush.h"
+#include "Evaluation\EvalFiveOfAKind.h"
+#include "Evaluation\EvalNaturalRoyalFlush.h"
 
 Game::Game() :
 		m_dCredit(-1),m_window(nullptr), m_renderer(nullptr),
-	m_eGameState(INTRO), m_event(), m_ptrDeckTest(nullptr)
+	m_eGameState(PLAY), m_event(), m_ptrDeck(nullptr)
 {
 	InitSDL();
 
@@ -14,15 +25,32 @@ Game::Game() :
 	m_tBackground->LoadFromFile(m_renderer, "Resources/back2.png");
 
 	m_paytable = new PaytableObject(m_renderer);
-	deck = new Deck(m_renderer);
+
+	//Card evaluation
+	m_vecEvaluations.push_back(new EvalKingsOrBetter() );
+	m_vecEvaluations.push_back(new EvalTwoPair() );
+	m_vecEvaluations.push_back(new EvalThreeOfKind() );
+	m_vecEvaluations.push_back(new EvalStraight() );
+	m_vecEvaluations.push_back(new EvalFlush() );
+	m_vecEvaluations.push_back(new EvalFullHouse() );
+	m_vecEvaluations.push_back(new EvalFourOfAKind() );
+	m_vecEvaluations.push_back(new EvalStraightFlush() );
+	m_vecEvaluations.push_back(new EvalWildRoyalFlush() );
+	m_vecEvaluations.push_back(new EvalFiveOfAKind() );
+	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush() );
 }
 
 Game::~Game()
 {
 	delete m_tBackground;
 	delete m_paytable;
-	delete deck;
 	std::cout << "Game deleted.\n";
+
+	for(int i = 0; i < m_vecEvaluations.size(); i++)
+	{
+		delete m_vecEvaluations[i];
+	}
+
 	Close();
 }
 
@@ -62,11 +90,8 @@ void Game::Render()
 			SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
 			BET_BTN_W, BET_BTN_H);
 
-		//deck->RenderHand(m_renderer);
-		//deck->RenderHoldBtns(m_renderer);
-		//deck->RenderHoldStamps(m_renderer);
-		if (m_ptrDeckTest != nullptr) 
-			RenderRound(m_ptrDeckTest);
+		if (m_ptrDeck != nullptr) 
+			RenderRound(m_ptrDeck);
 }
 
 void Game::RenderRound(Deck* deck)
@@ -105,22 +130,37 @@ void Game::ProcessKeyInput()
 		}
 	else if(m_event.key.keysym.sym == SDLK_d)
 	{
-		if(m_ptrDeckTest == nullptr)
+		if(m_ptrDeck == nullptr)
 		{
-			m_ptrDeckTest = new Deck(m_renderer);
+			m_ptrDeck = new Deck(m_renderer);
 		}
-		m_ptrDeckTest->deal();
+		m_ptrDeck->deal();
 
-		if(m_ptrDeckTest->GetKillCount() > 1)	
+		if(m_ptrDeck->GetKillCount() > 1)	
 		{
-			m_paytable->SetWinnerIndex(m_ptrDeckTest->evaluateHand());
+			
+			std::vector<Card> hand = m_ptrDeck->GetSortedHand();
+
+			int winIndex = 11;
+		
+			std::vector<Evaluation*>::iterator it;
+			for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
+			{
+				if((*it)->EvaluateHand(hand) < winIndex && (*it)->EvaluateHand(hand) != -1)
+				{
+					winIndex = (*it)->EvaluateHand(hand);
+				}
+				std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
+			}
+
+			m_paytable->SetWinnerIndex(winIndex);
 		}
 
-		if(m_ptrDeckTest->GetKillCount() > 2)
+		if(m_ptrDeck->GetKillCount() > 2)
 		{
+			delete m_ptrDeck;
+			m_ptrDeck = nullptr;
 			m_paytable->SetWinnerIndex(-1);
-			delete m_ptrDeckTest;
-			m_ptrDeckTest = nullptr;
 		}
 	}//sdlk d
 	
@@ -143,9 +183,9 @@ void Game::ProcessMouseInput()
 		m_paytable->SetMaxBet();
 	}
 
-	else if(m_ptrDeckTest != nullptr) 
+	else if(m_ptrDeck != nullptr) 
 	{
-		m_ptrDeckTest->HoldSelectedCards(); 
+		m_ptrDeck->HoldSelectedCards(); 
 	}
 }
 

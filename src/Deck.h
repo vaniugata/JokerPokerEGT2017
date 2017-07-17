@@ -36,7 +36,7 @@ public:
 	const std::vector<Card>& GetHand() const;
 	int GetKillCount() const;
 
-	std::vector<Card> sortHand();
+	std::vector<Card> GetSortedHand();
 
 	int evaluateHand();
 
@@ -48,6 +48,8 @@ public:
 	void RenderHoldStamps(SDL_Renderer* renderer);
 	void initHoldBtns();
 	void HoldSelectedCards();
+
+	void render_card_from_deck(SDL_Renderer* renderer, int i);
 };
 
 

@@ -7,6 +7,7 @@
 #include "BonusGame.h"
 #include "WinBonus.h"
 #include "Deck.h"
+#include "Evaluation\Evaluation.h"
 
 class Game
 {
@@ -18,8 +19,9 @@ private:
 	//game components
 	Texture* m_tBackground;
 	PaytableObject* m_paytable;
-	Deck* deck;
-	Deck* m_ptrDeckTest;
+	Deck* m_ptrDeck;
+
+	std::vector<Evaluation*> m_vecEvaluations;
 
 public:
 	eGameState m_eGameState;

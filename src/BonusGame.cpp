@@ -61,8 +61,8 @@ void BonusGame::Render() {
 			BONUSBTN_H);
 
 	RenderChoiceWin();
-	m_spriteDieTexture.Render(m_renderer, 480, 450, 163, 168, &m_spriteDie[0]);
-	m_spriteDieTexture.Render(m_renderer, 700, 400, 163, 168, &m_spriteDie[5]);
+//	m_spriteDieTexture.Render(m_renderer, 480, 450, 163, 168, &m_spriteDie[0]);
+//	m_spriteDieTexture.Render(m_renderer, 700, 400, 163, 168, &m_spriteDie[5]);
 
 }
 
@@ -162,14 +162,14 @@ void BonusGame::LoadDieFiles() {
 	}
 }
 void BonusGame::RenderDice() {
-	for (int i = 0; i < 6; i++) {
-
+	for (int i = 0; i <= 60000000; i++) {
+		if(i%1000000==0){
 	std::cout<<":RenderDice()"<<std::endl;
 		m_spriteDieTexture.Render(m_renderer, 480, 450, 163, 168,
 				&m_spriteDie[i * rand() % 6 + 1]);
 		m_spriteDieTexture.Render(m_renderer, 680, 400, 163, 168,
 				&m_spriteDie[i * rand() % 6 + 1]);
-
+		}
 
 	}
 }

@@ -1,12 +1,12 @@
 #include "Deck.h"
 #include<iostream>
 
-Deck::Deck(SDL_Renderer* renderer) :
+	Deck::Deck(SDL_Renderer* renderer) :
 	m_texture(renderer),
 	m_tHold(renderer),
 	m_currentBtn(renderer, "Resources/hold-button.png")
 {
-	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
+	m_texture.LoadFromFile(renderer, "Resources/deckOfCards.png");
 	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
 
 	for(int i = 0; i < 52; i++)

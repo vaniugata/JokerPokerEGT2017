@@ -2,7 +2,7 @@
 #define EVAL_NATURAL_ROYAL_FLUSH_H
 #include "EvalStraightFlush.h"
 
-class EvalNaturalRoyalFlush : public Evaluation, public EvalStraightFlush
+class EvalNaturalRoyalFlush :  public EvalStraightFlush
 {
 public:
 	EvalNaturalRoyalFlush();

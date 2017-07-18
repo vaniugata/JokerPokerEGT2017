@@ -2,7 +2,7 @@
 #define EVAL_FLUSH_H
 #include "Evaluation.h"
 
-class EvalFlush : public Evaluation
+class EvalFlush : public virtual Evaluation
 {
 public:
 	EvalFlush();

@@ -2,7 +2,7 @@
 #define EVAL_STRAIGHT_H
 #include "Evaluation.h"
 
-class EvalStraight : public Evaluation
+class EvalStraight : public virtual Evaluation
 {
 public:
 	EvalStraight();

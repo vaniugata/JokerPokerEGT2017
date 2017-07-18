@@ -1,9 +1,10 @@
 #ifndef EVAL_FULL_HOUSE_H
 #define EVAL_FULL_HOUSE_H
 #include "EvalThreeOfKind.h"
+#include "Evaluation.h"
 #include "EvalTwoPair.h"
 
-class EvalFullHouse : public Evaluation, public EvalThreeOfKind, public EvalTwoPair
+class EvalFullHouse : public EvalThreeOfKind, public EvalTwoPair
 {
 public:
 	EvalFullHouse();

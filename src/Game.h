@@ -1,6 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
-
+#include "includesSDL2.h"
 #include "Texture.h"
 #include "Globals.h"
 #include "PaytableObject.h"
@@ -8,6 +8,8 @@
 #include "WinBonus.h"
 #include "Deck.h"
 #include "Evaluation\Evaluation.h"
+
+
 
 class Game
 {
@@ -23,11 +25,10 @@ private:
 	std::vector<Evaluation*> m_vecEvaluations;
 	Texture m_tCredit;
 
-
-
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;
+
 
 public:
 	Game();

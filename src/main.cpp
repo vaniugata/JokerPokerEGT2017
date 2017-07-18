@@ -35,9 +35,8 @@ int main(int args, char* argc[])
 				bonus.Render();
 				bonus.HandleEvent();
 				bonus.Draw();
-				bonus.DoAnimation();
-
 				break;
+
 			case WIN:
 				win.Render();
 				win.HandleEvent();

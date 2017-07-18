@@ -2,6 +2,7 @@
 #define GAME_OBJECT_H
 #include "Texture.h"
 
+
 class GameObject
 {
 protected:

@@ -1,7 +1,6 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-
 #include "Scene.h"
 #include "Texture.h"
 #include "Globals.h"

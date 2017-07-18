@@ -11,7 +11,7 @@ using std::cerr;
 
 
 WinBonus::WinBonus(SDL_Renderer* renderer,SDL_Event& event ,eGameState& eGameState) :
-		Scene(renderer),  m_tBackgorund(), m_event(&event), m_ptrGameState(&eGameState)
+		Screen(renderer),  m_tBackgorund(), m_event(&event), m_ptrGameState(&eGameState)
 {
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/win.png");
@@ -27,7 +27,7 @@ WinBonus::~WinBonus()
 
 void WinBonus::Draw()
 {
-	Scene::Draw();
+	Screen::Draw();
 }
 
 void WinBonus::Render()

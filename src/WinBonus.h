@@ -9,7 +9,7 @@
 #define SRC_WINBONUS_H_
 
 
-#include "Scene.h"
+#include "Screen.h"
 #include "Texture.h"
 #include "Globals.h"
 #include <fstream>
@@ -17,7 +17,7 @@
 #include <sstream>
 
 
-class WinBonus: public Scene {
+class WinBonus: public Screen {
 
 	Texture m_tBackgorund;
 	Texture m_tText;

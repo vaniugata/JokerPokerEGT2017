@@ -17,19 +17,21 @@
 using std::cerr;
 #include <sstream>
 Game::Game() :
-		m_dCredit(-1),m_window(nullptr), m_renderer(nullptr),
+		m_dCredit(0),m_window(nullptr), m_renderer(nullptr),
 	m_eGameState(INTRO), m_event(), m_ptrDeck(nullptr)
 {
 	InitSDL();
 
-	m_tBackground = new Texture;
-	m_tBackground->LoadFromFile(m_renderer, "Resources/back2.png");
+	m_tBackground = Texture(m_renderer);
+	m_tBackground.LoadFromFile(m_renderer, "Resources/back2.png");
 
 	m_tCredit = Texture(m_renderer);
 	m_tCredit.InitFont("Resources/font.ttf", 28);
 
 	m_paytable = new PaytableObject(m_renderer);
 
+	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
+		0,0, INTRO_BTN_W, INTRO_BTN_H);
 	//Card evaluation
 	m_vecEvaluations.push_back(new EvalKingsOrBetter() );
 	m_vecEvaluations.push_back(new EvalTwoPair() );
@@ -46,8 +48,8 @@ Game::Game() :
 
 Game::~Game()
 {
-	delete m_tBackground;
 	delete m_paytable;
+	delete m_btnCashOut;
 	std::cout << "Game deleted.\n";
 
 	for(int i = 0; i < m_vecEvaluations.size(); i++)
@@ -81,12 +83,11 @@ void Game::Draw()
 void Game::Render()
 {
 	//draw background
-	m_tBackground->Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	m_tBackground.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	//draw paytable
 	m_paytable->Render(m_renderer);
-	//draw bet buttons
+	//draw buttons
 	SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
-
 	m_paytable->GetBetOneBtn().Render(m_renderer, &clip1,
 		SCREEN_WIDTH - BET_BTN_W -10, SCREEN_HEIGHT - BET_BTN_H - 5,
 		BET_BTN_W, BET_BTN_H);
@@ -94,11 +95,15 @@ void Game::Render()
 	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2,
 		SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
 		BET_BTN_W, BET_BTN_H);
+	SDL_Rect clipCashOut {0, 0, INTRO_BTN_W, INTRO_BTN_H};
+	m_btnCashOut->Render(m_renderer, &clipCashOut,
+		0, SCREEN_HEIGHT - m_btnCashOut->GetHeight() + 5,
+		INTRO_BTN_W, INTRO_BTN_H );
 
 	if (m_ptrDeck != nullptr) 
 		RenderRound(m_ptrDeck);
 
-	RenderCredit();
+	RenderGameInfo();
 }
 
 void Game::RenderRound(Deck* deck)
@@ -108,13 +113,36 @@ void Game::RenderRound(Deck* deck)
 	deck->RenderHoldStamps(m_renderer);
 }
 
-void Game::RenderCredit()
+void Game::RenderGameInfo()
 {
-	SDL_Color clrText {255, 255, 255};
+	SDL_Color clrText{ 255,255,255 };
+	SDL_Color clrCredit {235, 235, 0};
 	std::stringstream ss;
-	ss << m_dCredit;
+
+	//Credit
+	ss << "Credits: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrText);
-	m_tCredit.Render(m_renderer, 0, 0, m_tCredit.GetWidth(), m_tCredit.GetHeight());
+	m_tCredit.Render(m_renderer, 0, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight(),
+		m_tCredit.GetWidth(), m_tCredit.GetHeight());
+	ss.str("");
+	int iTextW = m_tCredit.GetWidth();
+	ss << m_dCredit;
+	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrCredit);
+	m_tCredit.Render(m_renderer, iTextW , SCREEN_HEIGHT - 2 * m_tCredit.GetHeight(),
+		m_tCredit.GetWidth(), m_tCredit.GetHeight());
+	ss.str("");
+
+	//Bet
+	ss << "Bet: ";
+	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrText);
+	m_tCredit.Render(m_renderer, 200, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight(),
+		m_tCredit.GetWidth(), m_tCredit.GetHeight());
+	iTextW = m_tCredit.GetWidth();
+	ss.str("");
+	ss << m_paytable->GetBet().at(10);
+	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrCredit);
+	m_tCredit.Render(m_renderer, 200 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight(),
+		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 }
 
@@ -160,16 +188,17 @@ void Game::ProcessMouseInput()
 	{
 		m_paytable->IncreaseBet();
 	}
-
 	else if(m_paytable->GetBetMaxBtn().IsSelected())
-
 	{
 		m_paytable->SetMaxBet();
 	}
-
 	else if(m_ptrDeck != nullptr) 
 	{
 		m_ptrDeck->HoldSelectedCards(); 
+	}
+	else if(m_btnCashOut->IsSelected())
+	{
+		m_eGameState = OUTRO;
 	}
 
 }

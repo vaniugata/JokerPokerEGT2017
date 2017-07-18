@@ -3,7 +3,7 @@
 #include "Texture.h"
 #include "Intro.h"
 #include "Deck.h"
-eGameState gGameState;
+#include "OutroScreen.h"
 
 int main(int args, char* argc[])
 {
@@ -11,6 +11,8 @@ int main(int args, char* argc[])
 	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit());
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(),game.m_event, game.m_eGameState );
+	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);
+
 	//Current animation frame
 	int frame = 0;
 	while(game.m_eGameState != QUIT)
@@ -43,6 +45,11 @@ int main(int args, char* argc[])
 				win.Draw();
 				break;
 
+			case OUTRO:
+				outro.Render();
+				outro.HandleEvent();
+				outro.Draw();
+				break;
 			}
 		} //event loop
 		

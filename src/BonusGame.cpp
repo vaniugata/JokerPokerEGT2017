@@ -24,7 +24,7 @@ using std::time;
 bool winsABonus = false;
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState, double* credit) :
-		m_ptrCredit(credit), Scene(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
+		m_ptrCredit(credit), Screen(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
 				&eGameState), m_buttonX2(renderer,
 				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
 				BONUSBTN_H), m_buttonX5(renderer,
@@ -48,7 +48,7 @@ BonusGame::~BonusGame() {
 }
 
 void BonusGame::Draw() {
-	Scene::Draw();
+	Screen::Draw();
 }
 
 void BonusGame::Render() {

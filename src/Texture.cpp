@@ -7,7 +7,6 @@
 Texture::Texture(SDL_Renderer* renderer, std::string path) : 
 	m_texture(nullptr), m_font(nullptr), m_iWidth(100), m_iHeight(100)
 {
-
 }
 
 Texture::~Texture()
@@ -28,12 +27,10 @@ int Texture::GetHeight() const
 
 void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 {
-	Free();
-
 	SDL_Surface* surface = IMG_Load(path.c_str() );
 	if(surface == nullptr)
 	{
-		std::cerr << "Unable to load image" << path << " ! SDL_image Error: " << \
+		std::cerr << "Unable to load image" << path.c_str() << " ! SDL_image Error: " << \
 			SDL_GetError();
 		return;
 	}

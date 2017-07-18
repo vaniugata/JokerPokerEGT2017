@@ -21,6 +21,7 @@ private:
 	PaytableObject* m_paytable;
 	Deck* m_ptrDeck;
 	std::vector<Evaluation*> m_vecEvaluations;
+	Texture m_tCredit;
 
 
 
@@ -39,12 +40,15 @@ public:
 
 	void Draw();
 	void Render();
-
 	void RenderRound(Deck* deck);
+	void RenderCredit();
 
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
+
+	//game logic
+	void ProcessRound();
 
 private:
 	void InitSDL();

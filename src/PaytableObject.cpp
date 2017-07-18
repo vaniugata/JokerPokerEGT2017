@@ -41,6 +41,11 @@ ButtonObject & PaytableObject::GetBetMaxBtn()
 	return m_btnbetMax;
 }
 
+const std::vector<int>& PaytableObject::GetBet() const
+{
+	return m_vecBets;
+}
+
 void PaytableObject::SetWinnerIndex(int index)
 {
 	this->m_iWinnerIndex = index;

@@ -6,7 +6,7 @@ Deck::Deck(SDL_Renderer* renderer) :
 	m_tHold(renderer),
 	m_currentBtn(renderer, "Resources/hold-button.png")
 {
-	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
+	m_texture.LoadFromFile(renderer, "Resources/deckOFCards.png");
 	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
 
 	for(int i = 0; i < 52; i++)
@@ -365,10 +365,11 @@ void Deck::HoldSelectedCards()
 
 	for(int i = 0; i < 5; i++)
 	{
-		if(m_vecCardHold[i].IsSelected())
-		{
+		if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == false)
 			hand[i].setIsHold(true);
-		}
+		else if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == true)
+			hand[i].setIsHold(false);
+		
 		std::cout << hand[i].getIsHold();
 	}
 }

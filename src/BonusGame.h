@@ -8,17 +8,19 @@
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
-class BonusGame: public Scene {
+class BonusGame: public Scene
+{
 
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
-			double* credit	);
+			double* credit);
 
 	virtual ~BonusGame();
 
 	//The music that will be played
 	Mix_Chunk* ButtonPress = nullptr;
 	Mix_Chunk* RollDice = nullptr;
+
 	double* GetCredit();
 	void LoadMusicFiles();
 	void LoadDieFiles();
@@ -38,6 +40,12 @@ public:
 	double calculateWin(double credits, int x);
 
 	void Close();
+	int getDiceResult() const;
+	void setDiceResult(int diceResult);
+	int getResDie1() const;
+	void setResDie1(int resDie1);
+	int getResDie2() const;
+	void setResDie2(int resDie2);
 
 private:
 	double* m_ptrCredit;

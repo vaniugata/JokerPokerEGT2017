@@ -52,6 +52,7 @@ int main(int args, char* argc[])
 				outro.Render();
 				outro.HandleEvent();
 				outro.Draw();
+				outro.Delay();
 				break;
 			}
 		} //event loop

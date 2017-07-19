@@ -21,10 +21,13 @@ private:
 	//game components
 	Texture m_tBackground;
 	Texture m_tCredit;
+	Texture m_tGameOver;
 	PaytableObject* m_paytable;
 	Deck* m_ptrDeck;
 	std::vector<Evaluation*> m_vecEvaluations;
 	ButtonObject* m_btnCashOut;
+	bool m_bIsGameOver;
+	bool m_bIsBonus;
 
 public:
 	eGameState m_eGameState;
@@ -44,7 +47,7 @@ public:
 	void Render();
 	void RenderRound(Deck* deck);
 	void RenderGameInfo();
-
+	void RenderGameOver();
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();

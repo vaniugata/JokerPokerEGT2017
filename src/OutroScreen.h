@@ -8,8 +8,10 @@ class OutroScreen : public Screen
 {
 private:
 	Texture m_tBackground;
+	Texture m_tCredit;
 	SDL_Event* m_ptrEvent;
 	eGameState* m_ptrGameState;
+	static double m_dCredit;
 public:
 	OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState* gameState);
 	~OutroScreen();
@@ -17,5 +19,8 @@ public:
 	void Draw();
 	void Render();
 	void HandleEvent();
+	void Delay();
+
+	static void SetCredit(double credit);
 };
 #endif

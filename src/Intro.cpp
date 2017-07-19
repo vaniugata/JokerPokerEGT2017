@@ -90,7 +90,7 @@ void Intro::HandleEvent()
 void Intro::CashIn(double ammount)
 {
 	if(*m_ptrCredit == -1) { *m_ptrCredit = 0; }
-	*m_ptrCredit += (ammount * DENOM);
+	*m_ptrCredit += ammount;
 }
 
 void Intro::RenderInfoWindow()

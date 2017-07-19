@@ -1,10 +1,11 @@
 #include "Deck.h"
 #include<iostream>
 
-	Deck::Deck(SDL_Renderer* renderer) :
+Deck::Deck(SDL_Renderer* renderer) :
 	m_texture(renderer),
 	m_tHold(renderer),
-	m_currentBtn(renderer, "Resources/hold-button.png")
+	m_currentBtn(renderer, "Resources/hold-button.png"),
+	m_iKillCount(0)
 {
 	m_texture.LoadFromFile(renderer, "Resources/deckOfCards.png");
 	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
@@ -57,7 +58,7 @@ Deck::~Deck()
 
 void Deck::deal()
 {
-	printDeck();
+	//printDeck();
 	for(int i = 0;i < 5;i++)
 	{
 		Card currentCard = deckOfCards[rand() % 53];
@@ -72,12 +73,10 @@ void Deck::deal()
 			hand[i].setIsHold(false);
 		}
 	}
-	std::cout << "--------------------------------------" << std::endl;
-
-	printDeck();
-
+	//std::cout << "--------------------------------------" << std::endl;
+	//printDeck();
+	std::cout << "Kill count: " << m_iKillCount << std::endl;
 	m_iKillCount++;
-
 }
 
 
@@ -129,154 +128,6 @@ std::vector<Card> Deck::GetSortedHand()
 
 }
 
-int Deck::evaluateHand()
-{
-	std::vector<Card> sorted = GetSortedHand();
-
-	int royalFlush, full, fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter, fiveOfAKind;
-	fourOfAKind = royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter = fiveOfAKind = 0;
-	k = 0;
-	//checks for flush
-	while(k < 4 && sorted[k].getCardSuit() == sorted[k + 1].getCardSuit())
-
-		k++;
-	isJokerHand();
-	if(k == 4)
-		flush = 1;
-
-	//checks for straight
-	k = 0;
-
-	while(k < 4 && sorted[k].getCardValue() == sorted[k + 1].getCardValue() - 1)
-	{
-		if(sorted[0].getCardValue() == DEUCE && sorted[4].getCardValue() == ACE && k == 2)
-
-		{
-			k++;
-		}
-		k++;
-	}
-	//check for 2 3 5 A Joker
-
-	if(sorted[0].getCardValue() == DEUCE && sorted[3].getCardValue() == ACE && k == 1)
-	{
-		if(sorted[2].getCardValue() == FIVE)
-
-			k += 2;
-		isJokerHand();
-	}
-	if(k == 4)
-		straight = 1;
-	//chech for four of a kind
-	for(int i = 0; i < 2; i++)
-	{
-		k = i;
-
-		while(k < i + 3 && sorted[k].getCardValue() == sorted[k + 1].getCardValue())
-
-			k++;
-		isJokerHand();
-		if(k == i + 3)
-			fourOfAKind = 1;
-		if(k == i + 4)
-			fiveOfAKind = 1;
-	}
-	//check for three and full
-	if(!fourOfAKind) {
-		for(int i = 0; i < 3; i++)
-		{
-			k = i;
-
-			while(k < i + 2 && sorted[k].getCardValue() == sorted[k + 1].getCardValue())
-
-			{
-				k++;
-			}
-			isJokerHand();
-			if(k == i + 2)
-			{
-				threeOfKind = 1;
-				if(i == 0)
-				{
-
-					if(sorted[3].getCardValue() == sorted[4].getCardValue()) {
-
-						full = 1;
-					}
-				}
-				else if(i == 1) {
-
-					if(sorted[0].getCardValue() == sorted[4].getCardValue()) {
-
-						full = 1;
-					}
-				}
-				else {
-
-					if(sorted[0].getCardValue() == sorted[1].getCardValue())
-
-						full = 1;
-				}
-			}
-
-		}
-	}
-
-	if(straight && flush && sorted[0].getCardValue() == TEN) {
-
-		return 0;
-	}
-	else if(fiveOfAKind)
-	{
-		return 1;
-	}
-
-	else if(straight && flush && isJokerHand() && sorted[0].getCardValue() == TEN)
-
-	{
-		return 2;
-	}
-	else if(straight && flush)
-	{
-		return 3;
-	}
-	else if(fourOfAKind) {
-		return 4;
-	}
-	else if(full) {
-		return 5;
-	}
-	else if(flush) {
-		return 6;
-	}
-	else if(straight) {
-		return 7;
-	}
-	else if(threeOfKind) {
-		return 8;
-	}
-	for(k = 0; k < 4; k++) {
-
-		if(sorted[k].getCardValue() == sorted[k + 1].getCardValue())
-
-			pair++;
-	}
-	if(pair == 2) {
-		return 9;
-	}
-
-	else if (sorted[3].getCardValue() >= KING)
-	{
-		if (isJokerHand())
-			return 10;
-		if (sorted[3].getCardValue() == sorted[4].getCardValue())
-			return 10;
-		return -1;
-
-	}
-	else return -1;
-}
-
 bool Deck::isCardInHand(Card& card)
 {
 	for(int i = 0; i < hand.size(); i++)
@@ -304,7 +155,6 @@ void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destina
 
 void Deck::RenderHand(SDL_Renderer * renderer)
 {
-
 	SDL_Rect cardPlace{ (SCREEN_WIDTH - 5 * CARD_W)/2,350,CARD_W,CARD_H_ };
 
 	for(int i = 0; i < 5; i++)
@@ -316,6 +166,16 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 	
 }
 
+void Deck::RenderStart(SDL_Renderer * renderer)
+{
+	SDL_Rect cardPos{ (SCREEN_WIDTH - 5 * CARD_W) / 2,350,CARD_W,CARD_H_ };
+	for(int i = 0; i < HAND_SIZE; i++)
+	{
+		RenderCard(renderer, deckOfCards[53].getCardRect(), &cardPos);
+		cardPos.x += CARD_W;
+	}
+}
+
 void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 {
 
@@ -325,13 +185,16 @@ void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 
 	for (int i = 0; i <5; i++)
 	{
-		m_vecCardHold[i].SetDimentions(HOLD_W, HOLD_H /2);
+		//set dimentions for clicking logic
+		m_vecCardHold[i].SetDimentions(HOLD_W, CARD_H_ / 2);
 		m_vecCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
 		//render the picture
 		if(hand[i].getIsHold())
 		{
+			//show golden hold stamp
 			m_tHold.Render(renderer, x, y + 50, m_tHold.GetWidth() / 2, m_tHold.GetHeight() / 2);
 		}
+		//move to the next card
 		x += HOLD_W + 2;
 	}
 }
@@ -345,7 +208,6 @@ void Deck::RenderHoldStamps(SDL_Renderer * renderer)
 	{
 		if(hand[i].getIsHold())
 		{
-			
 			x += HOLD_W + 2;
 		}
 	}
@@ -361,8 +223,6 @@ void Deck::initHoldBtns()
 
 void Deck::HoldSelectedCards()
 {
-	if(m_iKillCount >= 2) {	return; }
-
 	for(int i = 0; i < 5; i++)
 	{
 		if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == false)

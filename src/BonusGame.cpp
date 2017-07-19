@@ -83,8 +83,8 @@ void BonusGame::HandleEvent()
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			Mix_PlayChannel(-1, RollDice, 0);
 			delay(3000);
-			m_diceResult = getResDie1()+getResDie1();
-			cout<<getResDie1()<<"/"<<getResDie1()<<"/"<<m_diceResult<<std::endl;
+			m_diceResult = getResDie1()+getResDie2();
+			cout<<getResDie1()<<"/"<<getResDie2()<<"/"<<m_diceResult<<std::endl;
 			SDL_Delay(2000);
 			if (m_diceResult < 5)
 			{
@@ -95,15 +95,14 @@ void BonusGame::HandleEvent()
 			{
 				*m_ptrGameState = PLAY;
 			}
-
 		}
 		else if (m_buttonX5.IsSelected())
 		{
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			Mix_PlayChannel(-1, RollDice, 0);
 			delay(3000);
-			m_diceResult = getResDie1()+getResDie1();
-			cout<<getResDie1()<<"/"<<getResDie1()<<"/"<<m_diceResult<<std::endl;
+			m_diceResult = getResDie1()+getResDie2();
+			cout<<getResDie1()<<"/"<<getResDie2()<<"/"<<m_diceResult<<std::endl;
 			SDL_Delay(2000);
 			if (m_diceResult > 4 && m_diceResult < 10)
 			{
@@ -120,13 +119,17 @@ void BonusGame::HandleEvent()
 			Mix_PlayChannel(-1, ButtonPress, 0);
 			Mix_PlayChannel(-1, RollDice, 0);
 			delay(3000);
-			m_diceResult = getResDie1()+getResDie1();
-			cout<<getResDie1()<<"/"<<getResDie1()<<"/"<<m_diceResult<<std::endl;
+			m_diceResult = getResDie1()+getResDie2();
+			cout<<getResDie1()<<"/"<<getResDie2()<<"/"<<m_diceResult<<std::endl;
 			SDL_Delay(2000);
 			if (m_diceResult > 9 && m_diceResult < 13)
 			{
 				*m_ptrCredit = calculateWin(*m_ptrCredit, 10);
 				*m_ptrGameState = WIN;
+			}
+			else
+			{
+				*m_ptrGameState = PLAY;
 			}
 		}
 		break;
@@ -188,7 +191,7 @@ void BonusGame::RenderDice()
 	m_spriteDieTexture.Render(m_renderer, 480, 450, 155, 148,
 			&m_spriteDie[getResDie1()-1]);
 	m_spriteDieTexture.Render(m_renderer, 680, 400, 155, 148,
-			&m_spriteDie[getResDie1()-1]);
+			&m_spriteDie[getResDie2()-1]);
 }
 
 int BonusGame::ResultDice()

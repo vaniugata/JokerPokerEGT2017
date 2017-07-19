@@ -8,7 +8,10 @@
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/master
 class BonusGame: public Screen {
 
 

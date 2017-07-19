@@ -8,7 +8,10 @@
 #ifndef SRC_WINBONUS_H_
 #define SRC_WINBONUS_H_
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/master
 #include "Screen.h"
 #include "Texture.h"
 #include "Globals.h"

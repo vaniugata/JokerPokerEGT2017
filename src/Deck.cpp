@@ -179,7 +179,7 @@ void Deck::RenderStart(SDL_Renderer * renderer)
 void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 {
 
-	SDL_Rect  clipVisible {0,0, HOLD_W, HOLD_H / 2 };
+	SDL_Rect  clipVisible {0,0, HOLD_W, CARD_H_};
 	int x= (SCREEN_WIDTH - 5 * CARD_W) / 2;
 	int y = 350;
 

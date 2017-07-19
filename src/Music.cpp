@@ -13,7 +13,11 @@ Music::Music() {
 }
 
 Music::~Music() {
-	// TODO Auto-generated destructor stub
+	Mix_FreeMusic(BackGroundMusic);
+	BackGroundMusic = nullptr;
+
+	Mix_FreeChunk(ChunkMusic);
+	ChunkMusic = nullptr;
 }
 
 
@@ -30,9 +34,9 @@ Mix_Chunk* Music::getChunkMusic(){
 	return ChunkMusic;
 }
 
-void Music::LoadMusic(){
+void Music::LoadMusic(std::string path){
 
-	ChunkMusic = Mix_LoadWAV("sound.wav");
+	ChunkMusic = Mix_LoadWAV(path.c_str());
 	if(ChunkMusic == NULL)
 	{
 		cout << "Problem to Load Music" << endl;

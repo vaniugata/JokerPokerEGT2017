@@ -2,7 +2,7 @@
 #define EVAL_WILD_ROYAL_FLUSH
 #include "EvalStraightFlush.h"
 
-class EvalWildRoyalFlush :public Evaluation, public EvalStraightFlush
+class EvalWildRoyalFlush : public EvalStraightFlush
 {
 public:
 	EvalWildRoyalFlush();

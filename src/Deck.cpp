@@ -1,19 +1,21 @@
 #include "Deck.h"
 #include<iostream>
 
-Deck::Deck(SDL_Renderer* renderer) :
+	Deck::Deck(SDL_Renderer* renderer) :
 	m_texture(renderer),
 	m_tHold(renderer),
 	m_currentBtn(renderer, "Resources/hold-button.png")
 {
-	m_texture.LoadFromFile(renderer, "Resources/DeckOfCards.png");
+	m_texture.LoadFromFile(renderer, "Resources/deckOfCards.png");
 	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
 
 	for(int i = 0; i < 52; i++)
-	{
-		eCardSuit suit;
+	{ 
+		
+		//eCardSuit suit;
 		deckOfCards[i].setCardSuit(static_cast<eCardSuit> ((i / 13) + 1));
 		deckOfCards[i].setCardValue(static_cast<eCardValue>((i % 13) + 1));
+		//std::cout << deckOfCards[i].getCardValue() << "  " << deckOfCards[i].getCardSuit() << std::endl;
 	}
 
 	int counter = 0;
@@ -35,13 +37,13 @@ Deck::Deck(SDL_Renderer* renderer) :
 	deckOfCards[52].setCardSuit(JOKERSUIT);
 	deckOfCards[52].setCardValue(JOKERVALUE);
 	deckOfCards[52].setCardRect(0, 4 * T_CARD_HEIGHT, T_CARD_WIDTH, T_CARD_HEIGHT);
-
+	//BackCard
 	deckOfCards[53].setCardSuit(static_cast<eCardSuit>(0));
 	deckOfCards[53].setCardValue(static_cast<eCardValue>(0));
 	deckOfCards[53].setCardRect(T_CARD_WIDTH, 4 * T_CARD_HEIGHT, T_CARD_WIDTH, T_CARD_HEIGHT);
 	
 	srand(time(0));
-	//BackCard
+	
 
 	initHoldBtns();
 	
@@ -58,13 +60,24 @@ Deck::~Deck()
 void Deck::deal()
 {
 	printDeck();
+	int previousRandom = 0;
 	for(int i = 0;i < 5;i++)
 	{
-		Card currentCard = deckOfCards[rand() % 53];
 		
+		int random = rand() % 53;
+		int secondRandom = random;
+		Card currentCard = deckOfCards[random];
+		while (random == secondRandom)
+		{
+			secondRandom = rand() % 53;
+	    }
 		if(hand[i].getIsHold() == false && isCardInHand(currentCard) == false)
 		{
-			hand[i] = currentCard;
+			hand[i] = deckOfCards[random];
+		}
+		else if(hand[i].getIsHold() == false && isCardInHand(currentCard) == true)
+		{		
+			hand[i] = deckOfCards[secondRandom];
 		}
 
 		if (hand[i].getIsHold() == true)
@@ -74,6 +87,32 @@ void Deck::deal()
 	}
 	std::cout << "--------------------------------------" << std::endl;
 
+	/*int card1 = 0;
+	hand[0].setCardValue(DEUCE);
+	hand[0].setCardSuit(CLUBS);
+	hand[0].setCardRect(deckOfCards[card1].getCardRect()->x, deckOfCards[card1].getCardRect()->y,
+		deckOfCards[card1].getCardRect()->w, deckOfCards[card1].getCardRect()->h);
+
+	int card2 =39;
+	hand[1].setCardValue(DEUCE);
+	hand[1].setCardSuit(CLUBS);
+	hand[1].setCardRect(deckOfCards[card2].getCardRect()->x, deckOfCards[card2].getCardRect()->y,
+		deckOfCards[card2].getCardRect()->w, deckOfCards[card2].getCardRect()->h);
+	int card3 = 42;
+	hand[2].setCardValue(FIVE);
+	hand[2].setCardSuit(SPADES);
+	hand[2].setCardRect(deckOfCards[card3].getCardRect()->x, deckOfCards[card3].getCardRect()->y,
+		deckOfCards[card3].getCardRect()->w, deckOfCards[card3].getCardRect()->h);
+	int card4 = 30;
+	hand[3].setCardValue(SIX);
+	hand[3].setCardSuit(HEARTS);
+	hand[3].setCardRect(deckOfCards[card4].getCardRect()->x, deckOfCards[card4].getCardRect()->y,
+		deckOfCards[card4].getCardRect()->w, deckOfCards[card4].getCardRect()->h);
+	int card5 = 17;
+	hand[4].setCardValue(SIX);
+	hand[4].setCardSuit(DIAMONDS);
+	hand[4].setCardRect(deckOfCards[card5].getCardRect()->x, deckOfCards[card5].getCardRect()->y,
+		deckOfCards[card5].getCardRect()->w, deckOfCards[card5].getCardRect()->h);*/
 	printDeck();
 
 	m_iKillCount++;
@@ -365,10 +404,11 @@ void Deck::HoldSelectedCards()
 
 	for(int i = 0; i < 5; i++)
 	{
-		if(m_vecCardHold[i].IsSelected())
-		{
+		if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == false)
 			hand[i].setIsHold(true);
-		}
+		else if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == true)
+			hand[i].setIsHold(false);
+		
 		std::cout << hand[i].getIsHold();
 	}
 }

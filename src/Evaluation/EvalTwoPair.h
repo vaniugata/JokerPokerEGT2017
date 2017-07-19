@@ -2,7 +2,7 @@
 #define EVAL_TWO_PAIR_H
 #include "Evaluation.h"
 
-class EvalTwoPair : public Evaluation
+class EvalTwoPair : public virtual Evaluation
 {
 public:
 	EvalTwoPair();

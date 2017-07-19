@@ -1,7 +1,5 @@
 #include "Game.h"
 #include "Globals.h"
-#include <iostream>
-using std::cerr;
 #include "includesSDL2.h"
 #include "Evaluation\EvalKingsOrBetter.h"
 #include "Evaluation\EvalTwoPair.h"
@@ -15,14 +13,20 @@ using std::cerr;
 #include "Evaluation\EvalFiveOfAKind.h"
 #include "Evaluation\EvalNaturalRoyalFlush.h"
 
+#include <iostream>
+using std::cerr;
+#include <sstream>
 Game::Game() :
 		m_dCredit(-1),m_window(nullptr), m_renderer(nullptr),
-	m_eGameState(PLAY), m_event(), m_ptrDeck(nullptr)
+	m_eGameState(INTRO), m_event(), m_ptrDeck(nullptr)
 {
 	InitSDL();
 
 	m_tBackground = new Texture;
 	m_tBackground->LoadFromFile(m_renderer, "Resources/back2.png");
+
+	m_tCredit = Texture(m_renderer);
+	m_tCredit.InitFont("Resources/font.ttf", 28);
 
 	m_paytable = new PaytableObject(m_renderer);
 
@@ -77,22 +81,24 @@ void Game::Draw()
 void Game::Render()
 {
 	//draw background
-		m_tBackground->Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-		//draw paytable
-		m_paytable->Render(m_renderer);
-		//draw bet buttons
-		SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
+	m_tBackground->Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	//draw paytable
+	m_paytable->Render(m_renderer);
+	//draw bet buttons
+	SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
 
-		m_paytable->GetBetOneBtn().Render(m_renderer, &clip1,
-			SCREEN_WIDTH - BET_BTN_W -10, SCREEN_HEIGHT - BET_BTN_H - 5,
-			BET_BTN_W, BET_BTN_H);
-		SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
-		m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2,
-			SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
-			BET_BTN_W, BET_BTN_H);
+	m_paytable->GetBetOneBtn().Render(m_renderer, &clip1,
+		SCREEN_WIDTH - BET_BTN_W -10, SCREEN_HEIGHT - BET_BTN_H - 5,
+		BET_BTN_W, BET_BTN_H);
+	SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
+	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2,
+		SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
+		BET_BTN_W, BET_BTN_H);
 
-		if (m_ptrDeck != nullptr) 
-			RenderRound(m_ptrDeck);
+	if (m_ptrDeck != nullptr) 
+		RenderRound(m_ptrDeck);
+
+	RenderCredit();
 }
 
 void Game::RenderRound(Deck* deck)
@@ -100,6 +106,16 @@ void Game::RenderRound(Deck* deck)
 	deck->RenderHand(m_renderer);
 	deck->RenderHoldBtns(m_renderer);
 	deck->RenderHoldStamps(m_renderer);
+}
+
+void Game::RenderCredit()
+{
+	SDL_Color clrText {255, 255, 255};
+	std::stringstream ss;
+	ss << m_dCredit;
+	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrText);
+	m_tCredit.Render(m_renderer, 0, 0, m_tCredit.GetWidth(), m_tCredit.GetHeight());
+	ss.str("");
 }
 
 void Game::HandleEvent()
@@ -129,39 +145,7 @@ void Game::ProcessKeyInput()
 
 	else if(m_event.key.keysym.sym == SDLK_d)
 	{
-		if(m_ptrDeck == nullptr)
-		{
-			m_ptrDeck = new Deck(m_renderer);
-		}
-		m_ptrDeck->deal();
-
-		if(m_ptrDeck->GetKillCount() > 1)
-		{
-
-			std::vector<Card> hand = m_ptrDeck->GetSortedHand();
-
-			int winIndex = 11;
-
-			std::vector<Evaluation*>::iterator it;
-			for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
-			{
-				if((*it)->EvaluateHand(hand) < winIndex && (*it)->EvaluateHand(hand) != -1)
-				{
-					winIndex = (*it)->EvaluateHand(hand);
-				}
-				std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
-			}
-
-			m_paytable->SetWinnerIndex(winIndex);
-		}
-
-		if(m_ptrDeck->GetKillCount() > 2)
-
-		{
-			delete m_ptrDeck;
-			m_ptrDeck = nullptr;
-			m_paytable->SetWinnerIndex(-1);
-		}
+		ProcessRound();
 	}//sdlk d
 
 	else if(m_event.key.keysym.sym == SDLK_b)
@@ -188,6 +172,50 @@ void Game::ProcessMouseInput()
 		m_ptrDeck->HoldSelectedCards(); 
 	}
 
+}
+
+void Game::ProcessRound()
+{
+	if(m_ptrDeck == nullptr)
+	{
+		m_ptrDeck = new Deck(m_renderer);
+	}
+	//Deal 5 cards on the screen
+	m_ptrDeck->deal();
+
+	//Take bet
+	if(m_ptrDeck->GetKillCount() == 1)
+	m_dCredit -= m_paytable->GetBet().at(10);
+
+	if(m_ptrDeck->GetKillCount() > 1)
+	{
+		std::vector<Card> hand = m_ptrDeck->GetSortedHand();
+		int winIndex = 11;
+		std::vector<Evaluation*>::iterator it;
+		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
+		{
+			if((*it)->EvaluateHand(hand) < winIndex && (*it)->EvaluateHand(hand) != -1)
+			{
+				winIndex = (*it)->EvaluateHand(hand);
+			}
+			std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
+		}
+
+		//Add win ammount to credit
+		if(winIndex >= 0 && winIndex <= m_paytable->GetBet().size() - 1)
+			m_dCredit += m_paytable->GetBet().at(winIndex);
+
+		//set the current win in the paytable
+		m_paytable->SetWinnerIndex(winIndex);
+
+		//reset round 
+		if(m_ptrDeck->GetKillCount() > 2)
+		{
+			delete m_ptrDeck;
+			m_ptrDeck = nullptr;
+			m_paytable->SetWinnerIndex(-1);
+		}
+	}
 }
 
 void Game::InitSDL()

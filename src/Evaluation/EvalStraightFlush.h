@@ -4,7 +4,7 @@
 #include "EvalStraight.h"
 #include "EvalFlush.h"
 
-class EvalStraightFlush : public Evaluation, public EvalStraight, public EvalFlush
+class EvalStraightFlush : public EvalStraight, public EvalFlush
 {
 public:
 	EvalStraightFlush();

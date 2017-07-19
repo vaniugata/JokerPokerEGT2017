@@ -1,19 +1,19 @@
-#include "Scene.h"
+#include "Screen.h"
 #include <iostream>
 using std::cout;
 
-Scene::Scene(SDL_Renderer* renderer) :
+Screen::Screen(SDL_Renderer* renderer) :
 	m_renderer(renderer)
 {
 
 }
 
-Scene::~Scene()
+Screen::~Screen()
 {
 	std::cout << "Scene deleted.\n";
 }
 
-void Scene::Draw()
+void Screen::Draw()
 {
 	SDL_RenderPresent(m_renderer);
 	SDL_RenderClear(m_renderer);

@@ -9,35 +9,33 @@
 #define SRC_WINBONUS_H_
 
 
-#include "Scene.h"
+#include "Screen.h"
 #include "Texture.h"
 #include "Globals.h"
 #include <fstream>
 #include <string>
 #include <sstream>
 
-
-class WinBonus: public Scene {
-
+class WinBonus: public Screen {
+	double* m_ptrCredit;
 	Texture m_tBackgorund;
 	Texture m_tText;
-
 	SDL_Event* m_event;
-
 	eGameState* m_ptrGameState;
-
 	Mix_Chunk* winning = nullptr;
 
 public:
-	WinBonus(SDL_Renderer* renderer,SDL_Event& event, eGameState& eGameState);
+	WinBonus(SDL_Renderer* renderer, SDL_Event& event,
+			eGameState& eGameState,double* credit);
+
 	virtual ~WinBonus();
+
 	void LoadMusicFiles();
-
-	void Draw();
-	void Render();
-	void HandleEvent();
-
 	std::string DoubleToString(double number) const;
+
+	virtual void Draw();
+	virtual void Render();
+	virtual void HandleEvent();
 
 	void Close();
 };

@@ -11,7 +11,7 @@
 
 
 
-class Game
+class Game 
 {
 private:
 	double m_dCredit;
@@ -19,11 +19,12 @@ private:
 	SDL_Renderer* m_renderer;
 
 	//game components
-	Texture* m_tBackground;
+	Texture m_tBackground;
+	Texture m_tCredit;
 	PaytableObject* m_paytable;
 	Deck* m_ptrDeck;
 	std::vector<Evaluation*> m_vecEvaluations;
-	Texture m_tCredit;
+	ButtonObject* m_btnCashOut;
 
 public:
 	eGameState m_eGameState;
@@ -42,7 +43,7 @@ public:
 	void Draw();
 	void Render();
 	void RenderRound(Deck* deck);
-	void RenderCredit();
+	void RenderGameInfo();
 
 	void HandleEvent();
 	void ProcessKeyInput();

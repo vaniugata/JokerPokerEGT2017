@@ -5,6 +5,7 @@
 #include "Deck.h"
 #include "OutroScreen.h"
 #include "Music.h"
+#include "Recovery.h"
 
 int main(int args, char* argc[])
 {
@@ -13,7 +14,11 @@ int main(int args, char* argc[])
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit() );
 	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);
+	
 
+	std::cout << "Credit: " << Recovery::Read().credit << " Bet: "
+		<< Recovery::Read().bet << " Win: "
+		<< Recovery::Read().win << "\n";
 
 	//Current animation frame
 	int frame = 0;
@@ -59,7 +64,5 @@ int main(int args, char* argc[])
 		
 	} // run loop
 		
-	
-
 	return 0;
 }

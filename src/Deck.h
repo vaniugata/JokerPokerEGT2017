@@ -26,7 +26,6 @@ public:
 public:
 	int k = 0;
 	Deck(SDL_Renderer*);
-
 	~Deck();
 
 	void deal();
@@ -40,12 +39,12 @@ public:
 	int GetKillCount() const;
 
 	std::vector<Card> GetSortedHand();
-	int evaluateHand();
 
 	bool isCardInHand(Card& card);
 	bool isJokerHand();
 	void RenderCard(SDL_Renderer*,SDL_Rect*,SDL_Rect*);
 	void RenderHand(SDL_Renderer*);
+	void RenderStart(SDL_Renderer* renderer);
 	void RenderHoldBtns(SDL_Renderer*);
 	void RenderHoldStamps(SDL_Renderer* renderer);
 	void initHoldBtns();

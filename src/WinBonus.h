@@ -8,17 +8,14 @@
 #ifndef SRC_WINBONUS_H_
 #define SRC_WINBONUS_H_
 
-#include "Scene.h"
+#include "Screen.h"
 #include "Texture.h"
 #include "Globals.h"
 #include <fstream>
 #include <string>
 #include <sstream>
 
-class WinBonus: public Scene
-{
-private:
-
+class WinBonus: public Screen {
 	double* m_ptrCredit;
 	Texture m_tBackgorund;
 	Texture m_tText;

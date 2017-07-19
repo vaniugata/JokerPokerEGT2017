@@ -1,15 +1,15 @@
 #ifndef BONUSGAME_H_
 #define BONUSGAME_H_
 
-#include "Scene.h"
+#include "Screen.h"
 #include "Card.h"
 #include "Texture.h"
 #include "Globals.h"
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
-class BonusGame: public Scene
-{
+class BonusGame: public Screen {
+
 
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,

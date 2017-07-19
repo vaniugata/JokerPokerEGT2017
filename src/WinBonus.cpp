@@ -11,7 +11,7 @@ using std::cerr;
 
 WinBonus::WinBonus(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState, double* credit) :
-		Scene(renderer), m_tBackgorund(), m_event(&event),
+		Screen(renderer), m_tBackgorund(), m_event(&event),
 		m_ptrGameState(&eGameState), m_ptrCredit(credit)
 {
 	this->m_renderer = renderer;
@@ -28,24 +28,28 @@ WinBonus::~WinBonus()
 
 void WinBonus::Draw()
 {
-	Scene::Draw();
+	Screen::Draw();
 }
 
 void WinBonus::Render()
-{	//render Backgorund
-	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+{
 	//render the text
 	SDL_Color color { 0, 0, 0 };
-	m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
+	int x = 300;
+	int y = SCREEN_HEIGHT - 80;
 	Uint32 timerDelay = SDL_GetTicks();
 	while (SDL_GetTicks() - timerDelay < 2000 && *m_ptrGameState != QUIT)
 	{
-		int x = 300;
-		int y = SCREEN_HEIGHT - 80;
+		std::cout<<"eeeeeeeeeeee"<<std::endl;
+		//render Backgorund
+		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
+
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 	}
 	Mix_PlayChannel(-1, winning, 0);
+
 	*m_ptrGameState = PLAY;
 }
 

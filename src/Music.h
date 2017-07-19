@@ -7,11 +7,10 @@
 
 #ifndef SRC_MUSIC_H_
 #define SRC_MUSIC_H_
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
+#include "includesSDL2.h"
 #include<iostream>
+#include <string>
+
 using namespace std;
 
 class Music {
@@ -25,7 +24,7 @@ public:
 	Mix_Music* getBackGroundMusic();
 	Mix_Chunk* getChunkMusic();
 
-	void LoadMusic();
+	void LoadMusic(std::string path);
 
 	void PlayMusic();
 

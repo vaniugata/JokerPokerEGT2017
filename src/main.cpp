@@ -24,9 +24,9 @@ int main(int args, char* argc[])
 	int frame = 0;
 	while(game.m_eGameState != QUIT)
 	{
-
 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
+
 			switch(game.m_eGameState)
 			{
 			case INTRO:

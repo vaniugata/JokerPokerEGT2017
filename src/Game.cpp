@@ -228,6 +228,8 @@ void Game::ProcessRound()
 
 	//Deal 5 cards on the screen
 	m_ptrDeck->deal();
+	//TODO: Invoke sound for flipping the cards
+	//Charge the fee to play a round
 	m_dCredit -= m_paytable->GetBet().at(10);
 
 	if(m_ptrDeck->GetKillCount() == 2)

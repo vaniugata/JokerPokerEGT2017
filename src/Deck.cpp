@@ -186,7 +186,7 @@ void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 	for (int i = 0; i <5; i++)
 	{
 		//set dimentions for clicking logic
-		m_vecCardHold[i].SetDimentions(HOLD_W, CARD_H_ / 2);
+		m_vecCardHold[i].SetDimentions(HOLD_W, CARD_H_);
 		m_vecCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
 		//render the picture
 		if(hand[i].getIsHold())

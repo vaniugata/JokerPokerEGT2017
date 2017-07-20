@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Globals.h"
 
+
 class ButtonObject
 {
 private:
@@ -13,21 +14,25 @@ private:
 	int m_iWidth;
 	int m_iHeight;
 public:
-	ButtonObject(SDL_Renderer* renderer, std::string path, 
+	ButtonObject(SDL_Renderer* renderer = NULL, std::string path = "", 
 		int x = 0, int y = 0, int w = 100, int h = 100);
 	virtual~ButtonObject();
 
 	//getters
+	//On screen dimentions
 	int GetWidth() const;
 	int GetHeight() const;
 
 	//setters
 	void SetPosition(int x, int y);
+	void SetDimentions(int w, int h);
 
-	void Render(SDL_Renderer* renderer, SDL_Rect* clip = NULL, 
+	void Render(SDL_Renderer* renderer, SDL_Rect* clip, 
 		int x = 0, int y = 0, int w = 100, int h = 100);
 
-	bool IsPressed();
+	bool IsSelected();
+
+
 
 };
 #endif

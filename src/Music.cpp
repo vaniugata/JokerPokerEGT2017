@@ -1,7 +1,11 @@
 /*
  * Music.cpp
  *
+<<<<<<< HEAD
  *  Created on: 18.07.2017 ã.
+=======
+ *  Created on: 18.07.2017 ï¿½.
+>>>>>>> origin/master
  *      Author: Borqna
  */
 
@@ -13,7 +17,15 @@ Music::Music() {
 }
 
 Music::~Music() {
+
 	// TODO Auto-generated destructor stub
+
+	Mix_FreeMusic(BackGroundMusic);
+	BackGroundMusic = nullptr;
+
+	Mix_FreeChunk(ChunkMusic);
+	ChunkMusic = nullptr;
+
 }
 
 
@@ -30,12 +42,15 @@ Mix_Chunk* Music::getChunkMusic(){
 	return ChunkMusic;
 }
 
-void Music::LoadMusic(){
 
-	ChunkMusic = Mix_LoadWAV("sound.wav");
+
+void Music::LoadMusic(std::string path){
+
+	ChunkMusic = Mix_LoadWAV(path.c_str());
 	if(ChunkMusic == NULL)
 	{
-		cout << "Problem to Load Music" << endl;
+		std::cout << "Problem to Load Music" << std::endl;
+
 	}
 }
 

@@ -1,6 +1,5 @@
 #ifndef CARD_H
 #define CARD_H
-
 #include<iostream>
 #include "includesSDL2.h"
 
@@ -26,10 +25,10 @@ typedef enum
 typedef enum 
 {
 	EMPTYSUIT,
-	DIOMOND,
-	SPADE,
-	HEART,
-	CLUB,
+	CLUBS,
+	DIAMONDS,
+	HEARTS,
+	SPADES,
 	JOKERSUIT
 } eCardSuit;
 

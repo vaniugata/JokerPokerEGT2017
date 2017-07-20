@@ -1,18 +1,22 @@
 /*
  * Music.h
  *
+<<<<<<< HEAD
  *  Created on: 18.07.2017 ã.
+=======
+ *  Created on: 18.07.2017 ï¿½.
+>>>>>>> origin/master
  *      Author: Borqna
  */
 
 #ifndef SRC_MUSIC_H_
 #define SRC_MUSIC_H_
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
-#include<iostream>
 using namespace std;
+#include "includesSDL2.h"
+#include<iostream>
+#include <string>
+
+
 
 class Music {
 public:
@@ -25,7 +29,8 @@ public:
 	Mix_Music* getBackGroundMusic();
 	Mix_Chunk* getChunkMusic();
 
-	void LoadMusic();
+	void LoadMusic(std::string path);
+
 
 	void PlayMusic();
 

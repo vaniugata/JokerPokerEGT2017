@@ -8,26 +8,33 @@
 #ifndef SRC_WINBONUS_H_
 #define SRC_WINBONUS_H_
 
-#include "GameState.h"
+#include "Screen.h"
 #include "Texture.h"
 #include "Globals.h"
+#include <fstream>
+#include <string>
+#include <sstream>
 
-class WinBonus: public GameState {
+class WinBonus: public Screen {
+	double* m_ptrCredit;
 	Texture m_tBackgorund;
-	SDL_Event* m_event;
 	Texture m_tText;
+	SDL_Event* m_event;
 	eGameState* m_ptrGameState;
-	TTF_Font* m_font;
 	Mix_Chunk* winning = nullptr;
-public:
-	WinBonus(SDL_Renderer* renderer,SDL_Event& event, eGameState& eGameState);
-	virtual ~WinBonus();
-	void LoadMusicFiles();
-	void InitFont(std::string path);
 
-	void Draw();
-	void Render();
-	void HandleEvent();
+public:
+	WinBonus(SDL_Renderer* renderer, SDL_Event& event,
+			eGameState& eGameState,double* credit);
+
+	virtual ~WinBonus();
+
+	void LoadMusicFiles();
+	std::string DoubleToString(double number) const;
+
+	virtual void Draw();
+	virtual void Render();
+	virtual void HandleEvent();
 
 	void Close();
 };

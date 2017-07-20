@@ -4,6 +4,7 @@
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
+
 #include <vector>
 
 class PaytableObject
@@ -41,6 +42,7 @@ public:
 	//getters
 	ButtonObject& GetBetOneBtn();
 	ButtonObject& GetBetMaxBtn();
+	const std::vector<int>& GetBet() const;
 
 	//setters
 	void SetWinnerIndex(int index);

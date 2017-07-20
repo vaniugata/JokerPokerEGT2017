@@ -40,7 +40,7 @@ eCardValue Card::getCardValue()const
 	return this->m_cardValue;
 }
 
-SDL_Rect* Card::getCardRect()
+SDL_Rect* Card::getCardRect() 
 {
 	return &m_cardRect;
 }

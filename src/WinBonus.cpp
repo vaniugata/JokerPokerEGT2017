@@ -9,65 +9,84 @@
 #include <iostream>
 using std::cerr;
 
-WinBonus::WinBonus(SDL_Renderer* renderer,SDL_Event& event ,eGameState& eGameState) :
-		GameState(renderer),  m_tBackgorund(), m_event(&event), m_ptrGameState(&eGameState)
+WinBonus::WinBonus(SDL_Renderer* renderer, SDL_Event& event,
+		eGameState& eGameState, double* credit) :
+		Screen(renderer), m_tBackgorund(), m_event(&event),
+		m_ptrGameState(&eGameState), m_ptrCredit(credit)
 {
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/win.png");
-	InitFont("Resources/font.ttf");
+	m_tText.InitFont("Resources/font.ttf", 50);
+	LoadMusicFiles();
 }
 
 WinBonus::~WinBonus()
 {
 	std::cerr << "BonusGame Object deleted.\n";
-		Close();
+	Close();
 }
 
 void WinBonus::Draw()
 {
-	GameState::Draw();
+	Screen::Draw();
 }
 
 void WinBonus::Render()
-{
+{	
+	//render Backgorund
+	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	//Play greeting sound
+	Mix_PlayChannel(-1, winning, 0);
+	//render the text
+	SDL_Color color { 0, 0, 0 };
+	int x = 300;
+	int y = SCREEN_HEIGHT - 80;
+	m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
+	Uint32 timerDelay = SDL_GetTicks();
+	while (SDL_GetTicks() - timerDelay < 4000 && *m_ptrGameState != QUIT)
+	{
+		std::cout<<"eeeeeeeeeeee"<<std::endl;
+		//render Backgorund
 		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-		//render the text
-		SDL_Color color { 255, 255, 255 };
-		int x = SCREEN_WIDTH / 3;
-		int y = SCREEN_HEIGHT - 100;
-		std::string credits = "123456";
-		//m_tText.LoadFromRendererdText(m_renderer, m_font, credits, color);
+		m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
+
+		int x = 300;
+		int y = SCREEN_HEIGHT - 80;
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
-
-
-}
-
-void WinBonus::InitFont(std::string path) {
-	m_font = TTF_OpenFont(path.c_str(), 50);
-	if (m_font == nullptr) {
-		std::cerr << "Failed to load " << path << " font! SDL_ttf Error:"
-				<< TTF_GetError();
-		return;
+		Draw();
 	}
-}
-void WinBonus::LoadMusicFiles() {
 
+	*m_ptrGameState = PLAY;
+}
+
+void WinBonus::LoadMusicFiles()
+{
 	winning = Mix_LoadWAV("ResourcesMusic/Winning.wav");
 	if (winning == nullptr) {
 		std::cout << "Failed to load scratch Winning! SDL_mixer Error:"
 				<< Mix_GetError() << std::endl;
 		return;
 	}
-
 }
 
 void WinBonus::HandleEvent()
 {
-
+	switch (m_event->type)
+	{
+	case SDL_QUIT:
+		*m_ptrGameState = QUIT;
+		break;
+	}
 }
-
-void WinBonus::Close() {	//Free the sound effects
-
+std::string WinBonus::DoubleToString(double x) const
+{
+	std::stringstream ss;
+	ss << x;
+	std::string res = ss.str();
+	return res;
+}
+//Free the sound effects
+void WinBonus::Close()
+{
 	Mix_FreeChunk(winning);
-
 }

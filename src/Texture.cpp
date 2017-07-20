@@ -7,7 +7,6 @@
 Texture::Texture(SDL_Renderer* renderer, std::string path) : 
 	m_texture(nullptr), m_font(nullptr), m_iWidth(100), m_iHeight(100)
 {
-
 }
 
 Texture::~Texture()
@@ -28,12 +27,10 @@ int Texture::GetHeight() const
 
 void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 {
-	Free();
-
 	SDL_Surface* surface = IMG_Load(path.c_str() );
 	if(surface == nullptr)
 	{
-		std::cerr << "Unable to load image" << path << " ! SDL_image Error: " << \
+		std::cerr << "Unable to load image" << path.c_str() << " ! SDL_image Error: " << \
 			SDL_GetError();
 		return;
 	}
@@ -51,8 +48,6 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 
 void Texture::LoadFromRendererdText(SDL_Renderer * renderer, std::string text, SDL_Color color)
 {
-	//Free();
-
 	SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), color);
 	if(textSurface == nullptr)
 	{
@@ -86,9 +81,9 @@ void Texture::Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rec
 	SDL_RenderCopy(renderer, m_texture, clip, &dest);
 }
 
-void Texture::InitFont(std::string path)
+void Texture::InitFont(std::string path, int fontSize)
 {
-	m_font = TTF_OpenFont(path.c_str(), 18);
+	m_font = TTF_OpenFont(path.c_str(), fontSize);
 	if(m_font == nullptr)
 	{
 		std::cerr << "Failed to load " << path << " font! SDL_ttf Error:" << TTF_GetError();

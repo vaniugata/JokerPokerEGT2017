@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Globals.h"
+#include "Music.h"
 #include <iostream>
 using std::cerr;
 #include "includesSDL2.h"
@@ -42,6 +43,7 @@ void Game::SetGameState(eGameState gs)
 
 void Game::Draw()
 {
+
 	SDL_RenderPresent(m_renderer);
 	SDL_RenderClear(m_renderer);
 }
@@ -124,6 +126,11 @@ void Game::InitSDL()
 	{
 		std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError();
 		return;
+	}
+
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		std::cerr << "SDL MUSIC PROBLEM INITIALIZE" << std::endl;
 	}
 
 	m_window = SDL_CreateWindow("Joker Poker", \

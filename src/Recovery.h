@@ -18,11 +18,7 @@ public:
 	~Recovery();
 
 	static void InitNewFile();
-<<<<<<< HEAD
 	static void Save(double credit = 0.0, int bet = 0, double won = 0.0);
-=======
-	static void Save(double credit = 0.0, int bet = -1, double won = -1.0);
->>>>>>> origin/master
 	static Recover Read();
 
 	static std::string DoubleToStr(double num);

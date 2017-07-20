@@ -32,43 +32,20 @@ void WinBonus::Draw()
 }
 
 void WinBonus::Render()
-<<<<<<< HEAD
 {
-=======
-{	
-	//render Backgorund
-	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	//Play greeting sound
-	Mix_PlayChannel(-1, winning, 0);
->>>>>>> origin/master
 	//render the text
 	SDL_Color color { 0, 0, 0 };
 	int x = 300;
 	int y = SCREEN_HEIGHT - 80;
 	m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
 	Uint32 timerDelay = SDL_GetTicks();
-<<<<<<< HEAD
 	while (SDL_GetTicks() - timerDelay < 3000 && *m_ptrGameState != QUIT)
 	{
-=======
-	while (SDL_GetTicks() - timerDelay < 4000 && *m_ptrGameState != QUIT)
-	{
-		std::cout<<"eeeeeeeeeeee"<<std::endl;
->>>>>>> origin/master
 		//render Backgorund
 		Mix_PlayChannel(-1, winning, 0);
 		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-<<<<<<< HEAD
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		SDL_RenderPresent(m_renderer);
-=======
-		m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
-
-		int x = 300;
-		int y = SCREEN_HEIGHT - 80;
-		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
-		Draw();
->>>>>>> origin/master
 	}
 
 
@@ -105,4 +82,5 @@ std::string WinBonus::DoubleToString(double x) const
 void WinBonus::Close()
 {
 	Mix_FreeChunk(winning);
+
 }

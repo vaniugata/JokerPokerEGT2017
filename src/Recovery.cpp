@@ -29,15 +29,15 @@ void Recovery::InitNewFile() {
 void Recovery::Save(double credit, int bet, double won) {
 	pugi::xml_node node = doc.append_child("recovery");
 
-	if (credit > 0) {
 
+if(credit > 0)
+{
 		pugi::xml_node credits = node.append_child("credit");
 
 		// we can't change value of the element or name of the comment
 		credits.append_child(pugi::node_pcdata).set_value(
 				DoubleToStr(credit).c_str());
 		credits.set_value(DoubleToStr(credit).c_str());
-	
 
 }
 if (bet >= 0) {
@@ -69,13 +69,11 @@ recover.win = current.child("win").text().as_double();
 return recover;
 }
 
-std::string Recovery::DoubleToStr(double num) {
-std::stringstream ss;
-ss << num;
-
-
-
-return ss.str();
+std::string Recovery::DoubleToStr(double num)
+{
+	std::stringstream ss;
+	ss << num;
+	return ss.str();
 }
 
 std::string Recovery::IntToStr(int num) {

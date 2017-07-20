@@ -35,6 +35,9 @@ Game::Game() :
 	m_tGameOver = Texture(m_renderer);
 	m_tGameOver.InitFont("Resources/ARCADECLASSIC.TTF", 28);
 
+	m_tFlashingPicture = Texture(m_renderer);
+	m_tFlashingPicture.LoadFromFile(m_renderer, "Resources/poker_joker_game.png");
+
 	m_paytable = new PaytableObject(m_renderer);
 
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
@@ -56,6 +59,7 @@ Game::Game() :
 	m_vecEvaluations.push_back(new EvalWildRoyalFlush());
 	m_vecEvaluations.push_back(new EvalFiveOfAKind());
 	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush());
+	LoadFlashingPicture();
 }
 
 Game::~Game()
@@ -94,6 +98,48 @@ void Game::Draw()
 	SDL_RenderClear(m_renderer);
 }
 
+void Game::LoadFlashingPicture()
+{
+	m_tFlashingPicture.LoadFromFile(m_renderer, "Resources/poker_joker_game.png");
+
+	//Load sprite sheet texture
+	int offset = 0;
+	int w = 454;
+	int h = 325;
+	for (int i = 0; i < 10; i++)
+	{
+		if(i%2 != 0)
+		{
+			offset =10;
+		}
+		m_rFlashingPicture[i].x = 0+offset;
+		m_rFlashingPicture[i].y = 0+offset;
+		m_rFlashingPicture[i].w = w+offset;
+		m_rFlashingPicture[i].h = h+offset;
+
+	}
+}
+
+void Game::RenderChoiceWinFiles()
+{
+	int offset = 0;
+	Uint32 timerDelay = SDL_GetTicks();
+	while (SDL_GetTicks() - timerDelay < 100 )
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			if(i%2 != 0)
+			{
+				offset = 10;
+			}
+
+			m_tFlashingPicture.Render(m_renderer, offset, offset, 454, 325, &m_rFlashingPicture[i]);
+
+		}
+			SDL_RenderPresent(m_renderer);
+	}
+}
+
 void Game::Render()
 {
 	//draw background
@@ -126,6 +172,7 @@ void Game::Render()
 	}
 	RenderGameInfo();
 	if(m_bIsGameOver) { RenderGameOver(); }
+	RenderChoiceWinFiles();
 }
 
 void Game::RenderRound(Deck* deck)

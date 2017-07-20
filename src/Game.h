@@ -27,6 +27,7 @@ private:
 	ButtonObject* m_btnDealDraw;//Button Deal/Draw
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
+	int m_iWinIndex;
 
 public:
 	eGameState m_eGameState;

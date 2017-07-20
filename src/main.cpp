@@ -30,8 +30,6 @@ int main(int args, char* argc[])
 			switch(game.m_eGameState)
 			{
 			case INTRO:
-
-
 				intro.Render();
 				intro.HandleEvent();
 				intro.Draw();

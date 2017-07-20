@@ -40,7 +40,7 @@ Game::Game() :
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0, 0, INTRO_BTN_W, INTRO_BTN_H);
 
-	m_btnDealDraw = new  ButtonObject(m_renderer, "Resources/deal-draw.png",
+	m_btnDealDraw = new  ButtonObject(m_renderer, "Resources/round-button.png",
 			0, 0, DEALDRAWBTN_W, DEALDRAWBTN_H);
 
 	m_ptrDeck = new Deck(m_renderer);
@@ -113,10 +113,13 @@ void Game::Render()
 		0, SCREEN_HEIGHT - m_btnCashOut->GetHeight() + 5,
 		INTRO_BTN_W, INTRO_BTN_H);
 
-	//SDL_Rect clipDealDraw{ 0, 0,DEALDRAWBTN_W, DEALDRAWBTN_H };
-	//m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
-	//		600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() + 5,
-	//		DEALDRAWBTN_W, DEALDRAWBTN_H);
+	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
+	if(m_ptrDeck->GetKillCount() == 1) { clipDealDraw.x += DEAL_W; }
+	else if(m_ptrDeck->GetKillCount() == 2 && 
+		m_iWinIndex >= 5 && m_iWinIndex <= 10) { clipDealDraw.x += 2 * DEAL_W; }
+	m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
+			600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() + 5,
+			DEALDRAWBTN_W, DEALDRAWBTN_H);
 
 	if(m_ptrDeck != nullptr)
 	{
@@ -236,14 +239,11 @@ void Game::ProcessMouseInput()
 	{
 		m_ptrDeck->HoldSelectedCards();
 	}
-	else if(m_btnDealDraw->IsSelected())
+	if(m_btnDealDraw->IsSelected())
 	{
-	countIsSelected++;
-	ProcessRound();
+		ProcessRound();
 	}
-	if(countIsSelected==2){
-		//??????????????????
-	}
+
 
 }
 
@@ -262,27 +262,27 @@ void Game::ProcessRound()
 	if(m_ptrDeck->GetKillCount() == 2)
 	{
 		//Evaluate hand
-		int winIndex = 11;
+		 m_iWinIndex = 11;
 		std::vector<Card> hand = m_ptrDeck->GetSortedHand();
 		std::vector<Evaluation*>::iterator it;
 		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
 		{
-			if((*it)->EvaluateHand(hand) < winIndex && (*it)->EvaluateHand(hand) != -1)
+			if((*it)->EvaluateHand(hand) < m_iWinIndex && (*it)->EvaluateHand(hand) != -1)
 			{
-				winIndex = (*it)->EvaluateHand(hand);
+				m_iWinIndex = (*it)->EvaluateHand(hand);
 			}
 			std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
 		}
 		//Add win ammount to credit
-		if(winIndex >= 0 && winIndex <= m_paytable->GetBet().size() - 1)
+		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
 		{
-			m_dCredit += m_paytable->GetBet().at(winIndex);
-			Recovery::Save(m_dCredit, m_paytable->GetBet().at(winIndex), m_paytable->GetBet().at(winIndex) );
+			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
 			//set the current win in the paytable
-			m_paytable->SetWinnerIndex(winIndex);
+			m_paytable->SetWinnerIndex(m_iWinIndex);
 		}
 		//Check for bonus state
-		if(winIndex >= 5 && winIndex <= 10) { m_bIsBonus = true; }
+		if(m_iWinIndex >= 5 && m_iWinIndex <= 10) { m_bIsBonus = true; }
 	}
 
 	if(m_ptrDeck->GetKillCount() == 3)

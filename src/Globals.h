@@ -45,6 +45,9 @@ const int ENUM_COUNTS_SUIT = 4;
 
 const int HOLD_W = 168;
 const int HOLD_H = 486;//316
+
+const int DEAL_W = 486;
+const int DEAL_H = 264;
 //----BONUS--------------------------------------------------------------------
 const int S_BONUSBTN_W = 204;
 const int S_BONUSBTN_H = 104;

@@ -15,21 +15,12 @@
 #include <string>
 #include <sstream>
 
-class WinBonus: public Screen
-{
+class WinBonus: public Screen {
 	double* m_ptrCredit;
-
-	 //Texture objects
 	Texture m_tBackgorund;
 	Texture m_tText;
-
-	//SDL_Event object pointer
 	SDL_Event* m_event;
-
-	//enum eGameState pointer
 	eGameState* m_ptrGameState;
-
-	//Mix_Chunk object pointer
 	Mix_Chunk* winning = nullptr;
 
 public:

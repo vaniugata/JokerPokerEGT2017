@@ -8,8 +8,7 @@
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
-class BonusGame: public Screen
-{
+class BonusGame: public Screen {
 private:
 
 	double* m_ptrCredit;
@@ -79,9 +78,6 @@ public:
 	void setResDie2(int resDie2);
 
 	void Close();
-
-
-
 
 };
 #endif

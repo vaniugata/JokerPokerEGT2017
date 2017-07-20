@@ -18,3 +18,5 @@ void Screen::Draw()
 	SDL_RenderPresent(m_renderer);
 	SDL_RenderClear(m_renderer);
 }
+
+

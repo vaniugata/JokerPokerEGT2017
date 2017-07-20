@@ -10,6 +10,7 @@
 int main(int args, char* argc[])
 {
 	Game game;
+	Music music;
 	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit());
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit() );
@@ -26,10 +27,11 @@ int main(int args, char* argc[])
 	{
 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
-
 			switch(game.m_eGameState)
 			{
 			case INTRO:
+
+
 				intro.Render();
 				intro.HandleEvent();
 				intro.Draw();

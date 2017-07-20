@@ -9,8 +9,6 @@
 #include "Deck.h"
 #include "Evaluation\Evaluation.h"
 
-
-
 class Game 
 {
 private:
@@ -26,6 +24,7 @@ private:
 	Deck* m_ptrDeck;
 	std::vector<Evaluation*> m_vecEvaluations;
 	ButtonObject* m_btnCashOut;
+	ButtonObject* m_btnDealDraw;//Button Deal/Draw
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 
@@ -51,7 +50,6 @@ public:
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
-
 	//game logic
 	void ProcessRound();
 

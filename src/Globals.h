@@ -48,11 +48,15 @@ const int HOLD_H = 486;//316
 //----BONUS--------------------------------------------------------------------
 const int S_BONUSBTN_W = 204;
 const int S_BONUSBTN_H = 104;
-//---EVALUATION----------------------------------------------------------------
-
 
 const int BONUSBTN_W = 366;
 const int BONUSBTN_H = 122;
+
+//---EVALUATION----------------------------------------------------------------
+
+//---GAME----------------------------------------------------------------
+const int DEALDRAWBTN_W = 240;
+const int DEALDRAWBTN_H =70;
 
 
 typedef enum

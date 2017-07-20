@@ -41,10 +41,10 @@ void WinBonus::Render()
 	SDL_Color color { 0, 0, 0 };
 	int x = 300;
 	int y = SCREEN_HEIGHT - 80;
+	m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
 	Uint32 timerDelay = SDL_GetTicks();
-	while (SDL_GetTicks() - timerDelay < 4000 && *m_ptrGameState != QUIT)
+	while (SDL_GetTicks() - timerDelay < 3000 && *m_ptrGameState != QUIT)
 	{
-		std::cout<<"eeeeeeeeeeee"<<std::endl;
 		//render Backgorund
 		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
@@ -54,7 +54,6 @@ void WinBonus::Render()
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		Draw();
 	}
-
 
 	*m_ptrGameState = PLAY;
 }
@@ -89,4 +88,5 @@ std::string WinBonus::DoubleToString(double x) const
 void WinBonus::Close()
 {
 	Mix_FreeChunk(winning);
+
 }

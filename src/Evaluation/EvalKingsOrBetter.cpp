@@ -1,5 +1,6 @@
 #include "EvalKingsOrBetter.h"
 
+
 EvalKingsOrBetter::EvalKingsOrBetter()
 {
 }
@@ -20,9 +21,9 @@ int EvalKingsOrBetter::EvaluateHand(std::vector<Card>& hand)
 	}
 
 	if(iAceCout == 2 || iKingCount == 2) { return 10;}
-	else if(iKingCount == 1 && hasJoker || iAceCout == 1 && hasJoker) {	return 10;}
+	else if( (iKingCount == 1 && hasJoker) || (iAceCout == 1 && hasJoker)){	return 10;}
 
-	return -1; 
+	return -1;
 }
 
 bool EvalKingsOrBetter::HasJoker(std::vector<Card>& hand)

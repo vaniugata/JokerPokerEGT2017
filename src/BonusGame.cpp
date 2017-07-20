@@ -9,6 +9,7 @@
 #include <string>
 #include <time.h>
 #include "Globals.h"
+#include "Recovery.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -89,6 +90,7 @@ void BonusGame::HandleEvent()
 			if (m_diceResult < 5)
 			{
 				*m_ptrCredit = calculateWin(*m_ptrCredit, 2);
+				Recovery::Save(*m_ptrCredit);
 					*m_ptrGameState = WIN;
 			}
 			else
@@ -107,6 +109,7 @@ void BonusGame::HandleEvent()
 			if (m_diceResult > 4 && m_diceResult < 10)
 			{
 				*m_ptrCredit = calculateWin(*m_ptrCredit, 5);
+				Recovery::Save(*m_ptrCredit);
 				*m_ptrGameState = WIN;
 			}
 			else
@@ -125,6 +128,7 @@ void BonusGame::HandleEvent()
 			if (m_diceResult > 9 && m_diceResult < 13)
 			{
 				*m_ptrCredit = calculateWin(*m_ptrCredit, 10);
+				Recovery::Save(*m_ptrCredit);
 				*m_ptrGameState = WIN;
 			}
 			else

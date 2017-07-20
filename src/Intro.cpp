@@ -1,5 +1,6 @@
 #include "Intro.h"
 #include "Globals.h"
+#include "Recovery.h"
 #include <iostream>
 using std::cout;
 #include <sstream>
@@ -73,7 +74,11 @@ void Intro::HandleEvent()
 
 	case SDL_MOUSEBUTTONDOWN:
 		if(m_btnNewGame.IsSelected())
+		{
+			Recovery::InitNewFile();
+			Recovery::Save(*m_ptrCredit);
 			*m_ptrGameState = PLAY;
+		}
 
 		else if(m_btnResumeGame.IsSelected())
 			*m_ptrGameState = PLAY;

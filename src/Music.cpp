@@ -1,7 +1,7 @@
 /*
  * Music.cpp
  *
- *  Created on: 18.07.2017 ã.
+ *  Created on: 18.07.2017 ï¿½.
  *      Author: Borqna
  */
 
@@ -39,7 +39,7 @@ void Music::LoadMusic(std::string path){
 	ChunkMusic = Mix_LoadWAV(path.c_str());
 	if(ChunkMusic == NULL)
 	{
-		cout << "Problem to Load Music" << endl;
+		std::cout << "Problem to Load Music" << std::endl;
 	}
 }
 

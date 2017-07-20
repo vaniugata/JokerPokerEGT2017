@@ -13,6 +13,7 @@
 #include "Evaluation\EvalFiveOfAKind.h"
 #include "Evaluation\EvalNaturalRoyalFlush.h"
 #include "OutroScreen.h"
+#include "Recovery.h"
 
 #include <iostream>
 using std::cerr;
@@ -38,6 +39,9 @@ Game::Game() :
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0, 0, INTRO_BTN_W, INTRO_BTN_H);
 
+	m_btnDealDraw = new  ButtonObject(m_renderer, "Resources/deal-draw.png",
+			0, 0, DEALDRAWBTN_W, DEALDRAWBTN_H);
+
 	m_ptrDeck = new Deck(m_renderer);
 	//Card evaluation
 	m_vecEvaluations.push_back(new EvalKingsOrBetter());
@@ -57,6 +61,7 @@ Game::~Game()
 {
 	delete m_paytable;
 	delete m_btnCashOut;
+	delete m_btnDealDraw;
 	std::cout << "Game deleted.\n";
 
 	for(int i = 0; i < m_vecEvaluations.size(); i++)
@@ -106,6 +111,11 @@ void Game::Render()
 	m_btnCashOut->Render(m_renderer, &clipCashOut,
 		0, SCREEN_HEIGHT - m_btnCashOut->GetHeight() + 5,
 		INTRO_BTN_W, INTRO_BTN_H);
+
+	SDL_Rect clipDealDraw{ 0, 0,DEALDRAWBTN_W, DEALDRAWBTN_H };
+	m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
+			600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() + 5,
+			DEALDRAWBTN_W, DEALDRAWBTN_H);
 
 	if(m_ptrDeck != nullptr)
 	{
@@ -162,7 +172,7 @@ void Game::RenderGameOver()
 		SDL_Color{255,255,255});
 	m_tGameOver.Render(m_renderer, 
 		(SCREEN_WIDTH - m_tGameOver.GetWidth() ) / 2, 300,
-		m_tGameOver.GetWidth(), m_tGameOver.GetHeight() );
+	m_tGameOver.GetWidth(), m_tGameOver.GetHeight() );
 }
 
 void Game::HandleEvent()
@@ -199,6 +209,10 @@ void Game::ProcessKeyInput()
 	{
 		m_eGameState = BONUS;
 	}
+	else if(m_event.key.keysym.sym == SDLK_w)
+		{
+			m_eGameState = WIN;
+		}
 }
 
 void Game::ProcessMouseInput()
@@ -219,6 +233,10 @@ void Game::ProcessMouseInput()
 	else if(m_ptrDeck != nullptr && m_ptrDeck->GetKillCount() == 1)
 	{
 		m_ptrDeck->HoldSelectedCards();
+	}
+	else if(m_btnDealDraw->IsSelected())
+	{
+	ProcessRound();
 	}
 }
 
@@ -248,6 +266,7 @@ void Game::ProcessRound()
 		if(winIndex >= 0 && winIndex <= m_paytable->GetBet().size() - 1)
 		{
 			m_dCredit += m_paytable->GetBet().at(winIndex);
+			Recovery::Save(m_dCredit);
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(winIndex);
 		}

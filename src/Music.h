@@ -1,7 +1,7 @@
 /*
  * Music.h
  *
- *  Created on: 18.07.2017 ã.
+ *  Created on: 18.07.2017 ï¿½.
  *      Author: Borqna
  */
 
@@ -11,7 +11,6 @@
 #include<iostream>
 #include <string>
 
-using namespace std;
 
 class Music {
 public:

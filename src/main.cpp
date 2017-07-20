@@ -27,6 +27,8 @@ int main(int args, char* argc[])
 	{
 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
+			Music Music;
+
 			//music.Render();
 			//music.HandleEvent();
 			//music.Draw();
@@ -38,6 +40,7 @@ int main(int args, char* argc[])
 				intro.Render();
 				intro.HandleEvent();
 				intro.Draw();
+				Music.PlayMusic();
 				break;
 
 			case PLAY:

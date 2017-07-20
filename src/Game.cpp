@@ -218,6 +218,7 @@ void Game::ProcessKeyInput()
 
 void Game::ProcessMouseInput()
 {
+	int countIsSelected = 0;
 	if(m_btnCashOut->IsSelected())
 	{
 		OutroScreen::SetCredit(m_dCredit);
@@ -237,8 +238,13 @@ void Game::ProcessMouseInput()
 	}
 	else if(m_btnDealDraw->IsSelected())
 	{
+	countIsSelected++;
 	ProcessRound();
 	}
+	if(countIsSelected==2){
+		//??????????????????
+	}
+
 }
 
 void Game::ProcessRound()

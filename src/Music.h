@@ -23,20 +23,20 @@ public:
 	Music();
 	virtual ~Music();
 
-	void setBackGroundMusic(Mix_Music* music);
+
 	void setChunkMusic(Mix_Chunk* chunk);
 
-	Mix_Music* getBackGroundMusic();
+
 	Mix_Chunk* getChunkMusic();
 
-	void LoadMusic(std::string path);
 
 
+    void LoadMusic();
 	void PlayMusic();
 
 private:
 
-	Mix_Music* BackGroundMusic = NULL;
+
 	Mix_Chunk* ChunkMusic = NULL;
 };
 

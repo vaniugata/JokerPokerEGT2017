@@ -20,13 +20,11 @@ private:
 	Texture m_tBackground;
 	Texture m_tCredit;
 	Texture m_tGameOver;
-	Texture m_tFlashingPicture;
 	PaytableObject* m_paytable;
 	Deck* m_ptrDeck;
 	std::vector<Evaluation*> m_vecEvaluations;
 	ButtonObject* m_btnCashOut;
 	ButtonObject* m_btnDealDraw;//Button Deal/Draw
-	SDL_Rect m_rFlashingPicture[10];
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 
@@ -52,8 +50,6 @@ public:
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
-	void LoadFlashingPicture();
-	void RenderChoiceWinFiles();
 	//game logic
 	void ProcessRound();
 

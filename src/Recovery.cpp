@@ -6,8 +6,6 @@ using std::string;
 #include <sstream>
 using std::stringstream;
 
-pugi::xml_document Recovery::doc;
-
 Recovery::Recovery() {
 }
 
@@ -15,58 +13,55 @@ Recovery::~Recovery() {
 	std::cout << "Deleted Recovery.\n";
 }
 
-void Recovery::InitNewFile() {
-	doc.reset();
-	doc.save_file("Recovery.xml");
-	//Specification node
-	pugi::xml_node root = doc.append_child(pugi::node_declaration);
-	root.append_attribute("version") = "1.0";
-	root.append_attribute("encoding") = "utf-8";
 
-	doc.save_file("Recovery.xml");
-}
-
-void Recovery::Save(double credit, int bet, double won) {
-	pugi::xml_node node = doc.append_child("recovery");
-
-
-if(credit > 0)
+void Recovery::Save(double credit, int bet, double won) 
 {
-		pugi::xml_node credits = node.append_child("credit");
+	static double Credit = 0.0;
+	static int Bet = 0;
+	static double Won = 0.0;
+	if(credit > 0) { Credit = credit; }
+	if(bet > 0) { Bet = bet; }
+	if(won > 0) { Won = won; }
 
-		// we can't change value of the element or name of the comment
-		credits.append_child(pugi::node_pcdata).set_value(
-				DoubleToStr(credit).c_str());
-		credits.set_value(DoubleToStr(credit).c_str());
+	pugi::xml_document doc;
 
+	//Specification node
+	pugi::xml_node node_root = doc.append_child(pugi::node_declaration);
+	node_root.append_attribute("version") = "1.0";
+	node_root.append_attribute("encoding") = "utf-8";
+
+	pugi::xml_node node_recovery = doc.append_child("recovery");
+	pugi::xml_node node_credit = node_recovery.append_child("credit");
+	node_credit.append_child(pugi::node_pcdata).set_value(DoubleToStr(Credit).c_str());
+
+	pugi::xml_node node_bet = node_recovery.append_child("bet");
+	node_bet.append_child(pugi::node_pcdata).set_value(IntToStr(Bet).c_str());
+
+	pugi::xml_node node_win = node_recovery.append_child("win");
+	node_win.append_child(pugi::node_pcdata).set_value(DoubleToStr(Won).c_str());
+
+	doc.save_file("Recovery.xml");
 }
-if (bet >= 0) {
-	pugi::xml_node bets = node.append_child("bet");
-	bets.append_child(pugi::node_pcdata).set_value(IntToStr(bet).c_str());
-}
-if (won >= 0) {
-	pugi::xml_node wons = node.append_child("won");
-	wons.append_child(pugi::node_pcdata).set_value(DoubleToStr(won).c_str());
-}
 
-doc.save_file("Recovery.xml");
-}
+Recover Recovery::Read()
+{
+	Recover recover;
+	pugi::xml_document doc;
 
-Recover Recovery::Read() {
-if (!doc.load_file("Recovery.xml")) {
-	std::cout << "Failed to open Recovery.xml.";
-	return Recover { -1, -1, -1 };
-}
+	if(doc.load_file("Recovery.xml") == false)
+	{
+		std::cout << "Could not read Recovery.xml!";
+	}
 
-Recover recover;
+	pugi::xml_node node_recovery = doc.child("recovery");
+	recover.credit = node_recovery.child("credit").text().as_double();
+	recover.bet = node_recovery.child("bet").text().as_int();
+	recover.win = node_recovery.child("win").text().as_double();
 
-pugi::xml_node current = doc.child("recovery");
 
-recover.credit = current.child("credit").text().as_double();
-recover.bet = current.child("bet").text().as_int();
-recover.win = current.child("win").text().as_double();
+	std::cout << recover.credit << " " << recover.bet << " " << recover.win << "!!!!";
 
-return recover;
+	return recover;
 }
 
 std::string Recovery::DoubleToStr(double num)

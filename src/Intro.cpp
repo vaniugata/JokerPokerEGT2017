@@ -73,15 +73,17 @@ void Intro::HandleEvent()
 		break;
 
 	case SDL_MOUSEBUTTONDOWN:
-		if(m_btnNewGame.IsSelected())
+		if(m_btnNewGame.IsSelected() && *m_ptrCredit > 0)
 		{
-			Recovery::InitNewFile();
 			Recovery::Save(*m_ptrCredit);
 			*m_ptrGameState = PLAY;
 		}
 
 		else if(m_btnResumeGame.IsSelected())
+		{
 			*m_ptrGameState = PLAY;
+			*m_ptrCredit = Recovery::Read().credit;
+		}
 
 		else if(m_btnCashIn.IsSelected())
 			CashIn(10);

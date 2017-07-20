@@ -35,9 +35,6 @@ Game::Game() :
 	m_tGameOver = Texture(m_renderer);
 	m_tGameOver.InitFont("Resources/ARCADECLASSIC.TTF", 28);
 
-	m_tFlashingPicture = Texture(m_renderer);
-	m_tFlashingPicture.LoadFromFile(m_renderer, "Resources/poker_joker_game.png");
-
 	m_paytable = new PaytableObject(m_renderer);
 
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
@@ -59,7 +56,6 @@ Game::Game() :
 	m_vecEvaluations.push_back(new EvalWildRoyalFlush());
 	m_vecEvaluations.push_back(new EvalFiveOfAKind());
 	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush());
-	LoadFlashingPicture();
 }
 
 Game::~Game()
@@ -68,7 +64,6 @@ Game::~Game()
 	delete m_btnCashOut;
 	delete m_btnDealDraw;
 	std::cout << "Game deleted.\n";
-
 	for(int i = 0; i < m_vecEvaluations.size(); i++)
 	{
 		delete m_vecEvaluations[i];
@@ -98,48 +93,6 @@ void Game::Draw()
 	SDL_RenderClear(m_renderer);
 }
 
-void Game::LoadFlashingPicture()
-{
-	m_tFlashingPicture.LoadFromFile(m_renderer, "Resources/poker_joker_game.png");
-
-	//Load sprite sheet texture
-	int offset = 0;
-	int w = 454;
-	int h = 325;
-	for (int i = 0; i < 10; i++)
-	{
-		if(i%2 != 0)
-		{
-			offset =10;
-		}
-		m_rFlashingPicture[i].x = 0+offset;
-		m_rFlashingPicture[i].y = 0+offset;
-		m_rFlashingPicture[i].w = w+offset;
-		m_rFlashingPicture[i].h = h+offset;
-
-	}
-}
-
-void Game::RenderChoiceWinFiles()
-{
-	int offset = 0;
-	Uint32 timerDelay = SDL_GetTicks();
-	while (SDL_GetTicks() - timerDelay < 100 )
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			if(i%2 != 0)
-			{
-				offset = 10;
-			}
-
-			m_tFlashingPicture.Render(m_renderer, offset, offset, 454, 325, &m_rFlashingPicture[i]);
-
-		}
-			SDL_RenderPresent(m_renderer);
-	}
-}
-
 void Game::Render()
 {
 	//draw background
@@ -160,10 +113,10 @@ void Game::Render()
 		0, SCREEN_HEIGHT - m_btnCashOut->GetHeight() + 5,
 		INTRO_BTN_W, INTRO_BTN_H);
 
-	SDL_Rect clipDealDraw{ 0, 0,DEALDRAWBTN_W, DEALDRAWBTN_H };
-	m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
-			600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() + 5,
-			DEALDRAWBTN_W, DEALDRAWBTN_H);
+	//SDL_Rect clipDealDraw{ 0, 0,DEALDRAWBTN_W, DEALDRAWBTN_H };
+	//m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
+	//		600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() + 5,
+	//		DEALDRAWBTN_W, DEALDRAWBTN_H);
 
 	if(m_ptrDeck != nullptr)
 	{
@@ -172,7 +125,6 @@ void Game::Render()
 	}
 	RenderGameInfo();
 	if(m_bIsGameOver) { RenderGameOver(); }
-	RenderChoiceWinFiles();
 }
 
 void Game::RenderRound(Deck* deck)
@@ -266,6 +218,7 @@ void Game::ProcessKeyInput()
 
 void Game::ProcessMouseInput()
 {
+	int countIsSelected = 0;
 	if(m_btnCashOut->IsSelected())
 	{
 		OutroScreen::SetCredit(m_dCredit);
@@ -285,8 +238,13 @@ void Game::ProcessMouseInput()
 	}
 	else if(m_btnDealDraw->IsSelected())
 	{
+	countIsSelected++;
 	ProcessRound();
 	}
+	if(countIsSelected==2){
+		//??????????????????
+	}
+
 }
 
 void Game::ProcessRound()
@@ -295,7 +253,11 @@ void Game::ProcessRound()
 
 	//Deal 5 cards on the screen
 	m_ptrDeck->deal();
-	m_dCredit -= m_paytable->GetBet().at(10);
+	//Save to recovery file
+	Recovery::Save(m_dCredit);
+	//TODO: Invoke sound for flipping the cards
+	//Charge the fee to play a round
+	if(m_ptrDeck->GetKillCount() == 1){ m_dCredit -= m_paytable->GetBet().at(10);}
 
 	if(m_ptrDeck->GetKillCount() == 2)
 	{
@@ -315,7 +277,7 @@ void Game::ProcessRound()
 		if(winIndex >= 0 && winIndex <= m_paytable->GetBet().size() - 1)
 		{
 			m_dCredit += m_paytable->GetBet().at(winIndex);
-			Recovery::Save(m_dCredit);
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(winIndex), m_paytable->GetBet().at(winIndex) );
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(winIndex);
 		}

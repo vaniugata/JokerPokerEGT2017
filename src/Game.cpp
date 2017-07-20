@@ -197,20 +197,20 @@ void Game::RenderGameInfo()
 	int iTextW = m_tCredit.GetWidth();
 	ss << m_dCredit;
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrCredit);
-	m_tCredit.Render(m_renderer,150+ iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,150 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 
 	//Bet
 	ss << "Bet: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrText);
-	m_tCredit.Render(m_renderer, 300, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer, 280, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
 	ss << m_paytable->GetBet().at(10);
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrCredit);
-	m_tCredit.Render(m_renderer, 300 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,280 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 }

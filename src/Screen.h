@@ -1,6 +1,6 @@
 #ifndef GAME_STATE_H
 #define GAME_STATE_H
-
+#include"Music.h"
 #include "includesSDL2.h"
 
 class Screen

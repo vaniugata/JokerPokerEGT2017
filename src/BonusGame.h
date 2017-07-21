@@ -9,10 +9,10 @@
 #include "includesSDL2.h"
 
 class BonusGame: public Screen {
+
 private:
-
+	static int win;
 	double* m_ptrCredit;
-
 	int m_diceResult;
 	int m_resDie1;
 	int m_resDie2;
@@ -67,7 +67,6 @@ public:
 	void delay(Uint32 ms);
 	int RandomNumberGenerator();
 	int ResultDice();
-	double calculateWin(double credits, int x);
 
 	//gets and sets
 	int getDiceResult() const;
@@ -76,6 +75,8 @@ public:
 	void setResDie1(int resDie1);
 	int getResDie2() const;
 	void setResDie2(int resDie2);
+
+	static void setWin(int);
 
 	void Close();
 

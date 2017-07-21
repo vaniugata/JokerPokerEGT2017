@@ -22,12 +22,10 @@ int main(int args, char* argc[])
 	std::cout << "Credit: " << Recovery::Read().credit << " Bet: "
 		<< Recovery::Read().bet << " Win: "
 		<< Recovery::Read().win << "\n";
+	//Music.PlayMusic();
 
-	//Current animation frame
-	int frame = 0;
 	while(game.m_eGameState != QUIT)
 	{
-		//Music.PlayMusic();
 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
 			//music.Render();
@@ -68,25 +66,6 @@ int main(int args, char* argc[])
 				break;
 			}
 		} //event lop
-		/*switch(game.m_eGameState)
-		{
-		case INTRO:
-			intro.Render();
-			intro.Draw();
-			break;
-		case PLAY:
-			game.Render();
-			game.Draw();
-			break;
-		case WIN:
-			win.Render();
-			win.Draw();
-			break;
-		case OUTRO:
-			outro.Render();
-			outro.Draw();
-			break;
-		}*/
 	} // run loop
 		
 	return 0;

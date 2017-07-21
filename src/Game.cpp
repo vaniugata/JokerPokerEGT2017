@@ -248,8 +248,6 @@ void Game::ProcessMouseInput()
 	{
 		ProcessRound();
 	}
-
-
 }
 
 void Game::ProcessRound()
@@ -282,6 +280,7 @@ void Game::ProcessRound()
 		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
 		{
 			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
+
 			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);
@@ -289,6 +288,7 @@ void Game::ProcessRound()
 		//Check for bonus state
 		if(m_iWinIndex >= 5 && m_iWinIndex <= 10) { m_bIsBonus = true; }
 	}
+
 
 	if(m_ptrDeck->GetKillCount() == 3)
 	{
@@ -299,6 +299,7 @@ void Game::ProcessRound()
 		m_bIsGameOver = true;
 		if(m_bIsBonus)
 		{
+			BonusGame::setWin(m_paytable->GetBet().at(m_iWinIndex));
 			m_bIsBonus = false;
 			m_eGameState = BONUS; 
 		}

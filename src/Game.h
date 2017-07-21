@@ -17,14 +17,20 @@ private:
 	SDL_Renderer* m_renderer;
 
 	//game components
+	//Texture objects
 	Texture m_tBackground;
 	Texture m_tCredit;
 	Texture m_tGameOver;
+	//PaytableObject objects
 	PaytableObject* m_paytable;
+	//Deck objects
 	Deck* m_ptrDeck;
+
 	std::vector<Evaluation*> m_vecEvaluations;
-	ButtonObject* m_btnCashOut;
+	//Button objects
+	ButtonObject* m_btnCashOut;//Button CashOut
 	ButtonObject* m_btnDealDraw;//Button Deal/Draw
+
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 	int m_iWinIndex;

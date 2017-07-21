@@ -19,6 +19,8 @@ using std::srand;
 using std::time;
 using std::cerr;
 
+	int BonusGame::win = 0;
+
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState, double* credit) :
 		m_ptrCredit(credit), Screen(renderer), m_tBackgorund(),
@@ -89,9 +91,10 @@ void BonusGame::HandleEvent()
 			SDL_Delay(2000);
 			if (m_diceResult < 5)
 			{
-				*m_ptrCredit = calculateWin(*m_ptrCredit, 2);
-				Recovery::Save(*m_ptrCredit);
-					*m_ptrGameState = WIN;
+				*m_ptrCredit += win * 2;
+				Recovery::Save(*m_ptrCredit, 0, win);
+				win = 0;
+				*m_ptrGameState = WIN;
 			}
 			else
 			{
@@ -108,8 +111,9 @@ void BonusGame::HandleEvent()
 			SDL_Delay(2000);
 			if (m_diceResult > 4 && m_diceResult < 10)
 			{
-				*m_ptrCredit = calculateWin(*m_ptrCredit, 5);
-				Recovery::Save(*m_ptrCredit);
+				*m_ptrCredit += win * 5;
+				Recovery::Save(*m_ptrCredit, 0, win);
+				win = 0;
 				*m_ptrGameState = WIN;
 			}
 			else
@@ -127,8 +131,9 @@ void BonusGame::HandleEvent()
 			SDL_Delay(2000);
 			if (m_diceResult > 9 && m_diceResult < 13)
 			{
-				*m_ptrCredit = calculateWin(*m_ptrCredit, 10);
-				Recovery::Save(*m_ptrCredit);
+				*m_ptrCredit += win * 10;
+				Recovery::Save(*m_ptrCredit, 0, win);
+				win=0;
 				*m_ptrGameState = WIN;
 			}
 			else
@@ -140,12 +145,6 @@ void BonusGame::HandleEvent()
 	}
 	}
 
-}
-double BonusGame::calculateWin(double credits, int koef)
-{
-	double res = 0;
-	res = credits * (double) koef;
-	return res;
 }
 
 void BonusGame::LoadMusicFiles()
@@ -238,6 +237,11 @@ void BonusGame::delay(Uint32 ms)
 		RenderDice();
 		SDL_RenderPresent(m_renderer);
 	}
+}
+
+void BonusGame::setWin(int winIndex)
+{
+	win = winIndex;
 }
 
 void BonusGame::Close()

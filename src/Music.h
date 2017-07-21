@@ -2,7 +2,7 @@
  * Music.h
  *
 <<<<<<< HEAD
- *  Created on: 18.07.2017 ã.
+ *  Created on: 18.07.2017 ï¿½.
 =======
  *  Created on: 18.07.2017 ï¿½.
 >>>>>>> origin/master
@@ -12,17 +12,22 @@
 #ifndef SRC_MUSIC_H_
 #define SRC_MUSIC_H_
 using namespace std;
+#include"Screen.h"
 #include "includesSDL2.h"
 #include<iostream>
 #include <string>
 
 
 
-class Music {
+class Music
+{
+
+
 public:
 	Music();
 	virtual ~Music();
 
+	//Screen::Renderer();
 
 	void setChunkMusic(Mix_Chunk* chunk);
 
@@ -33,9 +38,17 @@ public:
 
     void LoadMusic();
 	void PlayMusic();
+	void Press();
+	void Release();
+	void IsPressed();
 
 private:
 
+    bool m_buttonIsPressed;
+
+    SDL_Texture* m_TextureTPressed;
+
+    SDL_Texture* m_TextureButton;
 
 	Mix_Chunk* ChunkMusic = NULL;
 };

@@ -2,7 +2,7 @@
  * Music.cpp
  *
 <<<<<<< HEAD
- *  Created on: 18.07.2017 ã.
+ *  Created on: 18.07.2017 ï¿½.
 =======
  *  Created on: 18.07.2017 ï¿½.
 >>>>>>> origin/master
@@ -13,6 +13,8 @@
 
 Music::Music() {
 	// TODO Auto-generated constructor stub
+
+
 
 }
 
@@ -37,7 +39,7 @@ Mix_Chunk* Music::getChunkMusic(){
 }
 void Music::LoadMusic(){
 
-	ChunkMusic = Mix_LoadWAV("backgroundMusic.wav");
+	ChunkMusic = Mix_LoadWAV("ResourcesMusic/fonMusic.wav");
 
 	if(ChunkMusic==NULL){
 
@@ -46,9 +48,9 @@ void Music::LoadMusic(){
 }
 void Music::PlayMusic(){
 
-	Mix_PlayChannel(-1,ChunkMusic,1);
+	Mix_PlayChannel(0,ChunkMusic,0);
 
 }
-
+//void Music::Screen()
 
 

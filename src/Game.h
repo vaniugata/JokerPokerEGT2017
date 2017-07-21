@@ -17,18 +17,23 @@ private:
 	SDL_Renderer* m_renderer;
 
 	//game components
+	//Texture objects
 	Texture m_tBackground;
 	Texture m_tCredit;
 	Texture m_tGameOver;
-	Texture m_tFlashingPicture;
+	//PaytableObject objects
 	PaytableObject* m_paytable;
+	//Deck objects
 	Deck* m_ptrDeck;
+
 	std::vector<Evaluation*> m_vecEvaluations;
-	ButtonObject* m_btnCashOut;
+	//Button objects
+	ButtonObject* m_btnCashOut;//Button CashOut
 	ButtonObject* m_btnDealDraw;//Button Deal/Draw
-	SDL_Rect m_rFlashingPicture[10];
+
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
+	int m_iWinIndex;
 
 public:
 	eGameState m_eGameState;
@@ -52,8 +57,6 @@ public:
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
-	void LoadFlashingPicture();
-	void RenderChoiceWinFiles();
 	//game logic
 	void ProcessRound();
 

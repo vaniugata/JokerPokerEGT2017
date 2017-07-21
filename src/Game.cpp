@@ -35,15 +35,12 @@ Game::Game() :
 	m_tGameOver = Texture(m_renderer);
 	m_tGameOver.InitFont("Resources/ARCADECLASSIC.TTF", 28);
 
-	m_tFlashingPicture = Texture(m_renderer);
-	m_tFlashingPicture.LoadFromFile(m_renderer, "Resources/poker_joker_game.png");
-
 	m_paytable = new PaytableObject(m_renderer);
 
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0, 0, INTRO_BTN_W, INTRO_BTN_H);
 
-	m_btnDealDraw = new  ButtonObject(m_renderer, "Resources/deal-draw.png",
+	m_btnDealDraw = new  ButtonObject(m_renderer, "Resources/round-button.png",
 			0, 0, DEALDRAWBTN_W, DEALDRAWBTN_H);
 
 	m_ptrDeck = new Deck(m_renderer);
@@ -59,7 +56,6 @@ Game::Game() :
 	m_vecEvaluations.push_back(new EvalWildRoyalFlush());
 	m_vecEvaluations.push_back(new EvalFiveOfAKind());
 	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush());
-	LoadFlashingPicture();
 }
 
 Game::~Game()
@@ -68,7 +64,6 @@ Game::~Game()
 	delete m_btnCashOut;
 	delete m_btnDealDraw;
 	std::cout << "Game deleted.\n";
-
 	for(int i = 0; i < m_vecEvaluations.size(); i++)
 	{
 		delete m_vecEvaluations[i];
@@ -98,48 +93,6 @@ void Game::Draw()
 	SDL_RenderClear(m_renderer);
 }
 
-void Game::LoadFlashingPicture()
-{
-	m_tFlashingPicture.LoadFromFile(m_renderer, "Resources/poker_joker_game.png");
-
-	//Load sprite sheet texture
-	int offset = 0;
-	int w = 454;
-	int h = 325;
-	for (int i = 0; i < 10; i++)
-	{
-		if(i%2 != 0)
-		{
-			offset =10;
-		}
-		m_rFlashingPicture[i].x = 0+offset;
-		m_rFlashingPicture[i].y = 0+offset;
-		m_rFlashingPicture[i].w = w+offset;
-		m_rFlashingPicture[i].h = h+offset;
-
-	}
-}
-
-void Game::RenderChoiceWinFiles()
-{
-	int offset = 0;
-	Uint32 timerDelay = SDL_GetTicks();
-	while (SDL_GetTicks() - timerDelay < 100 )
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			if(i%2 != 0)
-			{
-				offset = 10;
-			}
-
-			m_tFlashingPicture.Render(m_renderer, offset, offset, 454, 325, &m_rFlashingPicture[i]);
-
-		}
-			SDL_RenderPresent(m_renderer);
-	}
-}
-
 void Game::Render()
 {
 	//draw background
@@ -160,7 +113,10 @@ void Game::Render()
 		0, SCREEN_HEIGHT - m_btnCashOut->GetHeight() + 5,
 		INTRO_BTN_W, INTRO_BTN_H);
 
-	SDL_Rect clipDealDraw{ 0, 0,DEALDRAWBTN_W, DEALDRAWBTN_H };
+	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
+	if(m_ptrDeck->GetKillCount() == 1) { clipDealDraw.x += DEAL_W; }
+	else if(m_ptrDeck->GetKillCount() == 2 && 
+		m_iWinIndex >= 5 && m_iWinIndex <= 10) { clipDealDraw.x += 2 * DEAL_W; }
 	m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
 			600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() + 5,
 			DEALDRAWBTN_W, DEALDRAWBTN_H);
@@ -172,7 +128,6 @@ void Game::Render()
 	}
 	RenderGameInfo();
 	if(m_bIsGameOver) { RenderGameOver(); }
-	RenderChoiceWinFiles();
 }
 
 void Game::RenderRound(Deck* deck)
@@ -197,20 +152,20 @@ void Game::RenderGameInfo()
 	int iTextW = m_tCredit.GetWidth();
 	ss << m_dCredit;
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrCredit);
-	m_tCredit.Render(m_renderer,150+ iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,150 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 
 	//Bet
 	ss << "Bet: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrText);
-	m_tCredit.Render(m_renderer, 300, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer, 280, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
 	ss << m_paytable->GetBet().at(10);
 	m_tCredit.LoadFromRendererdText(m_renderer, ss.str(), clrCredit);
-	m_tCredit.Render(m_renderer, 300 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,280 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 }
@@ -284,15 +239,10 @@ void Game::ProcessMouseInput()
 	{
 		m_ptrDeck->HoldSelectedCards();
 	}
-	else if(m_btnDealDraw->IsSelected())
+	if(m_btnDealDraw->IsSelected())
 	{
-	countIsSelected++;
-	ProcessRound();
+		ProcessRound();
 	}
-	if(countIsSelected==2){
-		//??????????????????
-	}
-
 }
 
 void Game::ProcessRound()
@@ -301,33 +251,39 @@ void Game::ProcessRound()
 
 	//Deal 5 cards on the screen
 	m_ptrDeck->deal();
-	m_dCredit -= m_paytable->GetBet().at(10);
+	//Save to recovery file
+	Recovery::Save(m_dCredit);
+	//TODO: Invoke sound for flipping the cards
+	//Charge the fee to play a round
+	if(m_ptrDeck->GetKillCount() == 1){ m_dCredit -= m_paytable->GetBet().at(10);}
 
 	if(m_ptrDeck->GetKillCount() == 2)
 	{
 		//Evaluate hand
-		int winIndex = 11;
+		 m_iWinIndex = 11;
 		std::vector<Card> hand = m_ptrDeck->GetSortedHand();
 		std::vector<Evaluation*>::iterator it;
 		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
 		{
-			if((*it)->EvaluateHand(hand) < winIndex && (*it)->EvaluateHand(hand) != -1)
+			if((*it)->EvaluateHand(hand) < m_iWinIndex && (*it)->EvaluateHand(hand) != -1)
 			{
-				winIndex = (*it)->EvaluateHand(hand);
+				m_iWinIndex = (*it)->EvaluateHand(hand);
 			}
 			std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
 		}
 		//Add win ammount to credit
-		if(winIndex >= 0 && winIndex <= m_paytable->GetBet().size() - 1)
+		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
 		{
-			m_dCredit += m_paytable->GetBet().at(winIndex);
-			Recovery::Save(m_dCredit);
+			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
+
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
 			//set the current win in the paytable
-			m_paytable->SetWinnerIndex(winIndex);
+			m_paytable->SetWinnerIndex(m_iWinIndex);
 		}
 		//Check for bonus state
-		if(winIndex >= 5 && winIndex <= 10) { m_bIsBonus = true; }
+		if(m_iWinIndex >= 5 && m_iWinIndex <= 10) { m_bIsBonus = true; }
 	}
+
 
 	if(m_ptrDeck->GetKillCount() == 3)
 	{
@@ -338,6 +294,7 @@ void Game::ProcessRound()
 		m_bIsGameOver = true;
 		if(m_bIsBonus)
 		{
+			BonusGame::setWin(m_paytable->GetBet().at(m_iWinIndex));
 			m_bIsBonus = false;
 			m_eGameState = BONUS; 
 		}

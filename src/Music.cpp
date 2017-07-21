@@ -51,6 +51,10 @@ void Music::PlayMusic(){
 	Mix_PlayChannel(0,ChunkMusic,0);
 
 }
+<<<<<<< HEAD
 //void Music::Screen()
+=======
+void Music::Screen()
+>>>>>>> origin/master
 
 

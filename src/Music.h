@@ -27,7 +27,8 @@ public:
 	Music();
 	virtual ~Music();
 
-	//Screen::Renderer();
+	
+
 
 	void setChunkMusic(Mix_Chunk* chunk);
 

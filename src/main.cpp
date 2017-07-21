@@ -37,7 +37,10 @@ int main(int args, char* argc[])
 			//music.HandleEvent();
 			//music.Draw();
 
-			//usic.PlayMusic();
+			usic.PlayMusic();
+
+			Ìusic.PlayMusic();
+
 
 
 

@@ -6,6 +6,7 @@
 #include "OutroScreen.h"
 #include "Music.h"
 #include "Recovery.h"
+#include "Animation.h"
 
 int main(int args, char* argc[])
 {
@@ -14,8 +15,6 @@ int main(int args, char* argc[])
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit() );
 	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);
-
-
 
 	Music Music;
 	Music.LoadMusic();
@@ -28,19 +27,12 @@ int main(int args, char* argc[])
 	int frame = 0;
 	while(game.m_eGameState != QUIT)
 	{
-
+		//Music.PlayMusic();
 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
-
-
 			//music.Render();
 			//music.HandleEvent();
 			//music.Draw();
-
-			Ìusic.PlayMusic();
-
-
-
 			switch(game.m_eGameState)
 			{
 			case INTRO:
@@ -75,8 +67,26 @@ int main(int args, char* argc[])
 				outro.Delay();
 				break;
 			}
-		} //event loop
-		
+		} //event lop
+		/*switch(game.m_eGameState)
+		{
+		case INTRO:
+			intro.Render();
+			intro.Draw();
+			break;
+		case PLAY:
+			game.Render();
+			game.Draw();
+			break;
+		case WIN:
+			win.Render();
+			win.Draw();
+			break;
+		case OUTRO:
+			outro.Render();
+			outro.Draw();
+			break;
+		}*/
 	} // run loop
 		
 	return 0;

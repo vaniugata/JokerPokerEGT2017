@@ -57,7 +57,8 @@ void Intro::Render()
 	//Render credit
 	std::stringstream creditText;
 	creditText << "Credits: " << *m_ptrCredit;
-	m_tCredit.LoadFromRendererdText(m_renderer, creditText.str(), SDL_Color{255,255,255});
+	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
+		creditText.str(), SDL_Color{255,255,255}, 32);
 	m_tCredit.Render(m_renderer, 20, 0, m_tCredit.GetWidth(), m_tCredit.GetHeight());
 
 	if(m_bShowInfo == true)

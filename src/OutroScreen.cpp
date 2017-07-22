@@ -38,7 +38,8 @@ void OutroScreen::Render()
 	m_tBackground.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	std::stringstream ss;
 	ss << "Congratulations you have won: " << m_dCredit * DENOM << " BGN";
-	m_tCredit.LoadFromRendererdText(m_renderer, ss.str().c_str(), SDL_Color{255, 255, 200});
+	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
+		ss.str().c_str(), SDL_Color{255, 255, 200}, 24);
 	m_tCredit.Render(m_renderer, (SCREEN_WIDTH - m_tCredit.GetWidth() ) / 2, 50,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight() );
 	ss.str();

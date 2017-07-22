@@ -2,6 +2,7 @@
 #define GAME_STATE_H
 #include "includesSDL2.h"
 
+
 class GameState
 {
 protected:

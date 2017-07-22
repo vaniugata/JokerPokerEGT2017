@@ -150,7 +150,6 @@ bool Deck::isJokerHand()
 void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destination)
 {
 	m_texture.Render(renderer, destination->x, destination->y, destination->w, destination->h, rect);
-
 }
 
 void Deck::RenderHand(SDL_Renderer * renderer)

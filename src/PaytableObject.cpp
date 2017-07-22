@@ -87,12 +87,13 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 		
 		int y = Y_BORDER_OFFSET + m_tText.GetHeight() * i;
 		
-		m_tText.LoadFromRendererdText(renderer, m_vecHands[i], color);
+		m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf", m_vecHands[i], color, 18);
 		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight() );
 
 		if(m_iWinnerIndex == i)
 		{
-			m_tText.LoadFromRendererdText(renderer, m_vecHands[i], colorWin);
+			m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf", 
+				m_vecHands[i], colorWin, 18);
 			m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		}
 	}
@@ -113,14 +114,16 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer, int winnerIndx)
 		int y = Y_BORDER_OFFSET + m_tText.GetHeight() * i;
 
 		ss << m_vecBets[i];
-		m_tText.LoadFromRendererdText(renderer, ss.str(), color);
+		m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf",
+			ss.str(), color, 18);
 		m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		ss.str("");
 
 		if(winnerIndx == i)
 		{
 			ss << m_vecBets[i];
-			m_tText.LoadFromRendererdText(renderer, ss.str(), colorWin);
+			m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf",
+				ss.str(), colorWin, 18);
 			m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 			ss.str("");
 		}

@@ -102,11 +102,11 @@ void Game::Render()
 	m_paytable->Render(m_renderer);
 	//draw buttons
 	SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
-	m_paytable->GetBetOneBtn().Render(m_renderer, &clip1,
+	m_paytable->m_btnBetOne.Render(m_renderer, &clip1,
 		SCREEN_WIDTH - BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
 		BET_BTN_W, BET_BTN_H);
 	SDL_Rect clip2{ 0, 0, T_BTN_W_BET, T_BTN_H_BET };
-	m_paytable->GetBetMaxBtn().Render(m_renderer, &clip2,
+	m_paytable->m_btnBetMax.Render(m_renderer, &clip2,
 		SCREEN_WIDTH - 2 * BET_BTN_W - 10, SCREEN_HEIGHT - BET_BTN_H - 5,
 		BET_BTN_W, BET_BTN_H);
 	SDL_Rect clipCashOut{ 0, 0, INTRO_BTN_W, INTRO_BTN_H };
@@ -232,11 +232,11 @@ void Game::ProcessMouseInput()
 		OutroScreen::SetCredit(m_dCredit);
 		m_eGameState = OUTRO;
 	}
-	else if(m_paytable->GetBetOneBtn().IsSelected())
+	else if(m_paytable->m_btnBetOne.IsSelected())
 	{
 		m_paytable->IncreaseBet();
 	}
-	else if(m_paytable->GetBetMaxBtn().IsSelected())
+	else if(m_paytable->m_btnBetMax.IsSelected())
 	{
 		m_paytable->SetMaxBet();
 	}
@@ -279,8 +279,10 @@ void Game::ProcessRound()
 		//Add win ammount to credit
 		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
 		{
+			//Add win to credit
 			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
-
+			//Play greeting sound
+			m_paytable->PlaySoundEffect(m_iWinIndex);
 			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);

@@ -22,6 +22,8 @@ const int S_BETBTN_H = 100;
 
 const int BET_BTN_W = 75;
 const int BET_BTN_H = 75;
+
+const int WINS = 11;
 //----INTRO--------------------------------------------------------------------
 const int INTRO_BTN_W = 214;
 const int INTRO_BTN_H = 53;

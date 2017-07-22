@@ -6,7 +6,6 @@
 #include "OutroScreen.h"
 #include "Music.h"
 #include "Recovery.h"
-#include "Animation.h"
 
 int main(int args, char* argc[])
 {

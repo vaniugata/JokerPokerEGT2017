@@ -14,7 +14,9 @@ class Deck
 {
 private:
 	int m_iKillCount;
+public:
 	Texture m_texture;
+private:
 	Texture m_tHold;
 	Card deckOfCards[54];
 	std::vector<Card> hand;

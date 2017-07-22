@@ -9,8 +9,7 @@
 #include "Deck.h"
 #include "Evaluation\Evaluation.h"
 
-class Game 
-{
+class Game {
 private:
 	double m_dCredit;
 	SDL_Window* m_window;
@@ -28,17 +27,24 @@ private:
 
 	std::vector<Evaluation*> m_vecEvaluations;
 	//Button objects
-	ButtonObject* m_btnCashOut;//Button CashOut
-	ButtonObject* m_btnDealDraw;//Button Deal/Draw
+	ButtonObject* m_btnCashOut;	//Button CashOut
+	ButtonObject* m_btnDealDraw;	//Button Deal/Draw
+
+	ButtonObject* m_btnMusic;
+	ButtonObject* m_btnMusicPlus;
+	ButtonObject* m_btnMusicMinus;
+	ButtonObject* m_btnMusicPause;
 
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 	int m_iWinIndex;
+	bool m_bShowPlayButton = true;
+
+	Music m_mMusic;
 
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;
-
 
 public:
 	Game();

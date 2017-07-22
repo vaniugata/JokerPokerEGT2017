@@ -10,6 +10,7 @@
 #include <time.h>
 #include "Globals.h"
 #include "Recovery.h"
+#include "ButtonObject.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -19,19 +20,25 @@ using std::srand;
 using std::time;
 using std::cerr;
 
-	int BonusGame::win = 0;
+int BonusGame::win = 0;
 
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 		eGameState& eGameState, double* credit) :
-		m_ptrCredit(credit), Screen(renderer), m_tBackgorund(),
-		m_event(&event), m_ptrGameState(&eGameState),
-		m_buttonX2(renderer,"Resources/buttons-BonusGame.png",
-				0, 0, BONUSBTN_W,BONUSBTN_H),
-		m_buttonX5(renderer,"Resources/buttons-BonusGame.png",
-				0, 0, BONUSBTN_W,BONUSBTN_H),
-		m_buttonX10(renderer,"Resources/buttons-BonusGame.png",
-				0, 0, BONUSBTN_W, BONUSBTN_H)
-{
+		m_ptrCredit(credit), Screen(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
+				&eGameState), m_buttonX2(renderer,
+				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
+				BONUSBTN_H), m_buttonX5(renderer,
+				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
+				BONUSBTN_H), m_buttonX10(renderer,
+				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
+				BONUSBTN_H), m_btnMusicPlus(renderer,
+				"Resources/IncreasesB.png", 0, 0, BUTTONVOLUMESIZE,
+				BUTTONVOLUMESIZE), m_btnMusic(renderer, "Resources/PlayB.png",
+				0, 0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE), m_btnMusicMinus(
+				renderer, "Resources/DecreasesB.png", 0, 0, BUTTONVOLUMESIZE,
+				BUTTONVOLUMESIZE), m_btnMusicPause(renderer,
+				"Resources/Pause.png", 0, 0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE) {
+
 	this->m_renderer = renderer;
 	this->m_resDie1 = m_resDie1;
 	this->m_resDie2 = m_resDie2;
@@ -43,8 +50,7 @@ BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 
 }
 
-BonusGame::~BonusGame()
-{
+BonusGame::~BonusGame() {
 	std::cerr << "BonusGame Object deleted.\n";
 	Close();
 }
@@ -53,12 +59,11 @@ void BonusGame::Draw() {
 	Screen::Draw();
 }
 
-void BonusGame::Render()
-{
+void BonusGame::Render() {
 	//render background
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	//render inscription Choice Win
-	RenderChoiceWin() ;
+	RenderChoiceWin();
 	//Render buttons
 	SDL_Rect rectOnScreen1 { 0, 0, BONUSBTN_W, BONUSBTN_H };
 	m_buttonX2.Render(m_renderer, &rectOnScreen1, 50, 150, BONUSBTN_W,
@@ -69,75 +74,87 @@ void BonusGame::Render()
 	SDL_Rect rectOnScreen3 { BONUSBTN_W * 2, 0, BONUSBTN_W, BONUSBTN_H };
 	m_buttonX10.Render(m_renderer, &rectOnScreen3, 50, 490, BONUSBTN_W,
 			BONUSBTN_H);
+
+	SDL_Rect rectMusicPlus { 0, 0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE };
+	m_btnMusicPlus.Render(m_renderer, &rectMusicPlus, SCREEN_WIDTH - 45, 5,
+			BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+
+	SDL_Rect rectMusic { 0, 0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE };
+	if (m_bShowPlayButton) {
+		m_btnMusic.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5,
+				BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+	} else {
+		m_btnMusicPause.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5,
+				BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+	}
+
+	SDL_Rect rectMusicMinus { 0, 0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE };
+	m_btnMusicMinus.Render(m_renderer, &rectMusicMinus, SCREEN_WIDTH - 153, 5,
+			BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
 }
 
-void BonusGame::HandleEvent()
-{
-	switch (m_event->type)
-	{
+void BonusGame::HandleEvent() {
+	switch (m_event->type) {
 	case SDL_QUIT:
 		*m_ptrGameState = QUIT;
 		break;
 
-	case SDL_MOUSEBUTTONDOWN:
-	{
-		if (m_buttonX2.IsSelected())
-		{
-			Mix_PlayChannel(-1, ButtonPress, 0);
-			Mix_PlayChannel(-1, RollDice, 0);
+	case SDL_MOUSEBUTTONDOWN: {
+		if (m_buttonX2.IsSelected()) {
+//			Mix_PlayChannel(-1, ButtonPress, 0);
+//			Mix_PlayChannel(-1, RollDice, 0);
 			delay(3000);
-			m_diceResult = getResDie1()+getResDie2();
-			cout<<getResDie1()<<"/"<<getResDie2()<<"/"<<m_diceResult<<std::endl;
+			m_diceResult = getResDie1() + getResDie2();
+			cout << getResDie1() << "/" << getResDie2() << "/" << m_diceResult
+					<< std::endl;
 			SDL_Delay(2000);
-			if (m_diceResult < 5)
-			{
+			if (m_diceResult < 5) {
 				*m_ptrCredit += win * 2;
 				Recovery::Save(*m_ptrCredit, 0, win);
 				win = 0;
 				*m_ptrGameState = WIN;
 			}
-			else
-			{
+
+			else if (m_btnMusic.IsSelected() && m_bShowPlayButton == true) {
+				m_bShowPlayButton = false;
+			} else if (m_btnMusicPause.IsSelected()
+					&& m_bShowPlayButton == false) {
+				m_bShowPlayButton = true;
+			}
+
+			else {
 				*m_ptrGameState = PLAY;
 			}
-		}
-		else if (m_buttonX5.IsSelected())
-		{
-			Mix_PlayChannel(-1, ButtonPress, 0);
-			Mix_PlayChannel(-1, RollDice, 0);
+		} else if (m_buttonX5.IsSelected()) {
+//			Mix_PlayChannel(-1, ButtonPress, 0);
+//			Mix_PlayChannel(-1, RollDice, 0);
 			delay(3000);
-			m_diceResult = getResDie1()+getResDie2();
-			cout<<getResDie1()<<"/"<<getResDie2()<<"/"<<m_diceResult<<std::endl;
+			m_diceResult = getResDie1() + getResDie2();
+			cout << getResDie1() << "/" << getResDie2() << "/" << m_diceResult
+					<< std::endl;
 			SDL_Delay(2000);
-			if (m_diceResult > 4 && m_diceResult < 10)
-			{
+			if (m_diceResult > 4 && m_diceResult < 10) {
 				*m_ptrCredit += win * 5;
 				Recovery::Save(*m_ptrCredit, 0, win);
 				win = 0;
 				*m_ptrGameState = WIN;
-			}
-			else
-			{
+			} else {
 				*m_ptrGameState = PLAY;
 			}
-		}
-		else if(m_buttonX10.IsSelected())
-		{
-			Mix_PlayChannel(-1, ButtonPress, 0);
-			Mix_PlayChannel(-1, RollDice, 0);
+		} else if (m_buttonX10.IsSelected()) {
+//			Mix_PlayChannel(-1, ButtonPress, 0);
+//			Mix_PlayChannel(-1, RollDice, 0);
 			delay(3000);
-			m_diceResult = getResDie1()+getResDie2();
-			cout<<getResDie1()<<"/"<<getResDie2()<<"/"<<m_diceResult<<std::endl;
+			m_diceResult = getResDie1() + getResDie2();
+			cout << getResDie1() << "/" << getResDie2() << "/" << m_diceResult
+					<< std::endl;
 			SDL_Delay(2000);
-			if (m_diceResult > 9 && m_diceResult < 13)
-			{
+			if (m_diceResult > 9 && m_diceResult < 13) {
 				*m_ptrCredit += win * 10;
 				Recovery::Save(*m_ptrCredit, 0, win);
-				win=0;
+				win = 0;
 				*m_ptrGameState = WIN;
-			}
-			else
-			{
+			} else {
 				*m_ptrGameState = PLAY;
 			}
 		}
@@ -147,8 +164,7 @@ void BonusGame::HandleEvent()
 
 }
 
-void BonusGame::LoadMusicFiles()
-{
+void BonusGame::LoadMusicFiles() {
 	//Load music
 	//gMusic = Mix_LoadMUS( "beat.wav" );
 
@@ -168,12 +184,10 @@ void BonusGame::LoadMusicFiles()
 	}
 }
 
-void BonusGame::LoadDieFiles()
-{
+void BonusGame::LoadDieFiles() {
 	m_spriteDieTexture.LoadFromFile(m_renderer, "Resources/Die.png");
 	//Load sprite sheet texture
-	for (int i = 0; i < 6; i++)
-	{
+	for (int i = 0; i < 6; i++) {
 		m_spriteDie[i].x = i * 155;
 		m_spriteDie[i].y = 0;
 		m_spriteDie[i].w = 155;
@@ -181,39 +195,34 @@ void BonusGame::LoadDieFiles()
 	}
 }
 
-int BonusGame::RandomNumberGenerator()
-{
+int BonusGame::RandomNumberGenerator() {
 	int dieResult = (rand() % 6) + 1;
 	return dieResult;
 }
 
-void BonusGame::RenderDice()
-{
+void BonusGame::RenderDice() {
 	setResDie1(RandomNumberGenerator());
 	setResDie2(RandomNumberGenerator());
 	m_spriteDieTexture.Render(m_renderer, 480, 450, 155, 148,
-			&m_spriteDie[getResDie1()-1]);
+			&m_spriteDie[getResDie1() - 1]);
 	m_spriteDieTexture.Render(m_renderer, 680, 400, 155, 148,
-			&m_spriteDie[getResDie2()-1]);
+			&m_spriteDie[getResDie2() - 1]);
 }
 
-int BonusGame::ResultDice()
-{
+int BonusGame::ResultDice() {
 
-	setDiceResult(getResDie1()+ getResDie2() );
+	setDiceResult(getResDie1() + getResDie2());
 	return getDiceResult();
 
 }
 
-void BonusGame::LoadChoiceWinFiles()
-{
+void BonusGame::LoadChoiceWinFiles() {
 	m_tChoiceWin.LoadFromFile(m_renderer, "Resources/ChoiseWin.png");
 
 	//Load sprite sheet texture
 	int w = 297;
 	int h = 40;
-	for (int i = 0; i < 3; i++)
-	{
+	for (int i = 0; i < 3; i++) {
 		m_ChoiceWin[i].x = 0;
 		m_ChoiceWin[i].y = i * h;
 		m_ChoiceWin[i].w = w;
@@ -221,17 +230,14 @@ void BonusGame::LoadChoiceWinFiles()
 	}
 }
 
-void BonusGame::RenderChoiceWin()
-{
-	for (int i = 0; i < (rand() % 3) + 1; i++)
-	{
+void BonusGame::RenderChoiceWin() {
+	for (int i = 0; i < (rand() % 3) + 1; i++) {
 		m_tChoiceWin.Render(m_renderer, 50, 70, 297, 40, &m_ChoiceWin[i]);
 	}
 }
 
 //Delay
-void BonusGame::delay(Uint32 ms)
-{
+void BonusGame::delay(Uint32 ms) {
 	Uint32 timerDelay = SDL_GetTicks();
 	while (SDL_GetTicks() - timerDelay < ms && *m_ptrGameState != QUIT) {
 		RenderDice();
@@ -239,16 +245,14 @@ void BonusGame::delay(Uint32 ms)
 	}
 }
 
-void BonusGame::setWin(int winIndex)
-{
+void BonusGame::setWin(int winIndex) {
 	win = winIndex;
 }
 
-void BonusGame::Close()
-{
+void BonusGame::Close() {
 	//Free the sound effects
-	Mix_FreeChunk(RollDice);
-	Mix_FreeChunk(ButtonPress);
+//	Mix_FreeChunk(RollDice);
+//	Mix_FreeChunk(ButtonPress);
 }
 
 int BonusGame::getDiceResult() const {

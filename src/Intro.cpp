@@ -21,12 +21,22 @@ Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	m_btnCashIn(renderer, "Resources/cash-in-btn.png", 0, 0,
 		INTRO_BTN_W, INTRO_BTN_H),
 	m_btnInfo(renderer, "Resources/game-info-btn.png", 0,0,
-		INTRO_BTN_W, INTRO_BTN_H)
+		INTRO_BTN_W, INTRO_BTN_H),
+
+		m_btnMusicPlus(renderer, "Resources/IncreasesB.png", 0,0, BUTTONVOLUMESIZE,BUTTONVOLUMESIZE),
+		m_btnMusic(renderer, "Resources/PlayB.png" , 0,0,BUTTONVOLUMESIZE,BUTTONVOLUMESIZE),
+		m_btnMusicMinus(renderer, "Resources/DecreasesB.png" ,0,0,BUTTONVOLUMESIZE,BUTTONVOLUMESIZE),
+		m_btnMusicPause(renderer, "Resources/Pause.png", 0,0, BUTTONVOLUMESIZE,BUTTONVOLUMESIZE)
+
+
 {
 
 	m_tBackgorund.LoadFromFile(renderer, "Resources/intro.png");
 	m_tCredit.InitFont("Resources/font.ttf", 32);
 	m_tInfo.LoadFromFile(renderer, "Resources/info.png");
+
+	m_mMusic.LoadMusic();
+	Mix_PlayMusic(m_mMusic.getBackgraund(),1);
 }
 
 Intro::~Intro()
@@ -44,6 +54,7 @@ void Intro::Draw()
 
 void Intro::Render()
 {
+
 	//render background
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -61,6 +72,20 @@ void Intro::Render()
 		creditText.str(), SDL_Color{255,255,255}, 32);
 	m_tCredit.Render(m_renderer, 20, 0, m_tCredit.GetWidth(), m_tCredit.GetHeight());
 
+	SDL_Rect rectMusicPlus{0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE};
+	m_btnMusicPlus.Render(m_renderer, &rectMusicPlus, SCREEN_WIDTH-45, 5, BUTTONVOLUMESIZE,BUTTONVOLUMESIZE);
+
+	SDL_Rect rectMusic{0,0, BUTTONVOLUMESIZE ,BUTTONVOLUMESIZE};
+	if (m_bShowPlayButton)
+	{
+		m_btnMusic.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5 , BUTTONVOLUMESIZE,BUTTONVOLUMESIZE);
+	}
+	else
+	{
+		m_btnMusicPause.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5 , BUTTONVOLUMESIZE,BUTTONVOLUMESIZE);
+	}
+	SDL_Rect rectMusicMinus{0,0, BUTTONVOLUMESIZE ,BUTTONVOLUMESIZE};
+			m_btnMusicMinus.Render(m_renderer, &rectMusicMinus, SCREEN_WIDTH - 153, 5, BUTTONVOLUMESIZE,BUTTONVOLUMESIZE);
 	if(m_bShowInfo == true)
 		RenderInfoWindow();
 }
@@ -76,15 +101,28 @@ void Intro::HandleEvent()
 	case SDL_MOUSEBUTTONDOWN:
 		if(m_btnNewGame.IsSelected() && *m_ptrCredit > 0)
 		{
+			Mix_PlayChannel(-1,m_mMusic.getButton(),0);
 			Recovery::Save(*m_ptrCredit);
 			*m_ptrGameState = PLAY;
+
 		}
 
 		else if(m_btnResumeGame.IsSelected())
 		{
+			Mix_PlayChannel(-1,m_mMusic.getButton(),0);
 			*m_ptrGameState = PLAY;
 			*m_ptrCredit = Recovery::Read().credit;
 		}
+
+		else if(m_btnMusic.IsSelected() && m_bShowPlayButton == true)
+		{
+			m_bShowPlayButton = false;
+		}
+		else if(m_btnMusicPause.IsSelected() && m_bShowPlayButton == false)
+		{
+			m_bShowPlayButton = true;
+		}
+
 
 		else if(m_btnCashIn.IsSelected())
 			CashIn(10);

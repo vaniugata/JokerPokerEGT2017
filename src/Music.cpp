@@ -2,7 +2,7 @@
  * Music.cpp
  *
 <<<<<<< HEAD
- *  Created on: 18.07.2017 ï¿½.
+ *  Created on: 18.07.2017 ã.
 =======
  *  Created on: 18.07.2017 ï¿½.
 >>>>>>> origin/master
@@ -51,6 +51,10 @@ void Music::PlayMusic(){
 	Mix_PlayChannel(0,ChunkMusic,0);
 
 }
+<<<<<<< HEAD
 //void Music::Screen()
+=======
+void Music::Screen()
+>>>>>>> origin/master
 
 

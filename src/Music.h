@@ -2,7 +2,7 @@
  * Music.h
  *
 <<<<<<< HEAD
- *  Created on: 18.07.2017 ï¿½.
+ *  Created on: 18.07.2017 ã.
 =======
  *  Created on: 18.07.2017 ï¿½.
 >>>>>>> origin/master
@@ -27,7 +27,11 @@ public:
 	Music();
 	virtual ~Music();
 
+<<<<<<< HEAD
 	//Screen::Renderer();
+=======
+	Screen::Renderer();
+>>>>>>> origin/master
 
 	void setChunkMusic(Mix_Chunk* chunk);
 

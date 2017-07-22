@@ -6,8 +6,12 @@
 #include "OutroScreen.h"
 #include "Music.h"
 #include "Recovery.h"
+<<<<<<< HEAD
 //#include "Animation.h"
 
+=======
+#include "Animation.h"
+>>>>>>> origin/master
 
 int main(int args, char* argc[])
 {

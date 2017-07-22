@@ -173,9 +173,13 @@ void Game::RenderGameInfo()
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
+<<<<<<< HEAD
 	//ss << m_paytable->GetBet().at(10);
 	if(m_iBet != 0){ss<< *GetBet();}
 
+=======
+	ss << m_paytable->GetBet().at(10);
+>>>>>>> origin/master
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
 	m_tCredit.Render(m_renderer,380 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,

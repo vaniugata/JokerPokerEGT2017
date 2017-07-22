@@ -41,13 +41,25 @@ void WinBonus::Render()
 	int x = 300;
 	int y = SCREEN_HEIGHT - 80;
 	m_tText.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
+<<<<<<< HEAD
 		"New Credit is :" + DoubleToString(*m_ptrCredit), color, 50);
+=======
+		"New Credit is :" + DoubleToString(*m_ptrCredit), color, 24);
+>>>>>>> origin/master
 	Uint32 timerDelay = SDL_GetTicks();
 	while (SDL_GetTicks() - timerDelay < 3000 && *m_ptrGameState != QUIT)
 	{
 		//render Backgorund
 		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+<<<<<<< HEAD
 		//render Text
+=======
+		m_tText.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
+			"New Credit is :" + DoubleToString(*m_ptrCredit), color, 24);
+
+		int x = 300;
+		int y = SCREEN_HEIGHT - 80;
+>>>>>>> origin/master
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
 		Draw();
 	}

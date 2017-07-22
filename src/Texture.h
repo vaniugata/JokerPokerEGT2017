@@ -4,6 +4,7 @@
 #include "includesSDL2.h"
 #include <string>
 
+
 class Texture
 {
 private:

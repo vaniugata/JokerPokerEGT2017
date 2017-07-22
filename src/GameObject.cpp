@@ -3,6 +3,7 @@
 #include <iostream>
 using std::cerr;
 
+
 GameObject::GameObject(SDL_Renderer* renderer) :
 	m_renderer(renderer)
 {

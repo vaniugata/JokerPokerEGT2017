@@ -10,7 +10,7 @@
 int main(int args, char* argc[])
 {
 	Game game;
-	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit());
+	Intro intro = Intro(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit(),game.GetBet());
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit() );
 	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);

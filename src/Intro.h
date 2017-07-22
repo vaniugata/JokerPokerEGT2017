@@ -10,10 +10,14 @@ class Intro : public Screen
 {
 private:
 	double* m_ptrCredit;
+	int* m_ptrBet;
+
 	Texture m_tBackgorund;
 	Texture m_tCredit;
 	Texture m_tInfo;
+
 	SDL_Event* m_event;
+
 	eGameState* m_ptrGameState;
 
 	ButtonObject m_btnNewGame;
@@ -24,7 +28,7 @@ private:
 	bool m_bShowInfo = false;
 
 public:
-	Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit);
+	Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit,int* bet);
 	~Intro();
 
 	void Draw();

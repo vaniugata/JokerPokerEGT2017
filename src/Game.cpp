@@ -81,6 +81,12 @@ double* Game::GetCredit()
 	return &m_dCredit;
 }
 
+int* Game::GetBet()
+{
+	return &m_iBet;
+}
+
+
 void Game::SetGameState(eGameState gs)
 {
 	this->m_eGameState = gs;
@@ -167,6 +173,11 @@ void Game::RenderGameInfo()
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
+
+	//set the bet to the value from the recovery file
+	//in case of recovery before rendering it to the screen
+	SetBetFromRecovery();
+
 	ss << m_paytable->GetBet().at(10);
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
@@ -284,6 +295,7 @@ void Game::ProcessRound()
 			//Play greeting sound
 			m_paytable->PlaySoundEffect(m_iWinIndex);
 			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
+			m_iBet = m_paytable->GetBet().at(10);
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);
 		}
@@ -305,6 +317,15 @@ void Game::ProcessRound()
 			m_bIsBonus = false;
 			m_eGameState = BONUS; 
 		}
+	}
+}
+
+void Game::SetBetFromRecovery()
+{
+	if(m_iBet != 0)
+	{
+		for(int i = 0; i < m_iBet - 1; i++) { m_paytable->IncreaseBet(); }
+		m_iBet = 0;
 	}
 }
 

@@ -51,6 +51,5 @@ void Music::PlayMusic(){
 	Mix_PlayChannel(0,ChunkMusic,0);
 
 }
-void Music::Screen()
 
 

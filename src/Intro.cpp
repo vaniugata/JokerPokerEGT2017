@@ -7,8 +7,7 @@ using std::cout;
 using std::stringstream;
 
 Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
-	double* credit,int* bet) :
-	m_ptrBet(bet),
+	double* credit) :
 	m_ptrCredit(credit),
 	Screen(renderer), 
 	m_tBackgorund(),
@@ -33,7 +32,6 @@ Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 Intro::~Intro()
 {
 	std::cout << "Intro Deleted.\n";
-	m_ptrBet = nullptr;
 	m_ptrCredit = nullptr;
 	m_event = nullptr;
 	m_ptrGameState = nullptr;
@@ -86,7 +84,6 @@ void Intro::HandleEvent()
 		{
 			*m_ptrGameState = PLAY;
 			*m_ptrCredit = Recovery::Read().credit;
-			*m_ptrBet = Recovery::Read().bet;
 		}
 
 		else if(m_btnCashIn.IsSelected())

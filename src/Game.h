@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 #include "includesSDL2.h"
-
 #include "Texture.h"
 #include "Globals.h"
 #include "PaytableObject.h"
@@ -14,7 +13,6 @@ class Game
 {
 private:
 	double m_dCredit;
-	int m_iBet;
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 
@@ -48,7 +46,7 @@ public:
 
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
-	int* GetBet();
+
 	void SetGameState(eGameState gs);
 
 	void Draw();
@@ -62,9 +60,6 @@ public:
 	//game logic
 	void ProcessRound();
 
-
-	//recovery
-	void SetBetFromRecovery();
 private:
 	void InitSDL();
 	void Close();

@@ -26,6 +26,8 @@ Game::Game() :
 {
 	InitSDL();
 
+	m_mMusic.LoadMusic();
+
 	m_tBackground = Texture(m_renderer);
 	m_tBackground.LoadFromFile(m_renderer, "Resources/back2.png");
 
@@ -39,6 +41,18 @@ Game::Game() :
 
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0, 0, INTRO_BTN_W, INTRO_BTN_H);
+
+	m_btnMusicMinus = new ButtonObject(m_renderer, "Resources/DecreasesB.png",
+			0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+
+	m_btnMusic = new ButtonObject(m_renderer, "Resources/PlayB.png",
+			0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+
+	m_btnMusicPlus = new ButtonObject(m_renderer, "Resources/IncreasesB.png",
+			0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+
+	m_btnMusicPause = new ButtonObject(m_renderer, "Resources/Pause.png",
+			0,0, BUTTONVOLUMESIZE,BUTTONVOLUMESIZE);
 
 	m_btnDealDraw = new  ButtonObject(m_renderer, "Resources/round-button.png",
 			0, 0, DEALDRAWBTN_W, DEALDRAWBTN_H);
@@ -114,6 +128,26 @@ void Game::Render()
 		0, SCREEN_HEIGHT - m_btnCashOut->GetHeight() + 5,
 		INTRO_BTN_W, INTRO_BTN_H);
 
+    SDL_Rect clipMusicMinus{0,0, BUTTONVOLUMESIZE,BUTTONVOLUMESIZE};
+    m_btnMusicMinus->Render(m_renderer, &clipMusicMinus, 10,
+    		SCREEN_HEIGHT - m_btnCashOut->GetHeight() -BUTTONVOLUMESIZE + 8, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE );
+    if (m_bShowPlayButton)
+    {
+    	SDL_Rect clipMusicPlay{0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE};
+    m_btnMusic->Render(m_renderer, &clipMusicPlay, BUTTONVOLUMESIZE + 18,
+    		SCREEN_HEIGHT - m_btnCashOut->GetHeight() - BUTTONVOLUMESIZE +  8, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+    }
+    else
+    {
+    SDL_Rect clipMusicPauseButton{0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE};
+    m_btnMusicPause->Render(m_renderer, &clipMusicPauseButton,BUTTONVOLUMESIZE + 18,
+    		SCREEN_HEIGHT - m_btnCashOut->GetHeight() - BUTTONVOLUMESIZE +  8, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+    }
+
+   SDL_Rect clipMusicPlus{0,0, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE};
+   m_btnMusicPlus->Render(m_renderer, &clipMusicPlus, BUTTONVOLUMESIZE * 2 + 26,
+		   SCREEN_HEIGHT - m_btnCashOut->GetHeight() - BUTTONVOLUMESIZE + 8, BUTTONVOLUMESIZE, BUTTONVOLUMESIZE);
+
 	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
 	if(m_ptrDeck->GetKillCount() == 1) { clipDealDraw.x += DEAL_W; }
 	else if(m_ptrDeck->GetKillCount() == 2 && 
@@ -129,6 +163,9 @@ void Game::Render()
 	}
 	RenderGameInfo();
 	if(m_bIsGameOver) { RenderGameOver(); }
+
+
+
 }
 
 void Game::RenderRound(Deck* deck)
@@ -148,14 +185,14 @@ void Game::RenderGameInfo()
 	ss << "Credits: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrText, 28);
-	m_tCredit.Render(m_renderer, 150, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer, 180, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 	int iTextW = m_tCredit.GetWidth();
 	ss << m_dCredit;
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
 		ss.str(), clrCredit, 28);
-	m_tCredit.Render(m_renderer,150 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,180 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 
@@ -163,16 +200,20 @@ void Game::RenderGameInfo()
 	ss << "Bet: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
 		ss.str(), clrText, 28);
-	m_tCredit.Render(m_renderer, 380, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer, 400, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
 	ss << m_paytable->GetBet().at(10);
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
-	m_tCredit.Render(m_renderer,380 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,400 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
+
+
+
+
 }
 
 void Game::RenderGameOver()
@@ -229,6 +270,7 @@ void Game::ProcessMouseInput()
 	int countIsSelected = 0;
 	if(m_btnCashOut->IsSelected())
 	{
+		Mix_PlayChannel(-1,m_mMusic.getOutro(),0);
 		OutroScreen::SetCredit(m_dCredit);
 		m_eGameState = OUTRO;
 	}
@@ -244,8 +286,17 @@ void Game::ProcessMouseInput()
 	{
 		m_ptrDeck->HoldSelectedCards();
 	}
+	else if (m_btnMusic->IsSelected() && m_bShowPlayButton == true)
+	{
+		m_bShowPlayButton = false;
+	}
+	else if (m_btnMusicPause->IsSelected() && m_bShowPlayButton == false)
+	{
+		m_bShowPlayButton = true;
+	}
 	if(m_btnDealDraw->IsSelected())
 	{
+
 		ProcessRound();
 	}
 }
@@ -328,8 +379,7 @@ void Game::InitSDL()
 		return;
 	}
 	// -1 is the index of the first supported rendering driver 
-	m_renderer = SDL_CreateRenderer(m_window, -1,
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 	if(m_renderer == nullptr)
 	{
 		std::cerr << "Renderer could not be created! SDL Error: " << SDL_GetError();
@@ -362,8 +412,8 @@ void Game::InitSDL()
 
 void Game::Close()
 {
-	SDL_DestroyWindow(m_window);
-	m_window = nullptr;
+//	SDL_DestroyWindow(m_window);
+//	m_window = nullptr;
 
 	SDL_Quit();
 }

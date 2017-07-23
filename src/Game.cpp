@@ -321,7 +321,6 @@ void Game::ProcessRound()
 	m_ptrDeck->deal();
 	//Save to recovery file
 	Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
-	//TODO: Invoke sound for flipping the cards
 	//Charge the fee to play a round
 	if(m_ptrDeck->GetKillCount() == 1){ m_dCredit -= m_paytable->GetBet().at(10);}
 	//Evaluation::SetAutoHold(true);
@@ -347,6 +346,8 @@ void Game::ProcessRound()
 			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);
+			//play winning sound
+			m_paytable->PlaySoundEffect(m_iWinIndex);
 		}
 		//Check for bonus state
 		if(m_iWinIndex >= 5 && m_iWinIndex <= 10) { m_bIsBonus = true; }

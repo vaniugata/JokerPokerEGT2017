@@ -141,6 +141,7 @@ bool Deck::isCardInHand(Card& card)
 
 bool Deck::isJokerHand()
 {
+	int k = 0;
 	if(hand[4].getCardValue() == JOKERVALUE) {
 		k++;
 		return true;

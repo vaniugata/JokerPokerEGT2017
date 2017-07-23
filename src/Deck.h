@@ -25,7 +25,6 @@ public:
 	ButtonObject m_vecCardHold[5];
 
 public:
-	int k = 0;
 	Deck(SDL_Renderer*);
 	~Deck();
 

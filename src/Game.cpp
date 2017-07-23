@@ -121,9 +121,15 @@ void Game::Render()
 		INTRO_BTN_W, INTRO_BTN_H);
 
 	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
-	if(m_ptrDeck->GetKillCount() == 1) { clipDealDraw.x += DEAL_W; }
+	if(m_ptrDeck->GetKillCount() == 1)
+	{
+		clipDealDraw.x += DEAL_W; 
+	}
 	else if(m_ptrDeck->GetKillCount() == 2 && 
-		m_iWinIndex >= 5 && m_iWinIndex <= 10) { clipDealDraw.x += 2 * DEAL_W; }
+		m_iWinIndex >= 5 && m_iWinIndex <= 10)
+	{
+		clipDealDraw.x += 2 * DEAL_W;
+	}
 	m_btnDealDraw->Render(m_renderer, &clipDealDraw,      //Button Deal/Draw
 			600, SCREEN_HEIGHT - m_btnDealDraw->GetHeight() - 5,
 			DEALDRAWBTN_W, DEALDRAWBTN_H);
@@ -133,8 +139,9 @@ void Game::Render()
 		m_ptrDeck->RenderStart(m_renderer);
 		RenderRound(m_ptrDeck);
 	}
-	RenderGameInfo();
+	if(m_ptrDeck->GetKillCount() == 2) { m_ptrDeck->DimCards(m_renderer); }
 	if(m_bIsGameOver) { RenderGameOver(); }
+	RenderGameInfo();
 }
 
 void Game::RenderRound(Deck* deck)
@@ -154,14 +161,14 @@ void Game::RenderGameInfo()
 	ss << "Credits: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrText, 28);
-	m_tCredit.Render(m_renderer, 150, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer, 250, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() + 20,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 	int iTextW = m_tCredit.GetWidth();
 	ss << m_dCredit;
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
 		ss.str(), clrCredit, 28);
-	m_tCredit.Render(m_renderer,150 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,250 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() + 20,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 
@@ -169,7 +176,7 @@ void Game::RenderGameInfo()
 	ss << "Bet: ";
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
 		ss.str(), clrText, 28);
-	m_tCredit.Render(m_renderer, 380, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer, 480, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() + 20,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
@@ -181,7 +188,7 @@ void Game::RenderGameInfo()
 	ss << m_paytable->GetBet().at(10);
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
-	m_tCredit.Render(m_renderer,380 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() - 10,
+	m_tCredit.Render(m_renderer,480 + iTextW, SCREEN_HEIGHT - 2 * m_tCredit.GetHeight() + 20,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str("");
 }
@@ -246,10 +253,12 @@ void Game::ProcessMouseInput()
 	else if(m_paytable->m_btnBetOne.IsSelected())
 	{
 		m_paytable->IncreaseBet();
+		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 	}
 	else if(m_paytable->m_btnBetMax.IsSelected())
 	{
 		m_paytable->SetMaxBet();
+		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 	}
 	else if(m_ptrDeck != nullptr && m_ptrDeck->GetKillCount() == 1)
 	{
@@ -268,7 +277,7 @@ void Game::ProcessRound()
 	//Deal 5 cards on the screen
 	m_ptrDeck->deal();
 	//Save to recovery file
-	Recovery::Save(m_dCredit);
+	Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 	//TODO: Invoke sound for flipping the cards
 	//Charge the fee to play a round
 	if(m_ptrDeck->GetKillCount() == 1){ m_dCredit -= m_paytable->GetBet().at(10);}
@@ -324,7 +333,10 @@ void Game::SetBetFromRecovery()
 {
 	if(m_iBet != 0)
 	{
-		for(int i = 0; i < m_iBet - 1; i++) { m_paytable->IncreaseBet(); }
+		for(int i = 0; i < m_iBet - 1; i++)
+		{
+			m_paytable->IncreaseBet();
+		}
 		m_iBet = 0;
 	}
 }

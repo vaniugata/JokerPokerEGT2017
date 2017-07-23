@@ -19,19 +19,16 @@ private:
 	SDL_Renderer* m_renderer;
 
 	//game components
-	//Texture objects
 	Texture m_tBackground;
 	Texture m_tCredit;
 	Texture m_tGameOver;
-	//PaytableObject objects
 	PaytableObject* m_paytable;
-	//Deck objects
 	Deck* m_ptrDeck;
 
 	std::vector<Evaluation*> m_vecEvaluations;
 	//Button objects
-	ButtonObject* m_btnCashOut;//Button CashOut
-	ButtonObject* m_btnDealDraw;//Button Deal/Draw
+	ButtonObject* m_btnCashOut;
+	ButtonObject* m_btnDealDraw;
 
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
@@ -46,9 +43,12 @@ public:
 	Game();
 	~Game();
 
+	//getters
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
 	int* GetBet();
+	//setters
+	void SetBetFromRecovery(); // only if game returns form recovery state
 	void SetGameState(eGameState gs);
 
 	void Draw();
@@ -62,12 +62,8 @@ public:
 	//game logic
 	void ProcessRound();
 
-
-	//recovery
-	void SetBetFromRecovery();
 private:
 	void InitSDL();
 	void Close();
-
 };
 #endif

@@ -41,10 +41,7 @@ void WinBonus::Render()
 	int x = 300;
 	int y = SCREEN_HEIGHT - 80;
 	m_tText.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
-
 		"New Credit is :" + DoubleToString(*m_ptrCredit), color, 50);
-
-	//	"New Credit is :" + DoubleToString(*m_ptrCredit), color, 24);
 
 	Uint32 timerDelay = SDL_GetTicks();
 	while (SDL_GetTicks() - timerDelay < 3000 && *m_ptrGameState != QUIT)
@@ -54,7 +51,7 @@ void WinBonus::Render()
 
 		//render Text
 		m_tText.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
-			"New Credit is :" + DoubleToString(*m_ptrCredit), color, 24);
+			"New Credit is :" + DoubleToString(*m_ptrCredit), color, 50);
 
 		int x = 300;
 		int y = SCREEN_HEIGHT - 80;

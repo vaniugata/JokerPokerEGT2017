@@ -15,8 +15,8 @@ public:
 	ButtonObject m_btnBetOne;
 	ButtonObject m_btnBetMax;
 private:
-	static int oldCoef;
-	static int coef;
+	static int m_iPrevBetCoef;
+	static int m_iNextBetCoef;
 	int m_iWinnerIndex;
 
 	std::vector<std::string> m_vecHands

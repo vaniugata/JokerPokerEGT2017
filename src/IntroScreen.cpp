@@ -1,4 +1,4 @@
-#include "Intro.h"
+#include "IntroScreen.h"
 #include "Globals.h"
 #include "Recovery.h"
 #include <iostream>
@@ -6,14 +6,14 @@ using std::cout;
 #include <sstream>
 using std::stringstream;
 
-Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
+IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit,int* bet) :
 	m_ptrBet(bet),
 	m_ptrCredit(credit),
 	Screen(renderer), 
 	m_tBackgorund(),
 	m_tInfo(),
-	m_event(&event),
+	m_ptrEvent(&event),
 	m_ptrGameState(&eGameState), 
 	m_btnNewGame(renderer, "Resources/new-game-btn.png", 0, 0, 
 		INTRO_BTN_W , INTRO_BTN_H),
@@ -30,21 +30,21 @@ Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	m_tInfo.LoadFromFile(renderer, "Resources/info.png");
 }
 
-Intro::~Intro()
+IntroScreen::~IntroScreen()
 {
 	std::cout << "Intro Deleted.\n";
 	m_ptrBet = nullptr;
 	m_ptrCredit = nullptr;
-	m_event = nullptr;
+	m_ptrEvent = nullptr;
 	m_ptrGameState = nullptr;
 }
 
-void Intro::Draw()
+void IntroScreen::Draw()
 {
 	Screen::Draw();
 }
 
-void Intro::Render()
+void IntroScreen::Render()
 {
 	//render background
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -67,9 +67,9 @@ void Intro::Render()
 		RenderInfoWindow();
 }
 
-void Intro::HandleEvent()
+void IntroScreen::HandleEvent()
 {
-	switch(m_event->type)
+	switch(m_ptrEvent->type)
 	{
 	case SDL_QUIT:
 		*m_ptrGameState = QUIT;
@@ -98,19 +98,19 @@ void Intro::HandleEvent()
 
 }
 
-void Intro::CashIn(double ammount)
+void IntroScreen::CashIn(double ammount)
 {
 	if(*m_ptrCredit == -1) { *m_ptrCredit = 0; }
 	*m_ptrCredit += ammount;
 }
 
-void Intro::RenderInfoWindow()
+void IntroScreen::RenderInfoWindow()
 {
 	m_tInfo.Render(m_renderer, (SCREEN_WIDTH - m_tInfo.GetWidth() ), 0, 
 		m_tInfo.GetWidth(), m_tInfo.GetHeight() );
 }
 
-void Intro::EvaluateInfoRendering()
+void IntroScreen::EvaluateInfoRendering()
 {
 	 if(m_btnInfo.IsSelected() && m_bShowInfo == false)
 		m_bShowInfo = true;

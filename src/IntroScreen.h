@@ -6,7 +6,7 @@
 #include "Globals.h"
 #include "ButtonObject.h"
 
-class Intro : public Screen
+class IntroScreen : public Screen
 {
 private:
 	double* m_ptrCredit;
@@ -16,7 +16,7 @@ private:
 	Texture m_tCredit;
 	Texture m_tInfo;
 
-	SDL_Event* m_event;
+	SDL_Event* m_ptrEvent;
 
 	eGameState* m_ptrGameState;
 
@@ -28,8 +28,8 @@ private:
 	bool m_bShowInfo = false;
 
 public:
-	Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit,int* bet);
-	~Intro();
+	IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit,int* bet);
+	~IntroScreen();
 
 	void Draw();
 	void Render();

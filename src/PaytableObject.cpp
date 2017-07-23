@@ -5,8 +5,8 @@ using std::cout;
 #include <sstream>
 using std::stringstream;
 
-int PaytableObject::coef = 2;
-int PaytableObject::oldCoef = 1;
+int PaytableObject::m_iNextBetCoef = 2;
+int PaytableObject::m_iPrevBetCoef = 1;
 
 PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	m_texture(), 
@@ -153,19 +153,19 @@ void PaytableObject::IncreaseBet()//Увеличете залога
 {
 	for(int i = 0; i < m_vecBets.size(); i++)
 	{
-		m_vecBets[i] /= oldCoef;
-		m_vecBets[i] *= coef;
+		m_vecBets[i] /= m_iPrevBetCoef;
+		m_vecBets[i] *= m_iNextBetCoef;
 	}
-	coef++;
-	oldCoef++;
+	m_iNextBetCoef++;
+	m_iPrevBetCoef++;
 
-	if(coef >= 12)
+	if(m_iNextBetCoef >= 12)
 	{
 		for(int i = 0; i < m_vecBets.size(); i++)
-			m_vecBets[i] /= oldCoef;
+			m_vecBets[i] /= m_iPrevBetCoef;
 		
-		oldCoef = 1;
-		coef = 2;
+		m_iPrevBetCoef = 1;
+		m_iNextBetCoef = 2;
 	}
 }
 
@@ -178,7 +178,7 @@ void PaytableObject::SetMaxBet()
 		m_vecBets[i] = arrMaxBets[i];
 	}
 
-	coef = 11;
-	oldCoef = 10;
+	m_iNextBetCoef = 11;
+	m_iPrevBetCoef = 10;
 }
 

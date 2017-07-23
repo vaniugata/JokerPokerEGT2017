@@ -37,13 +37,6 @@ private:
 	ButtonObject m_buttonX5;
 	ButtonObject m_buttonX10;
 
-	ButtonObject m_btnMusic;
-	ButtonObject m_btnMusicPlus;
-	ButtonObject m_btnMusicMinus;
-	ButtonObject m_btnMusicPause;
-
-	bool m_bShowPlayButton = true;
-
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 			double* credit);

@@ -9,8 +9,7 @@ Deck::Deck(SDL_Renderer* renderer) :
 {
 	m_texture.LoadFromFile(renderer, "Resources/deckOfCards.png");
 	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
-	m_tDim.LoadFromFile(renderer, "Resources/dimCard.png");
-	m_tDim.SetAlpha(100);
+
 	for(int i = 0; i < 52; i++)
 	{
 		eCardSuit suit;
@@ -141,7 +140,6 @@ bool Deck::isCardInHand(Card& card)
 
 bool Deck::isJokerHand()
 {
-	int k = 0;
 	if(hand[4].getCardValue() == JOKERVALUE) {
 		k++;
 		return true;
@@ -163,6 +161,8 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
 		cardPlace.x += cardPlace.w;
 	}
+
+	
 }
 
 void Deck::RenderStart(SDL_Renderer * renderer)
@@ -231,12 +231,6 @@ void Deck::HoldSelectedCards()
 		
 		std::cout << hand[i].getIsHold();
 	}
-}
-
-void Deck::DimCards(SDL_Renderer * renderer)
-{
-	int x = (SCREEN_WIDTH - 5 * CARD_W) / 2;
-	m_tDim.Render(renderer, x + CARD_W, 350, CARD_W, CARD_H_);
 }
 
 void Deck::render_card_from_deck(SDL_Renderer* renderer, int i)

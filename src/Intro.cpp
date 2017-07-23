@@ -9,12 +9,12 @@ using std::stringstream;
 Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit) :
 	m_ptrCredit(credit),
-	Screen(renderer), 
+	Screen(renderer),
 	m_tBackgorund(),
 	m_tInfo(),
 	m_event(&event),
-	m_ptrGameState(&eGameState), 
-	m_btnNewGame(renderer, "Resources/new-game-btn.png", 0, 0, 
+	m_ptrGameState(&eGameState),
+	m_btnNewGame(renderer, "Resources/new-game-btn.png", 0, 0,
 		INTRO_BTN_W , INTRO_BTN_H),
 	m_btnResumeGame(renderer, "Resources/resume-game-btn.png", 0, 0,
 		INTRO_BTN_W, INTRO_BTN_H),
@@ -57,7 +57,7 @@ void Intro::Render()
 	//Render credit
 	std::stringstream creditText;
 	creditText << "Credits: " << *m_ptrCredit;
-	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf", 
+	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		creditText.str(), SDL_Color{255,255,255}, 32);
 	m_tCredit.Render(m_renderer, 20, 0, m_tCredit.GetWidth(), m_tCredit.GetHeight());
 
@@ -85,6 +85,32 @@ void Intro::HandleEvent()
 			*m_ptrGameState = PLAY;
 			*m_ptrCredit = Recovery::Read().credit;
 		}
+		else if(m_btnMusic.IsSelected() && m_bShowPlayButton == true)
+		{
+					m_bShowPlayButton = false;
+
+					Mix_PauseMusic();
+		}
+		else if(m_btnMusicPause.IsSelected() && m_bShowPlayButton == false)
+		{
+					m_bShowPlayButton = true;
+
+					Mix_PlayMusic(m_mMusic.getBackgraund(),-1);
+		}
+		else if(m_btnMusicPlus.IsSelected())
+		{
+					m_iCounterVolumeMusic+=10;
+					if ( m_iCounterVolumeMusic > 100)
+						m_iCounterVolumeMusic = 100;
+					Mix_VolumeMusic(m_iCounterVolumeMusic);
+		}
+	else if (m_btnMusicMinus.IsSelected())
+	{
+					m_iCounterVolumeMusic-=10;
+					if (m_iCounterVolumeMusic < 10)
+						m_iCounterVolumeMusic = 10;
+					Mix_VolumeMusic(m_iCounterVolumeMusic);
+	}
 
 		else if(m_btnCashIn.IsSelected())
 			CashIn(10);
@@ -103,7 +129,7 @@ void Intro::CashIn(double ammount)
 
 void Intro::RenderInfoWindow()
 {
-	m_tInfo.Render(m_renderer, (SCREEN_WIDTH - m_tInfo.GetWidth() ), 0, 
+	m_tInfo.Render(m_renderer, (SCREEN_WIDTH - m_tInfo.GetWidth() ), 0,
 		m_tInfo.GetWidth(), m_tInfo.GetHeight() );
 }
 

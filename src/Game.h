@@ -13,40 +13,50 @@ class Game
 {
 private:
 	double m_dCredit;
+	int m_iBet;
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 
 	//game components
-	//Texture objects
 	Texture m_tBackground;
 	Texture m_tCredit;
 	Texture m_tGameOver;
-	//PaytableObject objects
 	PaytableObject* m_paytable;
-	//Deck objects
 	Deck* m_ptrDeck;
 
 	std::vector<Evaluation*> m_vecEvaluations;
 	//Button objects
-	ButtonObject* m_btnCashOut;//Button CashOut
-	ButtonObject* m_btnDealDraw;//Button Deal/Draw
+	ButtonObject* m_btnCashOut;	//Button CashOut
+	ButtonObject* m_btnDealDraw;	//Button Deal/Draw
+
+	ButtonObject* m_btnMusic;
+	ButtonObject* m_btnMusicPlus;
+	ButtonObject* m_btnMusicMinus;
+	ButtonObject* m_btnMusicPause;
 
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 	int m_iWinIndex;
+	bool m_bShowPlayButton = true;
+
+	Music m_mCards;
+	Music m_mMusic;
+	int m_iCounterVolumeMusic = 10;
 
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;
 
-
 public:
 	Game();
 	~Game();
 
+	//getters
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
-
+	int* GetBet();
+	//setters
+	void SetBetFromRecovery(); // only if game returns form recovery state
 	void SetGameState(eGameState gs);
 
 	void Draw();
@@ -63,6 +73,5 @@ public:
 private:
 	void InitSDL();
 	void Close();
-
 };
 #endif

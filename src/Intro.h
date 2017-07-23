@@ -21,7 +21,17 @@ private:
 	ButtonObject m_btnCashIn;
 	ButtonObject m_btnInfo;
 
+	ButtonObject m_btnMusic;
+	ButtonObject m_btnMusicPlus;
+	ButtonObject m_btnMusicMinus;
+	ButtonObject m_btnMusicPause;
 	bool m_bShowInfo = false;
+
+	Music m_mMusic;
+
+	bool m_bShowPlayButton = true;
+
+	int m_iCounterVolumeMusic = 10;
 
 public:
 	Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit);

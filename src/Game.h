@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 #include "includesSDL2.h"
-
 #include "Texture.h"
 #include "Globals.h"
 #include "PaytableObject.h"
@@ -27,17 +26,24 @@ private:
 
 	std::vector<Evaluation*> m_vecEvaluations;
 	//Button objects
-	ButtonObject* m_btnCashOut;
-	ButtonObject* m_btnDealDraw;
+	ButtonObject* m_btnCashOut;	//Button CashOut
+	ButtonObject* m_btnDealDraw;	//Button Deal/Draw
+
+	ButtonObject* m_btnMusic;
+	ButtonObject* m_btnMusicPlus;
+	ButtonObject* m_btnMusicMinus;
+	ButtonObject* m_btnMusicPause;
 
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 	int m_iWinIndex;
+	bool m_bShowPlayButton = true;
+
+	Music m_mMusic;
 
 public:
 	eGameState m_eGameState;
 	SDL_Event m_event;
-
 
 public:
 	Game();

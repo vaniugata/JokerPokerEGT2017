@@ -6,6 +6,7 @@ using std::cout;
 #include <sstream>
 using std::stringstream;
 
+
 IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit,int* bet) :
 	m_ptrBet(bet),
@@ -22,18 +23,27 @@ IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& e
 	m_btnCashIn(renderer, "Resources/cash-in-btn.png", 0, 0,
 		INTRO_BTN_W, INTRO_BTN_H),
 	m_btnInfo(renderer, "Resources/game-info-btn.png", 0,0,
-		INTRO_BTN_W, INTRO_BTN_H)
+		INTRO_BTN_W, INTRO_BTN_H),
+
+		m_btnMusicPlus(renderer, "Resources/IncreasesB.png", 0,0, BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE),
+		m_btnMusic(renderer, "Resources/PlayB.png" , 0,0,BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE),
+		m_btnMusicMinus(renderer, "Resources/DecreasesB.png" ,0,0,BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE),
+		m_btnMusicPause(renderer, "Resources/Pause.png", 0,0, BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE)
+
+
 {
 
 	m_tBackgorund.LoadFromFile(renderer, "Resources/intro.png");
 	m_tCredit.InitFont("Resources/font.ttf", 32);
 	m_tInfo.LoadFromFile(renderer, "Resources/info.png");
+
+	m_mMusic.LoadMusic();
+	Mix_PlayMusic(m_mMusic.getBackgraund(),1);
 }
 
 IntroScreen::~IntroScreen()
 {
 	std::cout << "Intro Deleted.\n";
-	m_ptrBet = nullptr;
 	m_ptrCredit = nullptr;
 	m_ptrEvent = nullptr;
 	m_ptrGameState = nullptr;
@@ -46,6 +56,7 @@ void IntroScreen::Draw()
 
 void IntroScreen::Render()
 {
+
 	//render background
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -63,6 +74,20 @@ void IntroScreen::Render()
 		creditText.str(), SDL_Color{255,255,255}, 32);
 	m_tCredit.Render(m_renderer, 20, 0, m_tCredit.GetWidth(), m_tCredit.GetHeight());
 
+	SDL_Rect rectMusicPlus{0,0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE};
+	m_btnMusicPlus.Render(m_renderer, &rectMusicPlus, SCREEN_WIDTH-45, 5, BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE);
+
+	SDL_Rect rectMusic{0,0, BUTTON_VOLUME_SIZE ,BUTTON_VOLUME_SIZE};
+	if (m_bShowPlayButton)
+	{
+		m_btnMusic.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5 , BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE);
+	}
+	else
+	{
+		m_btnMusicPause.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5 , BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE);
+	}
+	SDL_Rect rectMusicMinus{0,0, BUTTON_VOLUME_SIZE ,BUTTON_VOLUME_SIZE};
+			m_btnMusicMinus.Render(m_renderer, &rectMusicMinus, SCREEN_WIDTH - 153, 5, BUTTON_VOLUME_SIZE,BUTTON_VOLUME_SIZE);
 	if(m_bShowInfo == true)
 		RenderInfoWindow();
 }
@@ -78,16 +103,28 @@ void IntroScreen::HandleEvent()
 	case SDL_MOUSEBUTTONDOWN:
 		if(m_btnNewGame.IsSelected() && *m_ptrCredit > 0)
 		{
+			Mix_PlayChannel(-1,m_mMusic.getButton(),0);
 			Recovery::Save(*m_ptrCredit);
 			*m_ptrGameState = PLAY;
+
 		}
 
 		else if(m_btnResumeGame.IsSelected())
 		{
+			Mix_PlayChannel(-1,m_mMusic.getButton(),0);
 			*m_ptrGameState = PLAY;
 			*m_ptrCredit = Recovery::Read().credit;
-			*m_ptrBet = Recovery::Read().bet;
 		}
+
+		else if(m_btnMusic.IsSelected() && m_bShowPlayButton == true)
+		{
+			m_bShowPlayButton = false;
+		}
+		else if(m_btnMusicPause.IsSelected() && m_bShowPlayButton == false)
+		{
+			m_bShowPlayButton = true;
+		}
+
 
 		else if(m_btnCashIn.IsSelected())
 			CashIn(10);

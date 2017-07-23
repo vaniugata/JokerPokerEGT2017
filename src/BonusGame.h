@@ -32,21 +32,27 @@ private:
 	SDL_Rect m_spriteDie[6];
 	SDL_Rect m_ChoiceWin[3];
 
-//	//Button objects
+	//Button objects
 	ButtonObject m_buttonX2;
 	ButtonObject m_buttonX5;
 	ButtonObject m_buttonX10;
 
-	//The music that will be played
-	Mix_Chunk* ButtonPress = nullptr;
-	Mix_Chunk* RollDice = nullptr;
+	ButtonObject m_btnMusic;
+	ButtonObject m_btnMusicPlus;
+	ButtonObject m_btnMusicMinus;
+	ButtonObject m_btnMusicPause;
 
+	bool m_bShowPlayButton = true;
 
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 			double* credit);
 
 	virtual ~BonusGame();
+
+	//The music that will be played
+	Mix_Chunk* ButtonPress = nullptr;
+	Mix_Chunk* RollDice = nullptr;
 
 	//GetCredit
 	double* GetCredit();

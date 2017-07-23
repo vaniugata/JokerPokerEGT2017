@@ -27,27 +27,29 @@ public:
 	Music();
 	virtual ~Music();
 
-	void setChunkMusic(Mix_Chunk* chunk);
-
-	Mix_Chunk* getChunkMusic();
 
 
+  void setBackgraund(Mix_Music* music);
+  void setButton(Mix_Chunk* buttonMusic);
+  void setCards(Mix_Chunk* cardsButton);
+  void setOutro(Mix_Chunk* outroMusic);
 
-    void LoadMusic();
-	void PlayMusic();
-	void Press();
-	void Release();
-	void IsPressed();
+
+  Mix_Music* getBackgraund();
+  Mix_Chunk* getButton();
+  Mix_Chunk* getCards();
+  Mix_Chunk* getOutro();
+
+  void LoadMusic();
+
 
 private:
 
-    bool m_buttonIsPressed;
 
-    SDL_Texture* m_TextureTPressed;
-
-    SDL_Texture* m_TextureButton;
-
-	Mix_Chunk* ChunkMusic = NULL;
+    Mix_Music* Backgraund = nullptr;
+	Mix_Chunk* Button = nullptr;
+	Mix_Chunk* Cards = nullptr;
+	Mix_Chunk* Outro= nullptr;
 };
 
 #endif /* SRC_MUSIC_H_ */

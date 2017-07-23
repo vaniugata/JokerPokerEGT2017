@@ -6,8 +6,12 @@ const int SCREEN_HEIGHT = 680;
 
 const double DENOM = 5.00;
 
+const int BUTTON_VOLUME_SIZE = 40;
+
 //----PAYTABLE-----------------------------------------------------------------
 const double PAYTABLE_TEXTURE_SCALE_FACTOR = 0.75;
+
+const int WINS = 11;
 
 const int TEXT_BLANK_SPACE = 250;
 
@@ -22,8 +26,6 @@ const int S_BETBTN_H = 100;
 
 const int BET_BTN_W = 75;
 const int BET_BTN_H = 75;
-
-const int WINS = 11;
 //----INTRO--------------------------------------------------------------------
 const int INTRO_BTN_W = 214;
 const int INTRO_BTN_H = 53;

@@ -3,6 +3,8 @@
 
 #include "Texture.h"
 #include "Globals.h"
+#include "Music.h"
+
 
 class ButtonObject
 {
@@ -12,6 +14,8 @@ private:
 	SDL_Point m_pTopLeft;
 	int m_iWidth;
 	int m_iHeight;
+
+	Music m_mMusic;
 public:
 	ButtonObject(SDL_Renderer* renderer = NULL, std::string path = "", 
 		int x = 0, int y = 0, int w = 100, int h = 100);

@@ -36,6 +36,10 @@ typedef enum
 
 class Card
 {
+public:
+	friend bool operator<(const Card& oldcard, const Card& newcard);
+	friend bool operator==(const Card& leftValue, const Card& rightValue);
+
 private:
 	eCardSuit m_cardSuit;
 	eCardValue m_cardValue;
@@ -43,23 +47,21 @@ private:
 	bool m_bIsHold;
 public:
 	Card& operator=(const Card& newcard);
+
 	Card();
 	Card(eCardSuit,eCardValue,SDL_Rect);
+
+	//getters
 	eCardSuit getCardSuit()const;
 	eCardValue getCardValue()const;
 	SDL_Rect* getCardRect();
+	bool getIsHold();
+
+	//setters
 	void setCardSuit(eCardSuit);
 	void setCardValue(eCardValue);
 	void setCardRect(int,int,int,int);
 	void setIsHold(bool);
-	bool getIsHold();
-    friend bool operator<(const Card& oldcard,const Card& newcard);
-	friend bool operator==(const Card& leftValue,const Card& rightValue);
-	
-
-
-
-
 };
 
 

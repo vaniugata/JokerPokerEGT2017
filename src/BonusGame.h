@@ -11,7 +11,7 @@
 class BonusGame: public Screen {
 
 private:
-	static int win;
+	static int m_win;
 	double* m_ptrCredit;
 	int m_diceResult;
 	int m_resDie1;
@@ -32,10 +32,17 @@ private:
 	SDL_Rect m_spriteDie[6];
 	SDL_Rect m_ChoiceWin[3];
 
-//	//Button objects
+	//Button objects
 	ButtonObject m_buttonX2;
 	ButtonObject m_buttonX5;
 	ButtonObject m_buttonX10;
+
+	ButtonObject m_btnMusic;
+	ButtonObject m_btnMusicPlus;
+	ButtonObject m_btnMusicMinus;
+	ButtonObject m_btnMusicPause;
+
+	bool m_bShowPlayButton = true;
 
 	//The music that will be played
 	Mix_Chunk* ButtonPress = nullptr;
@@ -67,16 +74,12 @@ public:
 	//Utiliti function
 	void delay(Uint32 ms);
 	int RandomNumberGenerator();
-	int ResultDice();
 
 	//gets and sets
-	int getDiceResult() const;
-	void setDiceResult(int diceResult);
 	int getResDie1() const;
 	void setResDie1(int resDie1);
 	int getResDie2() const;
 	void setResDie2(int resDie2);
-
 	static void setWin(int);
 
 	void Close();

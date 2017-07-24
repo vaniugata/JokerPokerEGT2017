@@ -1,20 +1,16 @@
 /*
  * Music.cpp
  *
-<<<<<<< HEAD
+ <<<<<<< HEAD
  *  Created on: 18.07.2017 ã.
-=======
+ =======
  *  Created on: 18.07.2017 ï¿½.
->>>>>>> origin/master
+ >>>>>>> origin/master
  *      Author: Borqna
  */
 
 #include "Music.h"
-
 Music::Music() {
-	// TODO Auto-generated constructor stub
-
-
 
 }
 
@@ -22,39 +18,43 @@ Music::~Music() {
 
 	// TODO Auto-generated destructor stub
 
+}
 
+void Music::setBackgraund(Mix_Music* music) {
+	Backgraund = music;
 
-	Mix_FreeChunk(ChunkMusic);
-	ChunkMusic = nullptr;
+}
+void Music::setButton(Mix_Chunk* buttonMusic) {
+	Button = buttonMusic;
+}
+void Music::setCards(Mix_Chunk* cardsMusic) {
+	Cards = cardsMusic;
+}
+void Music::setOutro(Mix_Chunk* outroMusic) {
+	Outro = outroMusic;
+}
 
+Mix_Music* Music::getBackgraund() {
+	return Backgraund;
+}
+Mix_Chunk* Music::getButton() {
+	return Button;
+}
+Mix_Chunk* Music::getCards() {
+	return Cards;
+}
+Mix_Chunk* Music::getOutro() {
+	return Outro;
 }
 
 
-void Music::setChunkMusic(Mix_Chunk* chunk){
-	ChunkMusic=chunk;
+void Music::LoadMusic()
+{
+	Backgraund = Mix_LoadMUS("ResourcesMusic/backgroundMusic.mp3");
+
+	Button = Mix_LoadWAV("ResoucesMusic/buttons.wav");
+
+	Cards = Mix_LoadWAV("ResourcesMusic/cards.wav");
+
+	Outro = Mix_LoadWAV("ResourcesMusic/outro.wav");
 }
-
-Mix_Chunk* Music::getChunkMusic(){
-	return ChunkMusic;
-}
-void Music::LoadMusic(){
-
-	ChunkMusic = Mix_LoadWAV("ResourcesMusic/fonMusic.wav");
-
-	if(ChunkMusic==NULL){
-
-		std::cerr<<" Problem to load "<<std::endl;
-	}
-}
-void Music::PlayMusic(){
-
-	Mix_PlayChannel(0,ChunkMusic,0);
-
-}
-<<<<<<< HEAD
-//void Music::Screen()
-=======
-void Music::Screen()
->>>>>>> origin/master
-
-

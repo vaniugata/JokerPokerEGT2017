@@ -1,18 +1,18 @@
 #include "PaytableObject.h"
 #include "Globals.h"
 #include <iostream>
-using std::cerr;
+using std::cout;
 #include <sstream>
 using std::stringstream;
 
-int PaytableObject::coef = 2;
-int PaytableObject::oldCoef = 1;
+int PaytableObject::m_iNextBetCoef = 2;
+int PaytableObject::m_iPrevBetCoef = 1;
 
 PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	m_texture(), 
 	m_btnBetOne(renderer, "Resources/betButtons.png", \
 		0, 0, S_BETBTN_W, S_BETBTN_H),
-	m_btnbetMax(renderer, "Resources/betButtons.png", \
+	m_btnBetMax(renderer, "Resources/betButtons.png", \
 		0, 0, S_BETBTN_W, S_BETBTN_H),
 	m_iWinnerIndex(-1)
 {
@@ -21,24 +21,23 @@ PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 
 	m_btnBetOne.SetPosition(SCREEN_WIDTH - m_btnBetOne.GetWidth(), \
 	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
-	m_btnbetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
+	m_btnBetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
 		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
 	m_tText.InitFont("Resources/font.ttf", 18);
+	//init sfx 10 diffrent winnig sounds
+	LoadWinSounds();
 }
 
 PaytableObject::~PaytableObject()
 {
-	std::cerr << "PaytableObject deleted.\n";
-}
-
-ButtonObject& PaytableObject::GetBetOneBtn() 
-{
-	return m_btnBetOne;
-}
-
-ButtonObject & PaytableObject::GetBetMaxBtn()
-{
-	return m_btnbetMax;
+	std::cout << "PaytableObject deleted.\n";
+	for(int i = 0; i < WINS; i++)
+	{
+		Mix_FreeMusic(m_sfx[i]);
+		m_sfx[i] = nullptr;
+	}
+	TTF_CloseFont(m_font);
+	m_font = nullptr;
 }
 
 const std::vector<int>& PaytableObject::GetBet() const
@@ -49,6 +48,18 @@ const std::vector<int>& PaytableObject::GetBet() const
 void PaytableObject::SetWinnerIndex(int index)
 {
 	this->m_iWinnerIndex = index;
+}
+
+void PaytableObject::LoadWinSounds()
+{
+	std::stringstream file;
+	for(int i = 0; i < WINS; i++)
+	{
+		 file << "ResourcesMusic/pt" << i + 1 << ".ogg";
+		 m_sfx[i] = Mix_LoadMUS(file.str().c_str());
+		 if(m_sfx[i] == nullptr) { std::cout << Mix_GetError() << "\n"; return; }
+		 file.str("");
+	}
 }
 
 void PaytableObject::InitFont(std::string path)
@@ -130,25 +141,31 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer, int winnerIndx)
 	}
 }
 
+void PaytableObject::PlaySoundEffect(int i)
+{
+	if(i < 0 || i > 10) { return; }
+	Mix_PlayMusic(m_sfx[i], 0);
+}
+
 
 
 void PaytableObject::IncreaseBet()//Увеличете залога
 {
 	for(int i = 0; i < m_vecBets.size(); i++)
 	{
-		m_vecBets[i] /= oldCoef;
-		m_vecBets[i] *= coef;
+		m_vecBets[i] /= m_iPrevBetCoef;
+		m_vecBets[i] *= m_iNextBetCoef;
 	}
-	coef++;
-	oldCoef++;
+	m_iNextBetCoef++;
+	m_iPrevBetCoef++;
 
-	if(coef >= 12)
+	if(m_iNextBetCoef >= 12)
 	{
 		for(int i = 0; i < m_vecBets.size(); i++)
-			m_vecBets[i] /= oldCoef;
+			m_vecBets[i] /= m_iPrevBetCoef;
 		
-		oldCoef = 1;
-		coef = 2;
+		m_iPrevBetCoef = 1;
+		m_iNextBetCoef = 2;
 	}
 }
 
@@ -161,7 +178,7 @@ void PaytableObject::SetMaxBet()
 		m_vecBets[i] = arrMaxBets[i];
 	}
 
-	coef = 11;
-	oldCoef = 10;
+	m_iNextBetCoef = 11;
+	m_iPrevBetCoef = 10;
 }
 

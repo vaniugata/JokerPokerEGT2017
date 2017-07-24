@@ -59,7 +59,7 @@ public:
 
 	void Draw();
 	void Render();
-	void RenderRound(Deck* deck);
+	void RenderRound();
 	void RenderGameInfo();
 	void RenderGameOver();
 	void HandleEvent();

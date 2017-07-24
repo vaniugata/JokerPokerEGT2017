@@ -88,11 +88,13 @@ void OutroScreen::HandleEvent() {
 
 void OutroScreen::Delay() {
 	int oldTime = SDL_GetTicks();
-	while (true) {
-		if (oldTime == SDL_GetTicks() - 5000) {
+	while (true) 
+	{
+		if(oldTime == SDL_GetTicks() - 5000)
+		{
 			*m_ptrGameState = INTRO;
 			break;
-		}
+		}	
 	}
 }
 

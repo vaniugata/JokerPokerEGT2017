@@ -15,13 +15,6 @@ private:
 	eGameState* m_ptrGameState;
 	static double m_dCredit;
 
-	////////////////////////////////
-
-//	ButtonObject m_btnMusic;
-//	ButtonObject m_btnMusicPlus;
-//	ButtonObject m_btnMusicMinus;
-//	ButtonObject m_btnMusicPause;
-
 	bool m_bShowPlayButton = true;
 
 	Music m_mMusic;

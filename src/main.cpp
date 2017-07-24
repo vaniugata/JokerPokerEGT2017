@@ -21,7 +21,6 @@ int main(int args, char* argc[])
 	std::cout << "Credit: " << Recovery::Read().credit << " Bet: "
 		<< Recovery::Read().bet << " Win: "
 		<< Recovery::Read().win << "\n";
-	//Music.PlayMusic();
 
 	while(game.m_eGameState != QUIT)
 	{

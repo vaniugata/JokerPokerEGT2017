@@ -1,15 +1,7 @@
-/*
- * Music.cpp
- *
- <<<<<<< HEAD
- *  Created on: 18.07.2017 ã.
- =======
- *  Created on: 18.07.2017 ï¿½.
- >>>>>>> origin/master
- *      Author: Borqna
- */
-
 #include "Music.h"
+#include <iostream>
+using std::cout;
+
 Music::Music() {
 
 }
@@ -52,9 +44,12 @@ void Music::LoadMusic()
 {
 	Backgraund = Mix_LoadMUS("ResourcesMusic/backgroundMusic.mp3");
 
-	Button = Mix_LoadWAV("ResoucesMusic/buttons.wav");
+	Button = Mix_LoadWAV("ResourcesMusic/confirm.wav");
+	if(Button == nullptr) { std::cout << " Can't load confirm.wav" << Mix_GetError(); }
 
 	Cards = Mix_LoadWAV("ResourcesMusic/cards.wav");
+	if(Cards == nullptr) { std::cout << Mix_GetError(); }
 
 	Outro = Mix_LoadWAV("ResourcesMusic/outro.wav");
+	if(Outro == nullptr) { std::cout << Mix_GetError(); }
 }

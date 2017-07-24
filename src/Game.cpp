@@ -77,6 +77,11 @@ Game::~Game()
 	delete m_paytable;
 	delete m_btnCashOut;
 	delete m_btnDealDraw;
+	delete m_btnMusic;
+	delete m_btnMusicPlus;
+	delete m_btnMusicMinus;
+	delete m_btnMusicPause;
+	delete m_ptrDeck;
 	std::cout << "Game deleted.\n";
 	for(int i = 0; i < m_vecEvaluations.size(); i++)
 	{
@@ -170,7 +175,7 @@ void Game::Render()
 	if(m_ptrDeck != nullptr)
 	{
 		m_ptrDeck->RenderStart(m_renderer);
-		RenderRound(m_ptrDeck);
+		RenderRound();
 	}
 	if(m_ptrDeck->GetKillCount() == 2) { m_ptrDeck->DimCards(m_renderer); }
 	if(m_bIsGameOver) { RenderGameOver(); }
@@ -178,11 +183,11 @@ void Game::Render()
 	RenderGameInfo();
 }
 
-void Game::RenderRound(Deck* deck)
+void Game::RenderRound()
 {
-	deck->RenderHand(m_renderer);
-	deck->RenderHoldBtns(m_renderer);
-	deck->RenderHoldStamps(m_renderer);	
+	m_ptrDeck->RenderHand(m_renderer);
+	m_ptrDeck->RenderHoldBtns(m_renderer);
+	m_ptrDeck->RenderHoldStamps(m_renderer);
 }
 
 void Game::RenderGameInfo()
@@ -308,7 +313,6 @@ void Game::ProcessMouseInput()
 	}
 	if(m_btnDealDraw->IsSelected())
 	{
-
 		ProcessRound();
 	}
 }
@@ -437,8 +441,8 @@ void Game::InitSDL()
 
 void Game::Close()
 {
-//	SDL_DestroyWindow(m_window);
-//	m_window = nullptr;
+	SDL_DestroyWindow(m_window);
+	m_window = nullptr;
 
 	SDL_Quit();
 }

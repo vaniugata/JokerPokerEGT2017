@@ -1,10 +1,9 @@
-#ifndef GAME_STATE_H
-#define GAME_STATE_H
+#ifndef SCREEN_H
+#define SCREEN_H
 #include"Music.h"
 #include "includesSDL2.h"
 
-
-class Screen
+class Screen 
 {
 protected:
 	SDL_Renderer* m_renderer;
@@ -17,6 +16,5 @@ public:
 	virtual void Render() = 0;
 	virtual void HandleEvent() = 0;
 };
-
 #endif
 

@@ -22,7 +22,7 @@ private:
 	std::vector<Card> hand;
 public:
 	ButtonObject m_currentBtn;
-	ButtonObject m_vecCardHold[5];
+	ButtonObject m_arrCardHold[5];
 
 public:
 	Deck(SDL_Renderer*);
@@ -52,8 +52,6 @@ public:
 	void HoldSelectedCards();
 
 	void DimCards(SDL_Renderer* renderer);
-
-	void render_card_from_deck(SDL_Renderer* renderer, int i);
 };
 #endif 
 

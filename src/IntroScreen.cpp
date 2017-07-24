@@ -149,9 +149,16 @@ void IntroScreen::RenderInfoWindow()
 
 void IntroScreen::EvaluateInfoRendering()
 {
-	 if(m_btnInfo.IsSelected() && m_bShowInfo == false)
+	if(m_btnInfo.IsSelected() && m_bShowInfo == false)
+	{
+		Mix_PlayChannel(-1, m_mMusic.getButton(), 0);
 		m_bShowInfo = true;
+	 }
+	
 	else if(m_btnInfo.IsSelected() && m_bShowInfo == true)
+	{
+		Mix_PlayChannel(-1, m_mMusic.getButton(), 0);
 		m_bShowInfo = false;
+	}
 }
 

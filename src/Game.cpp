@@ -218,8 +218,11 @@ void Game::RenderGameInfo()
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
 	ss << m_paytable->GetBet().at(10);
+<<<<<<< HEAD
 	//if(m_iBet != 0 ){ss<< *GetBet();}
 
+=======
+>>>>>>> origin/master
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
 
@@ -300,6 +303,7 @@ void Game::ProcessMouseInput()
 	{
 		m_ptrDeck->HoldSelectedCards();
 	}
+<<<<<<< HEAD
 	else if (m_btnMusic->IsSelected() && m_bShowPlayButton == true)
 	{
 		m_bShowPlayButton = false;
@@ -308,6 +312,34 @@ void Game::ProcessMouseInput()
 	{
 		m_bShowPlayButton = true;
 	}
+=======
+	else if(m_btnMusic->IsSelected() && m_bShowPlayButton == true)
+				{
+					m_bShowPlayButton = false;
+
+					Mix_PauseMusic();
+				}
+				else if(m_btnMusicPause->IsSelected() && m_bShowPlayButton == false)
+				{
+					m_bShowPlayButton = true;
+
+					Mix_PlayMusic(m_mMusic.getBackgraund(),-1);
+				}
+				else if(m_btnMusicPlus->IsSelected())
+				{
+					m_iCounterVolumeMusic+=10;
+					if ( m_iCounterVolumeMusic > 100)
+						m_iCounterVolumeMusic = 100;
+					Mix_VolumeMusic(m_iCounterVolumeMusic);
+				}
+				else if (m_btnMusicMinus->IsSelected())
+				{
+					m_iCounterVolumeMusic-=10;
+					if (m_iCounterVolumeMusic < 10)
+						m_iCounterVolumeMusic = 10;
+					Mix_VolumeMusic(m_iCounterVolumeMusic);
+				}
+>>>>>>> origin/master
 	if(m_btnDealDraw->IsSelected())
 	{
 
@@ -346,7 +378,6 @@ void Game::ProcessRound()
 			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
 
 			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10), m_paytable->GetBet().at(m_iWinIndex) );
-			m_iBet = m_paytable->GetBet().at(10);
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);
 			//play winning sound

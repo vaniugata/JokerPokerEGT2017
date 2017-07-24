@@ -18,13 +18,10 @@ private:
 	SDL_Renderer* m_renderer;
 
 	//game components
-	//Texture objects
 	Texture m_tBackground;
 	Texture m_tCredit;
 	Texture m_tGameOver;
-	//PaytableObject objects
 	PaytableObject* m_paytable;
-	//Deck objects
 	Deck* m_ptrDeck;
 
 	std::vector<Evaluation*> m_vecEvaluations;
@@ -42,7 +39,13 @@ private:
 	int m_iWinIndex;
 	bool m_bShowPlayButton = true;
 
+<<<<<<< HEAD
 	Music m_mMusic;
+=======
+	Music m_mCards;
+	Music m_mMusic;
+	int m_iCounterVolumeMusic = 10;
+>>>>>>> origin/master
 
 public:
 	eGameState m_eGameState;
@@ -52,10 +55,18 @@ public:
 	Game();
 	~Game();
 
+<<<<<<< HEAD
 
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
 	int* GetBet();
+=======
+	//getters
+	SDL_Renderer* GetRenderer() const;
+	double* GetCredit();
+	int* GetBet();
+	//setters
+>>>>>>> origin/master
 	void SetBetFromRecovery(); // only if game returns form recovery state
 	void SetGameState(eGameState gs);
 

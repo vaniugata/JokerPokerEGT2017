@@ -17,10 +17,13 @@ private:
 
 	////////////////////////////////
 
+<<<<<<< HEAD
 //	ButtonObject m_btnMusic;
 //	ButtonObject m_btnMusicPlus;
 //	ButtonObject m_btnMusicMinus;
 //	ButtonObject m_btnMusicPause;
+=======
+>>>>>>> origin/master
 
 	bool m_bShowPlayButton = true;
 
@@ -34,6 +37,7 @@ public:
 	void Render();
 	void HandleEvent();
 	void Delay();
+
 
 	static void SetCredit(double credit);
 };

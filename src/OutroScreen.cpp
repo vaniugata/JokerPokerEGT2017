@@ -21,7 +21,7 @@ OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent,
 //				"Resources/Pause.png", 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE)
 
 {
-	m_tBackground.LoadFromFile(renderer, "Resources/intro.png");
+	m_tBackground.LoadFromFile(renderer, "Resources/outropictures.png");
 	m_tCredit.InitFont("Resources/font.ttf", 22);
 
 	m_mMusic.LoadMusic();
@@ -49,6 +49,7 @@ void OutroScreen::Render() {
 	m_tCredit.Render(m_renderer, (SCREEN_WIDTH - m_tCredit.GetWidth()) / 2, 50,
 			m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str();
+<<<<<<< HEAD
 //	SDL_Rect rectMusicPlus { 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
 //	m_btnMusicPlus.Render(m_renderer, &rectMusicPlus, SCREEN_WIDTH - 45, 5,
 //			BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
@@ -64,6 +65,8 @@ void OutroScreen::Render() {
 //	SDL_Rect rectMusicMinus { 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
 //	m_btnMusicMinus.Render(m_renderer, &rectMusicMinus, SCREEN_WIDTH - 153, 5,
 //			BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
+=======
+>>>>>>> origin/master
 
 }
 
@@ -74,6 +77,7 @@ void OutroScreen::HandleEvent() {
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 		Mix_PlayChannel(-1,m_mMusic.getOutro(),0);
+<<<<<<< HEAD
 //
 //		if (m_btnMusic.IsSelected() && m_bShowPlayButton == true) {
 //			m_bShowPlayButton = false;
@@ -83,10 +87,18 @@ void OutroScreen::HandleEvent() {
 //		break;
 //
 //	}
+=======
+
+>>>>>>> origin/master
 	}
 }
 
 void OutroScreen::Delay() {
+<<<<<<< HEAD
+=======
+	Mix_PauseMusic();
+	Mix_PlayChannel(-1,m_mMusic.getOutro(),-1);
+>>>>>>> origin/master
 	int oldTime = SDL_GetTicks();
 	while (true) {
 		if (oldTime == SDL_GetTicks() - 5000) {
@@ -99,3 +111,4 @@ void OutroScreen::Delay() {
 void OutroScreen::SetCredit(double credit) {
 	m_dCredit = credit;
 }
+

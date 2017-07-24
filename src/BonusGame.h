@@ -50,7 +50,6 @@ private:
 	Mix_Chunk* RollDice = nullptr;
 
 
-	Music m_mMusic;
 	int m_iCounterVolumeMusic;
 
 public:

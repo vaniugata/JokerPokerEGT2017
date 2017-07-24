@@ -1,6 +1,20 @@
+/*
+* Music.cpp
+*
+<<<<<<< HEAD
+*  Created on: 18.07.2017 ã.
+=======
+*  Created on: 18.07.2017 ï¿½.
+>>>>>>> origin/master
+*      Author: Borqna
+*/
+
 #include "Music.h"
-#include <iostream>
-using std::cout;
+
+Mix_Music* Music::Backgraund = nullptr;
+Mix_Chunk* Music::Button = nullptr;
+Mix_Chunk* Music::Cards = nullptr;
+Mix_Chunk* Music::Outro = nullptr;
 
 Music::Music() {
 
@@ -43,14 +57,29 @@ Mix_Chunk* Music::getOutro() {
 void Music::LoadMusic()
 {
 	Backgraund = Mix_LoadMUS("ResourcesMusic/backgroundMusic.mp3");
-	if(Backgraund == nullptr) { std::cout << " Can't load background music file" << Mix_GetError(); }
+	if(Backgraund == nullptr) { std::cout << Mix_GetError() << "\n"; }
 
 	Button = Mix_LoadWAV("ResourcesMusic/buttons.wav");
-	if(Button == nullptr) { std::cout << " Can't load confirm.wav" << Mix_GetError(); }
+	if(Button == nullptr) { std::cout << Mix_GetError() << "\n"; }
 
 	Cards = Mix_LoadWAV("ResourcesMusic/cards.wav");
-	if(Cards == nullptr) { std::cout << Mix_GetError(); }
+	if(Cards == nullptr) { std::cout << Mix_GetError() << "\n"; }
 
 	Outro = Mix_LoadWAV("ResourcesMusic/outro.wav");
-	if(Outro == nullptr) { std::cout << Mix_GetError(); }
+	if(Outro == nullptr) { std::cout << Mix_GetError() << "\n"; }
+}
+
+void Music::Free()
+{
+	Mix_FreeMusic(Backgraund);
+	Backgraund = nullptr;
+
+	Mix_FreeChunk(Button);
+	Button = nullptr;
+
+	Mix_FreeChunk(Cards);
+	Cards = nullptr;
+
+	Mix_FreeChunk(Outro);
+	Outro = nullptr;
 }

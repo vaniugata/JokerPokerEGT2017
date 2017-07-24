@@ -17,7 +17,7 @@ private:
 
 	bool m_bShowPlayButton = true;
 
-	Music m_mMusic;
+	//Music m_mMusic;
 
 public:
 	OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState* gameState);

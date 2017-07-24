@@ -27,8 +27,6 @@ private:
 	ButtonObject m_btnMusicMinus;
 	ButtonObject m_btnMusicPause;
 
-	Music m_mMusic;
-
 	bool m_bShowInfo = false;
 	bool m_bShowPlayButton = true;
 	int m_iCounterVolumeMusic = 10;

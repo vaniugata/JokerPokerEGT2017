@@ -12,19 +12,11 @@ OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent,
 	eGameState* gameState) :
 	Screen(renderer), m_ptrEvent(ptrEvent), m_ptrGameState(gameState), m_tBackground(
 		renderer)
-	//				m_btnMusicPlus(renderer, "Resources/IncreasesB.png",
-	//				0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE), m_btnMusic(renderer,
-	//				"Resources/PlayB.png", 0, 0, BUTTON_VOLUME_SIZE,
-	//				BUTTON_VOLUME_SIZE), m_btnMusicMinus(renderer,
-	//				"Resources/DecreasesB.png", 0, 0, BUTTON_VOLUME_SIZE,
-	//				BUTTON_VOLUME_SIZE), m_btnMusicPause(renderer,
-	//				"Resources/Pause.png", 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE)
-
 {
 	m_tBackground.LoadFromFile(renderer, "Resources/outropictures.png");
 	m_tCredit.InitFont("Resources/font.ttf", 22);
 
-	m_mMusic.LoadMusic();
+//	m_mMusic.LoadMusic();
 }
 
 OutroScreen::~OutroScreen() {
@@ -48,23 +40,6 @@ void OutroScreen::Render() {
 	m_tCredit.Render(m_renderer, (SCREEN_WIDTH - m_tCredit.GetWidth()) / 2, 50,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str();
-
-	//	SDL_Rect rectMusicPlus { 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
-	//	m_btnMusicPlus.Render(m_renderer, &rectMusicPlus, SCREEN_WIDTH - 45, 5,
-	//			BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
-	//
-	//	SDL_Rect rectMusic { 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
-	//	if (m_bShowPlayButton) {
-	//		m_btnMusic.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5,
-	//				BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
-	//	} else {
-	//		m_btnMusicPause.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5,
-	//				BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
-	//	}
-	//	SDL_Rect rectMusicMinus { 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
-	//	m_btnMusicMinus.Render(m_renderer, &rectMusicMinus, SCREEN_WIDTH - 153, 5,
-	//			BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
-	
 }
 
 void OutroScreen::HandleEvent() 
@@ -83,7 +58,7 @@ void OutroScreen::HandleEvent()
 void OutroScreen::Delay() 
 {
 	Mix_PauseMusic();
-	Mix_PlayChannel(-1, m_mMusic.getOutro(), 0);
+//	Mix_PlayChannel(-1, m_mMusic.getOutro(), 0);
 	
 	int oldTime = SDL_GetTicks();
 	while(true)
@@ -95,7 +70,7 @@ void OutroScreen::Delay()
 		}
 	}
 	Mix_Pause(-1);
-	Mix_PlayMusic(m_mMusic.getBackgraund(), -1);
+//	Mix_PlayMusic(m_mMusic.getBackgraund(), -1);
 }
 
 void OutroScreen::SetCredit(double credit) {

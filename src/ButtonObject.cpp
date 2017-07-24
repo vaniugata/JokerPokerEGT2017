@@ -4,12 +4,10 @@ using std::cout;
 
 ButtonObject::ButtonObject(SDL_Renderer* renderer, std::string path,
 	int x, int y, int w, int h) :
-	m_texture(), m_iWidth(w), m_iHeight(h)
+	 m_iWidth(w), m_iHeight(h)
 {
-	m_texture.LoadFromFile(renderer, path);
 	m_pTopLeft.x = x;
 	m_pTopLeft.y = y;
-	m_mMusic.LoadMusic();
 }
 
 ButtonObject::~ButtonObject()

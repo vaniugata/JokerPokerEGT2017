@@ -8,14 +8,14 @@
 
 class ButtonObject
 {
-private:
-	//SDL_Renderer* renderer;
+public:
 	Texture m_texture;
+private:
 	SDL_Point m_pTopLeft;
 	int m_iWidth;
 	int m_iHeight;
 
-	Music m_mMusic;
+//	Music m_mMusic;
 public:
 	ButtonObject(SDL_Renderer* renderer = NULL, std::string path = "", 
 		int x = 0, int y = 0, int w = 100, int h = 100);

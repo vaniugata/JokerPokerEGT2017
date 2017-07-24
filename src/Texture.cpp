@@ -4,7 +4,7 @@
 #include "includesSDL2.h"
 
 
-Texture::Texture(SDL_Renderer* renderer, std::string path) : 
+Texture::Texture(SDL_Renderer* renderer, std::string path) :
 	m_texture(nullptr), m_font(nullptr), m_iWidth(100), m_iHeight(100)
 {
 }
@@ -40,8 +40,8 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 	SDL_Surface* surface = IMG_Load(path.c_str() );
 	if(surface == nullptr)
 	{
-		std::cerr << "Unable to load image" << path.c_str() << " ! SDL_image Error: " << \
-			SDL_GetError();
+		std::cerr << "Unable to load image" << path << " ! SDL_image Error: " << \
+			SDL_GetError() << "\n";
 		return;
 	}
 	SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -59,7 +59,10 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 void Texture::LoadFromRendererdText(SDL_Renderer * renderer, \
 	std::string fontPath, std::string text, SDL_Color color, int fontSize)
 {
-	Free();
+	if(m_font != nullptr)
+	{
+		Free();
+	}
 	InitFont(fontPath, fontSize);
 
 	SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), color);

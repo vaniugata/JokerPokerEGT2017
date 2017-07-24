@@ -24,22 +24,33 @@ int BonusGame::m_win = 0;
 
 BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 	eGameState& eGameState, double* credit) :
-	m_ptrCredit(credit), Screen(renderer), m_tBackgorund(), m_event(&event), m_ptrGameState(
-		&eGameState), m_buttonX2(renderer,
-			"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
-			BONUSBTN_H), m_buttonX5(renderer,
-				"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
-				BONUSBTN_H), m_buttonX10(renderer,
-					"Resources/buttons-BonusGame.png", 0, 0, BONUSBTN_W,
-					BONUSBTN_H), m_btnMusicPlus(renderer,
-						"Resources/IncreasesB.png", 0, 0, BUTTON_VOLUME_SIZE,
-						BUTTON_VOLUME_SIZE), m_btnMusic(renderer, "Resources/PlayB.png",
-							0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE), m_btnMusicMinus(
-								renderer, "Resources/DecreasesB.png", 0, 0, BUTTON_VOLUME_SIZE,
-								BUTTON_VOLUME_SIZE), m_btnMusicPause(renderer,
-									"Resources/Pause.png", 0, 0, BUTTON_VOLUME_SIZE,
-									BUTTON_VOLUME_SIZE) {
+	m_ptrCredit(credit), Screen(renderer), m_tBackgorund(), m_event(&event),
+	m_ptrGameState(&eGameState), m_buttonX2(), m_buttonX5(), m_buttonX10(),
+	m_btnMusicPlus(), m_btnMusic(), m_btnMusicMinus(), m_btnMusicPause() 
+{
+	//------BUTTONS--------------------------
+	m_buttonX2.m_texture.LoadFromFile(renderer, "Resources/buttons-BonusGame.png");
+	m_buttonX2.SetDimentions(BONUSBTN_W, BONUSBTN_H);
 
+	m_buttonX5.m_texture.LoadFromFile(renderer,	"Resources/buttons-BonusGame.png");
+	m_buttonX5.SetDimentions(BONUSBTN_W, BONUSBTN_H);
+
+	m_buttonX10.m_texture.LoadFromFile(renderer, "Resources/buttons-BonusGame.png");
+	m_buttonX10.SetDimentions(BONUSBTN_W, BONUSBTN_H);
+
+	m_btnMusicPlus.m_texture.LoadFromFile(renderer, "Resources/IncreasesB.png");
+	m_btnMusicPlus.SetDimentions(BUTTON_VOLUME_SIZE , BUTTON_VOLUME_SIZE);
+
+	m_btnMusic.m_texture.LoadFromFile(renderer, "Resources/PlayB.png");
+	m_btnMusic.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
+
+	m_btnMusicMinus.m_texture.LoadFromFile(renderer, "Resources/DecreasesB.png");
+	m_btnMusicMinus.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
+
+	m_btnMusicPause.m_texture.LoadFromFile(renderer, "Resources/Pause.png");
+	m_btnMusicPause.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
+	//------BUTTONS--------------------------
+	
 	this->m_renderer = renderer;
 	this->m_resDie1 = m_resDie1;
 	this->m_resDie2 = m_resDie2;
@@ -49,9 +60,6 @@ BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 	LoadMusicFiles();
 	LoadDieFiles();
 	LoadChoiceWinFiles();
-	m_mMusic.LoadMusic();
-	Mix_PlayMusic(m_mMusic.getBackgraund(), -1);
-
 }
 
 BonusGame::~BonusGame() {
@@ -253,7 +261,7 @@ void BonusGame::MusicController()
 	else if(m_btnMusicPause.IsSelected() && m_bShowPlayButton == false)
 	{
 		m_bShowPlayButton = true;
-		Mix_PlayMusic(m_mMusic.getBackgraund(), -1);
+		Mix_PlayMusic(Music::getBackgraund(), -1);
 	}
 	else if(m_btnMusicPlus.IsSelected())
 	{

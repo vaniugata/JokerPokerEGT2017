@@ -6,8 +6,6 @@ const int SCREEN_HEIGHT = 680;
 
 const double DENOM = 5.00;
 
-const int BUTTON_VOLUME_SIZE = 40;
-
 //----PAYTABLE-----------------------------------------------------------------
 const double PAYTABLE_TEXTURE_SCALE_FACTOR = 0.75;
 
@@ -67,7 +65,7 @@ const int DEALDRAWBTN_H =70;
 
 //---ButtonsVolume------------------------------------
 
-const int BUTTONVOLUMESIZE = 40;
+const int BUTTON_VOLUME_SIZE = 40;
 
 
 typedef enum

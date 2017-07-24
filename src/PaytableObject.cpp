@@ -10,21 +10,26 @@ int PaytableObject::m_iPrevBetCoef = 1;
 
 PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	m_texture(), 
-	m_btnBetOne(renderer, "Resources/betButtons.png", \
-		0, 0, S_BETBTN_W, S_BETBTN_H),
-	m_btnBetMax(renderer, "Resources/betButtons.png", \
-		0, 0, S_BETBTN_W, S_BETBTN_H),
 	m_iWinnerIndex(-1)
 {
 	m_texture.LoadFromFile(renderer, "Resources/paytable2.png");
-	InitFont("Resources/font.ttf");
+	
+	m_btnBetOne.m_texture.LoadFromFile(renderer, "Resources/betButtons.png");
 
-	m_btnBetOne.SetPosition(SCREEN_WIDTH - m_btnBetOne.GetWidth(), \
+	m_btnBetOne.SetDimentions(m_btnBetOne.m_texture.GetWidth(),
+		m_btnBetOne.m_texture.GetHeight() / 2);
+
+		m_btnBetOne.SetPosition(SCREEN_WIDTH - m_btnBetOne.GetWidth(), \
 	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
+
+		m_btnBetMax.m_texture.LoadFromFile(renderer, "Resources/betButtons.png");
+
+		m_btnBetMax.SetDimentions(m_btnBetMax.m_texture.GetWidth(),
+			m_btnBetMax.m_texture.GetHeight() / 2);
+
 	m_btnBetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
 		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
-	m_tText.InitFont("Resources/font.ttf", 18);
-	//init sfx 10 diffrent winnig sounds
+	
 	LoadWinSounds();
 }
 

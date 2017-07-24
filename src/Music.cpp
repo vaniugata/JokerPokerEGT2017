@@ -42,7 +42,8 @@ Mix_Chunk* Music::getOutro() {
 
 void Music::LoadMusic()
 {
-	Backgraund = Mix_LoadMUS("ResourcesMusic/backgroundMusic.mp3");
+	Backgraund = Mix_LoadMUS("ResourcesMusic/backgorundMusic.wav");
+	if(Backgraund == nullptr) { std::cout << " Can't load background music file" << Mix_GetError(); }
 
 	Button = Mix_LoadWAV("ResourcesMusic/confirm.wav");
 	if(Button == nullptr) { std::cout << " Can't load confirm.wav" << Mix_GetError(); }

@@ -1,10 +1,3 @@
-/*
- * WinBonus.cpp
- *
- *  Created on: 14.07.2017 г.
- *      Author: Rossi
- */
-
 #include "WinBonus.h"
 #include <iostream>
 using std::cerr;
@@ -65,7 +58,8 @@ void WinBonus::Render()
 void WinBonus::LoadMusicFiles()
 {
 	winning = Mix_LoadWAV("ResourcesMusic/Winning.wav");
-	if (winning == nullptr) {
+	if (winning == nullptr)
+	{
 		std::cout << "Failed to load scratch Winning! SDL_mixer Error:"
 				<< Mix_GetError() << std::endl;
 		return;

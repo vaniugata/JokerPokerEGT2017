@@ -65,6 +65,10 @@ const int BONUSBTN_H = 122;
 const int DEALDRAWBTN_W = 240;
 const int DEALDRAWBTN_H =70;
 
+//---ButtonsVolume------------------------------------
+
+const int BUTTONVOLUMESIZE = 40;
+
 
 typedef enum
 {

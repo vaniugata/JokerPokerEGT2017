@@ -28,6 +28,7 @@ public:
 	void HandleEvent();
 	void Delay();
 
+
 	static void SetCredit(double credit);
 };
 #endif

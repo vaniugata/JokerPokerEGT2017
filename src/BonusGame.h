@@ -11,7 +11,7 @@
 class BonusGame: public Screen {
 
 private:
-	static int win;
+	static int m_win;
 	double* m_ptrCredit;
 	int m_diceResult;
 	int m_resDie1;
@@ -44,15 +44,22 @@ private:
 
 	bool m_bShowPlayButton = true;
 
+
+	//The music that will be played
+	Mix_Chunk* ButtonPress = nullptr;
+	Mix_Chunk* RollDice = nullptr;
+
+
+	Music m_mMusic;
+	int m_iCounterVolumeMusic;
+
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 			double* credit);
 
 	virtual ~BonusGame();
 
-	//The music that will be played
-	Mix_Chunk* ButtonPress = nullptr;
-	Mix_Chunk* RollDice = nullptr;
+
 
 	//GetCredit
 	double* GetCredit();
@@ -73,17 +80,16 @@ public:
 	//Utiliti function
 	void delay(Uint32 ms);
 	int RandomNumberGenerator();
-	int ResultDice();
 
 	//gets and sets
-	int getDiceResult() const;
-	void setDiceResult(int diceResult);
 	int getResDie1() const;
 	void setResDie1(int resDie1);
 	int getResDie2() const;
 	void setResDie2(int resDie2);
-
 	static void setWin(int);
+
+	//music stuff
+	void MusicController();
 
 	void Close();
 

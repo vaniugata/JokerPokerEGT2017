@@ -9,7 +9,7 @@
 #include "Deck.h"
 #include "Evaluation\Evaluation.h"
 
-class Game 
+class Game
 {
 private:
 	double m_dCredit;
@@ -39,13 +39,11 @@ private:
 	int m_iWinIndex;
 	bool m_bShowPlayButton = true;
 
-<<<<<<< HEAD
-	Music m_mMusic;
-=======
+
 	Music m_mCards;
 	Music m_mMusic;
 	int m_iCounterVolumeMusic = 10;
->>>>>>> origin/master
+
 
 public:
 	eGameState m_eGameState;
@@ -55,18 +53,11 @@ public:
 	Game();
 	~Game();
 
-<<<<<<< HEAD
 
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
 	int* GetBet();
-=======
-	//getters
-	SDL_Renderer* GetRenderer() const;
-	double* GetCredit();
-	int* GetBet();
-	//setters
->>>>>>> origin/master
+
 	void SetBetFromRecovery(); // only if game returns form recovery state
 	void SetGameState(eGameState gs);
 

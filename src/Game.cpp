@@ -218,11 +218,10 @@ void Game::RenderGameInfo()
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
 	ss << m_paytable->GetBet().at(10);
-<<<<<<< HEAD
+
 	//if(m_iBet != 0 ){ss<< *GetBet();}
 
-=======
->>>>>>> origin/master
+
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
 
@@ -303,16 +302,7 @@ void Game::ProcessMouseInput()
 	{
 		m_ptrDeck->HoldSelectedCards();
 	}
-<<<<<<< HEAD
-	else if (m_btnMusic->IsSelected() && m_bShowPlayButton == true)
-	{
-		m_bShowPlayButton = false;
-	}
-	else if (m_btnMusicPause->IsSelected() && m_bShowPlayButton == false)
-	{
-		m_bShowPlayButton = true;
-	}
-=======
+
 	else if(m_btnMusic->IsSelected() && m_bShowPlayButton == true)
 				{
 					m_bShowPlayButton = false;
@@ -339,7 +329,7 @@ void Game::ProcessMouseInput()
 						m_iCounterVolumeMusic = 10;
 					Mix_VolumeMusic(m_iCounterVolumeMusic);
 				}
->>>>>>> origin/master
+
 	if(m_btnDealDraw->IsSelected())
 	{
 

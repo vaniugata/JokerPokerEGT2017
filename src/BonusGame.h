@@ -43,13 +43,12 @@ private:
 	ButtonObject m_btnMusicPause;
 
 	bool m_bShowPlayButton = true;
-<<<<<<< HEAD
+
 
 	//The music that will be played
 	Mix_Chunk* ButtonPress = nullptr;
 	Mix_Chunk* RollDice = nullptr;
-=======
->>>>>>> origin/master
+
 
 	Music m_mMusic;
 	int m_iCounterVolumeMusic;
@@ -60,9 +59,7 @@ public:
 
 	virtual ~BonusGame();
 
-	//The music that will be played
-	Mix_Chunk* ButtonPress = nullptr;
-	Mix_Chunk* RollDice = nullptr;
+
 
 	//GetCredit
 	double* GetCredit();

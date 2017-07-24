@@ -6,28 +6,18 @@ using std::cout;
 #include <sstream>
 using std::stringstream;
 
-<<<<<<< HEAD:src/IntroScreen.cpp
-
 IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit,int* bet) :
 	m_ptrBet(bet),
-=======
-Intro::Intro(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
-	double* credit) :
->>>>>>> origin/master:src/Intro.cpp
+
 	m_ptrCredit(credit),
 	Screen(renderer),
 	m_tBackgorund(),
 	m_tInfo(),
-<<<<<<< HEAD:src/IntroScreen.cpp
 	m_ptrEvent(&event),
 	m_ptrGameState(&eGameState), 
 	m_btnNewGame(renderer, "Resources/new-game-btn.png", 0, 0, 
-=======
-	m_event(&event),
-	m_ptrGameState(&eGameState),
-	m_btnNewGame(renderer, "Resources/new-game-btn.png", 0, 0,
->>>>>>> origin/master:src/Intro.cpp
+
 		INTRO_BTN_W , INTRO_BTN_H),
 	m_btnResumeGame(renderer, "Resources/resume-game-btn.png", 0, 0,
 		INTRO_BTN_W, INTRO_BTN_H),
@@ -125,21 +115,6 @@ void IntroScreen::HandleEvent()
 			Mix_PlayChannel(-1,m_mMusic.getButton(),0);
 			*m_ptrGameState = PLAY;
 			*m_ptrCredit = Recovery::Read().credit;
-<<<<<<< HEAD:src/IntroScreen.cpp
-			*m_ptrBet = Recovery::Read().bet;
-
-		}
-
-		else if(m_btnMusic.IsSelected() && m_bShowPlayButton == true)
-		{
-			m_bShowPlayButton = false;
-		}
-		else if(m_btnMusicPause.IsSelected() && m_bShowPlayButton == false)
-		{
-			m_bShowPlayButton = true;
-		}
-
-=======
 		}
 		else if(m_btnMusic.IsSelected() && m_bShowPlayButton == true)
 		{
@@ -155,19 +130,19 @@ void IntroScreen::HandleEvent()
 		}
 		else if(m_btnMusicPlus.IsSelected())
 		{
-					m_iCounterVolumeMusic+=10;
-					if ( m_iCounterVolumeMusic > 100)
-						m_iCounterVolumeMusic = 100;
-					Mix_VolumeMusic(m_iCounterVolumeMusic);
+//					m_iCounterVolumeMusic+=10;
+//					if ( m_iCounterVolumeMusic > 100)
+//						m_iCounterVolumeMusic = 100;
+					//Mix_VolumeMusic(m_iCounterVolumeMusic);
 		}
 	else if (m_btnMusicMinus.IsSelected())
 	{
-					m_iCounterVolumeMusic-=10;
-					if (m_iCounterVolumeMusic < 10)
-						m_iCounterVolumeMusic = 10;
-					Mix_VolumeMusic(m_iCounterVolumeMusic);
+//					m_iCounterVolumeMusic-=10;
+//					if (m_iCounterVolumeMusic < 10)
+//						m_iCounterVolumeMusic = 10;
+					//Mix_VolumeMusic(m_iCounterVolumeMusic);
 	}
->>>>>>> origin/master:src/Intro.cpp
+
 
 		else if(m_btnCashIn.IsSelected())
 			CashIn(10);
@@ -197,4 +172,3 @@ void IntroScreen::EvaluateInfoRendering()
 	else if(m_btnInfo.IsSelected() && m_bShowInfo == true)
 		m_bShowInfo = false;
 }
-

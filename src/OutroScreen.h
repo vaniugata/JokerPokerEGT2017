@@ -16,14 +16,11 @@ private:
 	static double m_dCredit;
 
 	////////////////////////////////
-
-<<<<<<< HEAD
 //	ButtonObject m_btnMusic;
 //	ButtonObject m_btnMusicPlus;
 //	ButtonObject m_btnMusicMinus;
 //	ButtonObject m_btnMusicPause;
-=======
->>>>>>> origin/master
+
 
 	bool m_bShowPlayButton = true;
 

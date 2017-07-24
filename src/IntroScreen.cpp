@@ -131,22 +131,26 @@ void IntroScreen::HandleEvent()
 		}
 		else if(m_btnMusicPlus.IsSelected())
 		{
-//					m_iCounterVolumeMusic+=10;
-//					if ( m_iCounterVolumeMusic > 100)
-//						m_iCounterVolumeMusic = 100;
-					//Mix_VolumeMusic(m_iCounterVolumeMusic);
+					m_iCounterVolumeMusic+=10;
+					if ( m_iCounterVolumeMusic > 100)
+						m_iCounterVolumeMusic = 100;
+					Mix_VolumeMusic(m_iCounterVolumeMusic);
 		}
 	else if (m_btnMusicMinus.IsSelected())
 	{
-//					m_iCounterVolumeMusic-=10;
-//					if (m_iCounterVolumeMusic < 10)
-//						m_iCounterVolumeMusic = 10;
-					//Mix_VolumeMusic(m_iCounterVolumeMusic);
+					m_iCounterVolumeMusic-=10;
+					if (m_iCounterVolumeMusic < 10)
+						m_iCounterVolumeMusic = 10;
+					Mix_VolumeMusic(m_iCounterVolumeMusic);
 	}
 
 
-		else if(m_btnCashIn.IsSelected())
-			CashIn(10);
+	else if(m_btnCashIn.IsSelected())
+	{
+		Mix_PlayChannel(-1, m_mMusic.getButton(), 0);
+		CashIn(10);
+
+	}
 
 			EvaluateInfoRendering();
 		break;

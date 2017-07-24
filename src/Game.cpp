@@ -293,7 +293,6 @@ void Game::ProcessMouseInput()
 	int countIsSelected = 0;
 	if(m_btnCashOut->IsSelected())
 	{
-		Mix_PlayChannel(-1,m_mMusic.getOutro(),0);
 		OutroScreen::SetCredit(m_dCredit);
 		m_eGameState = OUTRO;
 	}
@@ -341,6 +340,7 @@ void Game::ProcessMouseInput()
 
 	if(m_btnDealDraw->IsSelected())
 	{
+		Mix_PlayChannel(-1, m_mMusic.getCards(), 0);
 		ProcessRound();
 	}
 }

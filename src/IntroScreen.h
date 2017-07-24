@@ -31,6 +31,7 @@ private:
 
 	bool m_bShowInfo = false;
 	bool m_bShowPlayButton = true;
+	int m_iCounterVolumeMusic = 10;
 
 public:
 	IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState, double* credit,int* bet);

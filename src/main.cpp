@@ -19,6 +19,7 @@ int main(int args, char* argc[])
 	Music::LoadMusic();
 	//Mix_PlayMusic(Music::getBackgraund(), -1);
 
+
 	while(game.m_eGameState != QUIT)
 	{
 		switch(game.m_eGameState)

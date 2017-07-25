@@ -1,27 +1,38 @@
 #include "EvalStraightFlush.h"
+#include<iostream>
 
 EvalStraightFlush::EvalStraightFlush()
+	:hasGoodCard(false)
 {
 }
 
-EvalStraightFlush::
-~EvalStraightFlush()
+EvalStraightFlush::~EvalStraightFlush()
 {
+	std::cout << "StraightFlush delete/n";
 }
 
-int EvalStraightFlush::EvaluateHand(std::vector<Card>& hand)
+std::vector<Card> EvalStraightFlush::EvaluateHand(std::vector<Card> hand)
 {
-	if(EvalStraight::EvaluateHand(hand) == 7)
+	this->hasGoodCard = false;
+	if (EvalFlush::HasGoodCards()==true && EvalStraight::HasGoodCards()==true)
 	{
-		if(EvalFlush::EvaluateHand(hand) == 6)
+		for (int i = 0; i < hand.size(); i++)
 		{
-			std::cout << EvalStraight::EvaluateHand(hand) << EvalFlush::EvaluateHand(hand) << "\n";
-			return 3;
+			hand[i].setIsGood(true);
 		}
-		
+		this->hasGoodCard = true;
 	}
+		sort(hand.begin(), hand.end(), [](const Card& left, const Card& right)
+		{
+			return left.getCardPosition() < right.getCardPosition();
+		});
+			return hand;
+	
+}
 
-	return -1;
+bool EvalStraightFlush::HasGoodCards()const
+{
+	return this->hasGoodCard;
 }
 
 bool EvalStraightFlush::HasJoker(std::vector<Card>& hand)

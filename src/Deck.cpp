@@ -12,10 +12,12 @@ Deck::Deck(SDL_Renderer* renderer) :
 	m_tDim.LoadFromFile(renderer, "Resources/dimCard.png");
 	m_tDim.SetAlpha(100);
 	for(int i = 0; i < 52; i++)
-	{
-		eCardSuit suit;
+	{ 
+		
+		//eCardSuit suit;
 		deckOfCards[i].setCardSuit(static_cast<eCardSuit> ((i / 13) + 1));
 		deckOfCards[i].setCardValue(static_cast<eCardValue>((i % 13) + 1));
+		//std::cout << deckOfCards[i].getCardValue() << "  " << deckOfCards[i].getCardSuit() << std::endl;
 	}
 
 	int counter = 0;
@@ -37,13 +39,13 @@ Deck::Deck(SDL_Renderer* renderer) :
 	deckOfCards[52].setCardSuit(JOKERSUIT);
 	deckOfCards[52].setCardValue(JOKERVALUE);
 	deckOfCards[52].setCardRect(0, 4 * T_CARD_HEIGHT, T_CARD_WIDTH, T_CARD_HEIGHT);
-
+	//BackCard
 	deckOfCards[53].setCardSuit(static_cast<eCardSuit>(0));
 	deckOfCards[53].setCardValue(static_cast<eCardValue>(0));
 	deckOfCards[53].setCardRect(T_CARD_WIDTH, 4 * T_CARD_HEIGHT, T_CARD_WIDTH, T_CARD_HEIGHT);
 	
 	srand(time(0));
-	//BackCard
+	
 
 	initHoldBtns();
 	
@@ -62,11 +64,23 @@ void Deck::deal()
 	//printDeck();
 	for(int i = 0;i < 5;i++)
 	{
-		Card currentCard = deckOfCards[rand() % 53];
 		
-		if(hand[i].getIsHold() == false && isCardInHand(currentCard) == false)
+		int random = rand() % 53;
+		Card currentCard = deckOfCards[random];
+		int secondRandom = rand() % 53;
+		while (random == secondRandom)
 		{
-			hand[i] = currentCard;
+			secondRandom = rand() % 53;
+	    }
+		if(hand[i].getIsHold() == false && isCardInHand(currentCard) == false)
+		{ 
+			hand[i] = currentCard;	
+			hand[i].setCardPosition(static_cast<eCardPosition>(i + 1));
+		}
+		else if(hand[i].getIsHold() == false && isCardInHand(currentCard) == true)
+		{
+			hand[i] = deckOfCards[secondRandom];
+			hand[i].setCardPosition(static_cast<eCardPosition>(i + 1));
 		}
 
 		if (hand[i].getIsHold() == true)
@@ -74,8 +88,44 @@ void Deck::deal()
 			hand[i].setIsHold(false);
 		}
 	}
+
 	//std::cout << "--------------------------------------" << std::endl;
+
+	//int card1 = 8;
+	//hand[0].setCardValue(TEN);
+	//hand[0].setCardSuit(CLUBS);
+	//hand[0].setCardRect(deckOfCards[card1].getCardRect()->x, deckOfCards[card1].getCardRect()->y,
+	//	deckOfCards[card1].getCardRect()->w, deckOfCards[card1].getCardRect()->h);
+	//hand[0].setCardPosition(FIRST);
+
+	//int card2 =34;
+	//hand[1].setCardValue(TEN);
+	//hand[1].setCardSuit(HEARTS);
+	//hand[1].setCardRect(deckOfCards[card2].getCardRect()->x, deckOfCards[card2].getCardRect()->y,
+	//deckOfCards[card2].getCardRect()->w, deckOfCards[card2].getCardRect()->h);
+	//hand[1].setCardPosition(SECOND);
+	//
+	//int card3 = 32;
+	//hand[2].setCardValue(EIGHT);
+	//hand[2].setCardSuit(HEARTS);
+	//hand[2].setCardRect(deckOfCards[card3].getCardRect()->x, deckOfCards[card3].getCardRect()->y,
+	//	deckOfCards[card3].getCardRect()->w, deckOfCards[card3].getCardRect()->h);
+	//hand[2].setCardPosition(THIRD);
+	//int card4 = 21;
+	//hand[3].setCardValue(TEN);
+	//hand[3].setCardSuit(DIAMONDS);
+	//hand[3].setCardRect(deckOfCards[card4].getCardRect()->x, deckOfCards[card4].getCardRect()->y,
+	//	deckOfCards[card4].getCardRect()->w, deckOfCards[card4].getCardRect()->h);
+	//hand[3].setCardPosition(FOURTH);
+	//int card5 =19;
+	//hand[4].setCardValue(EIGHT);
+	//hand[4].setCardSuit(DIAMONDS);
+	//hand[4].setCardRect(deckOfCards[card5].getCardRect()->x, deckOfCards[card5].getCardRect()->y,
+	//	deckOfCards[card5].getCardRect()->w, deckOfCards[card5].getCardRect()->h);
+	//hand[4].setCardPosition(FIFTH);
 	//printDeck();
+
+
 	std::cout << "Kill count: " << m_iKillCount << std::endl;
 	m_iKillCount++;
 }
@@ -85,9 +135,14 @@ void Deck::printDeck()
 {
 	for(int i = 0; i < 5; i++)
 	{
+		std::cout << "Suit:";
 		std::cout << hand[i].getCardSuit();
-		std::cout << "  ";
+		std::cout << " Value:";
 		std::cout << hand[i].getCardValue();
+		std::cout << " IsHold:";
+		std::cout << hand[i].getIsHold();
+		std::cout << " Position:";
+		std::cout << hand[i].getCardPosition();
 		std::cout << std::endl;
 	}
 }
@@ -110,6 +165,11 @@ const std::vector<Card>& Deck::GetHand() const
 	return this->hand;
 }
 
+void Deck::setHand(std::vector<Card>& hand)
+{
+	this->hand = hand;
+}
+
 
 
 int Deck::GetKillCount() const
@@ -125,6 +185,11 @@ std::vector<Card> Deck::GetSortedHand()
 	std::vector<Card> sorted = hand;
 	
 	std::sort(sorted.begin(), sorted.begin() + 5);
+	for (int i = 0; i < sorted.size(); i++)
+	{
+		sorted[i].setIsGood(false);
+	}
+	
 	return sorted;
 
 }
@@ -143,7 +208,6 @@ bool Deck::isJokerHand()
 {
 	int k = 0;
 	if(hand[4].getCardValue() == JOKERVALUE) {
-		k++;
 		return true;
 	}
 	return false;
@@ -220,6 +284,11 @@ void Deck::initHoldBtns()
 	}
 }
 
+void Deck::setCard(Card & card, int index)
+{
+	hand[index] = card;
+}
+
 void Deck::HoldSelectedCards()
 {
 	for(int i = 0; i < 5; i++)
@@ -244,5 +313,14 @@ void Deck::DimCards(SDL_Renderer * renderer, const std::vector<Card>& hand)
 		}
 	}
 	
+}
+
+void Deck::holdGoodCards()
+{
+	for (int i = 0; i <hand.size(); i++)
+	{
+		if (hand[i].getIsGood() == true)
+			hand[i].setIsHold(true);
+	}
 }
 

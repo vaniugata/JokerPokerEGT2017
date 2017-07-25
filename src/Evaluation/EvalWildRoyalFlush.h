@@ -4,11 +4,14 @@
 
 class EvalWildRoyalFlush : public EvalStraightFlush
 {
+private:
+	bool hasGoodCard;
 public:
 	EvalWildRoyalFlush();
 	virtual~EvalWildRoyalFlush();
 
-	int EvaluateHand(std::vector<Card>& hand);
+    std::vector<Card> EvaluateHand(std::vector<Card> hand);
+	bool HasGoodCards();
 	bool HasJoker(std::vector<Card>& hand);
 };
 #endif

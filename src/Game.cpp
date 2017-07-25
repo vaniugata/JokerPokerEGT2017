@@ -13,8 +13,14 @@
 #include "Evaluation\EvalWildRoyalFlush.h"
 #include "Evaluation\EvalFiveOfAKind.h"
 #include "Evaluation\EvalNaturalRoyalFlush.h"
+#include "Evaluation\EvalThreeToRoyalFlush.h"
+#include "Evaluation\FourToStraightFlush.h"
+#include "Evaluation\EvalJokerOnly.h"
+#include "Evaluation\EvalFourToRoyalFlush.h"
+#include "Evaluation\EvalFourToFlush.h"
 #include "OutroScreen.h"
 #include "Recovery.h"
+
 
 #include <iostream>
 using std::cerr;
@@ -29,6 +35,11 @@ Game::Game() :
 
 	m_paytable = new PaytableObject(m_renderer);
 
+
+	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
+		0,0, INTRO_BTN_W, INTRO_BTN_H);	
+
+	//Evaluation
 	m_btnCashOut = new  ButtonObject();
 	m_btnCashOut->m_texture.LoadFromFile(m_renderer, "Resources/cash-out-btn.png");
 	m_btnCashOut->SetDimentions(INTRO_BTN_W, INTRO_BTN_H);
@@ -54,6 +65,19 @@ Game::Game() :
 	m_btnMusicPause->SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	m_ptrDeck = new Deck(m_renderer);
+	//AutoHold evaluation
+	m_vecAutoHold.push_back(new EvalJokerOnly());
+	m_vecAutoHold.push_back(new EvalKingsOrBetter());
+	m_vecAutoHold.push_back(new EvalThreeToRoyalFlush());
+	m_vecAutoHold.push_back(new EvalTwoPair());
+	m_vecAutoHold.push_back(new EvalFourToFlush());
+	m_vecAutoHold.push_back(new EvalStraight());
+	m_vecAutoHold.push_back(new EvalThreeOfKind());
+	m_vecAutoHold.push_back(new FourToStraightFlush());
+	m_vecAutoHold.push_back(new EvalFlush());
+	m_vecAutoHold.push_back(new EvalFourToFlush());
+	m_vecAutoHold.push_back(new EvalFourToRoyalFlush());
+	m_vecAutoHold.push_back(new EvalFourOfAKind());
 	//Card evaluation
 	m_vecEvaluations.push_back(new EvalKingsOrBetter());
 	m_vecEvaluations.push_back(new EvalTwoPair());
@@ -84,6 +108,11 @@ Game::~Game()
 	{
 		delete m_vecEvaluations[i];
 		m_vecEvaluations.pop_back();
+	}
+	for (int i = 0; i < m_vecAutoHold.size(); i++)
+	{
+		delete m_vecAutoHold[i];
+		m_vecAutoHold.pop_back();
 	}
 
 	Close();
@@ -359,21 +388,49 @@ void Game::ProcessRound()
 	Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 	//Charge the fee to play a round
 	if(m_ptrDeck->GetKillCount() == 1) { m_dCredit -= m_paytable->GetBet().at(10); }
+	
+	bool  autoHold = true;
+	if (autoHold  && m_ptrDeck->GetKillCount() == 1)
+		{
+		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();
 
-	if(m_ptrDeck->GetKillCount() == 2)
+		std::vector<Evaluation*>::iterator it;
+		for (it = m_vecAutoHold.begin(); it != m_vecAutoHold.end(); it++)
+		{
+			(*it)->EvaluateHand(sorted);
+		 	if((*it)->HasGoodCards())
+				myhand = (*it)->EvaluateHand(sorted);				
+		}
+		m_ptrDeck->setHand(myhand);
+		m_ptrDeck->holdGoodCards();
+		
+		}
+
+	if (m_ptrDeck->GetKillCount() == 2)
 	{
-		//Evaluate hand
+		//Evaluation::setAutoHold(false);
+		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();
+		
+		int counter = 11;
 		m_iWinIndex = 11;
-		std::vector<Card> hand = m_ptrDeck->GetSortedHand();
+		m_ptrDeck->setHand(sorted);
 		std::vector<Evaluation*>::iterator it;
 		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
 		{
-			if((*it)->EvaluateHand(hand) < m_iWinIndex && (*it)->EvaluateHand(hand) != -1)
+			counter--;
+			(*it)->EvaluateHand(sorted);	
+			if((*it)->HasGoodCards())
 			{
-				m_iWinIndex = (*it)->EvaluateHand(hand);
+				m_iWinIndex = counter;
+				myhand = (*it)->EvaluateHand(sorted);
 			}
-			std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
 		}
+		m_ptrDeck->setHand(myhand);
+
+		std::cout << m_iWinIndex << std::endl;
+
 		//Add win ammount to credit
 		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
 		{

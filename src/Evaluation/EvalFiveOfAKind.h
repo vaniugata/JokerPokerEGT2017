@@ -4,11 +4,14 @@
 
 class EvalFiveOfAKind : public Evaluation
 {
-public: 
+private:
+	bool hasGoodCard;
+public:
 	EvalFiveOfAKind();
 	virtual~EvalFiveOfAKind();
 
-	int EvaluateHand(std::vector<Card>& hand);
+	std::vector<Card> EvaluateHand(std::vector<Card> hand);
 	bool HasJoker(std::vector<Card>& hand);
+	bool HasGoodCards()const;
 };
 #endif

@@ -14,9 +14,8 @@ OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent,
 		renderer)
 {
 	m_tBackground.LoadFromFile(renderer, "Resources/outropictures.png");
-	m_tCredit.InitFont("Resources/font.ttf", 22);
+//	m_tCredit.InitFont("Resources/font.ttf", 22);
 
-//	m_mMusic.LoadMusic();
 }
 
 OutroScreen::~OutroScreen() {
@@ -57,8 +56,6 @@ void OutroScreen::HandleEvent()
 
 void OutroScreen::Delay() 
 {
-	//Mix_PauseMusic();
-//	Mix_PlayChannel(-1, m_mMusic.getOutro(), 0);
 	Render();
 	Draw();
 	int oldTime = SDL_GetTicks();
@@ -70,11 +67,9 @@ void OutroScreen::Delay()
 			break;
 		}
 	}
-	//Mix_Pause(-1);
-//	Mix_PlayMusic(m_mMusic.getBackgraund(), -1);
 }
 
-void OutroScreen::SetCredit(double credit) {
+void OutroScreen::SetCredit(double credit)
+{
 	m_dCredit = credit;
 }
-

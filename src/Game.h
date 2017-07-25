@@ -25,6 +25,8 @@ private:
 	Deck* m_ptrDeck;
 
 	std::vector<Evaluation*> m_vecEvaluations;
+	std::vector<Evaluation*> m_vecAutoHold;
+
 	//Buttons
 	ButtonObject* m_btnCashOut;	
 	ButtonObject* m_btnDealDraw;	
@@ -38,11 +40,7 @@ private:
 	int m_iWinIndex;
 	bool m_bShowPlayButton = true;
 
-
-	//Music m_mCards;
-	//Music m_mMusic;
 	int m_iCounterVolumeMusic = 10;
-
 
 public:
 	eGameState m_eGameState;

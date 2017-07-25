@@ -23,15 +23,20 @@ std::vector<Card> EvalKingsOrBetter::EvaluateHand(std::vector<Card> hand)
 			this->hasGoodCard = true;
 		}
 	}
-	else
-	{
-		if (hand[3].getCardValue() == hand[4].getCardValue() && hand[3].getCardValue() >= KING)
+	else if (hand[3].getCardValue() == hand[4].getCardValue() && hand[3].getCardValue() >= KING)
 		{
 			hand[3].setIsGood(true);
 			hand[4].setIsGood(true);
 			this->hasGoodCard = true;
 		}
+	else if (hand[2].getCardValue() == hand[3].getCardValue() && hand[3].getCardValue() >= KING)
+	{
+		hand[3].setIsGood(true);
+		hand[4].setIsGood(true);
+		this->hasGoodCard = true;
 	}
+
+		
 	
 	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
 	{

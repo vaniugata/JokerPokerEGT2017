@@ -17,7 +17,7 @@ int main(int args, char* argc[])
 	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);
 
 	Music::LoadMusic();
-	//Mix_PlayMusic(Music::getBackgraund(), -1);
+	Mix_PlayMusic(Music::getBackgraund(), -1);
 
 
 	while(game.m_eGameState != QUIT)

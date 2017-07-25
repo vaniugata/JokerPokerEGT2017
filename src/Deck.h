@@ -18,6 +18,7 @@ public:
 private:
 	Texture m_tHold;
 	Texture m_tDim;
+	Texture m_tArrow;
 	Card deckOfCards[54];
 	std::vector<Card> hand;
 public:
@@ -52,8 +53,7 @@ public:
 	void setCard(Card& card, int index);
 	void HoldSelectedCards();
 	void DimCards(SDL_Renderer* renderer);
-	void holdGoodCards();
-
+	void holdGoodCards(SDL_Renderer*);
 };
 #endif 
 

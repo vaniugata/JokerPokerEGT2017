@@ -51,8 +51,6 @@ private:
 	Mix_Chunk* ButtonPress = nullptr;
 	Mix_Chunk* RollDice = nullptr;
 
-
-
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 			double* credit);

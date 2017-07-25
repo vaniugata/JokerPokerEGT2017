@@ -39,7 +39,6 @@ Game::Game() :
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0,0, INTRO_BTN_W, INTRO_BTN_H);	
 
-	//Evaluation
 	m_btnCashOut = new  ButtonObject();
 	m_btnCashOut->m_texture.LoadFromFile(m_renderer, "Resources/cash-out-btn.png");
 	m_btnCashOut->SetDimentions(INTRO_BTN_W, INTRO_BTN_H);
@@ -188,6 +187,7 @@ void Game::Render()
 	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
 	if(m_ptrDeck->GetKillCount() == 1)
 	{
+		m_ptrDeck->holdGoodCards(m_renderer);
 		clipDealDraw.x += DEAL_W;
 	}
 	else if(m_ptrDeck->GetKillCount() == 2 &&
@@ -400,7 +400,6 @@ void Game::ProcessRound()
 				myhand = (*it)->EvaluateHand(sorted);				
 		}
 		m_ptrDeck->setHand(myhand);
-		m_ptrDeck->holdGoodCards();
 		
 		}
 
@@ -455,7 +454,7 @@ void Game::ProcessRound()
 		{
 			BonusGame::setWin(m_paytable->GetBet().at(m_iWinIndex));
 			m_bIsBonus = false;
-			m_eGameState = BONUS;
+		//	m_eGameState = BONUS;
 		}
 	}
 }

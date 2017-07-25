@@ -14,7 +14,7 @@ std::vector<Card> EvalFullHouse::EvaluateHand(std::vector<Card> hand)
 {
 	this->hasGoodCard = false;
 	bool isFull =false;
-	if (true)//EvalThreeOfKind::HasGoodCards())
+	if (EvalThreeOfKind::HasGoodCards()==true)
 	{
 		if (hand[0].getCardValue() == hand[2].getCardValue())
 		{

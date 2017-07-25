@@ -51,7 +51,7 @@ public:
 
 	void HoldSelectedCards();
 
-	void DimCards(SDL_Renderer* renderer);
+	void DimCards(SDL_Renderer* renderer, const std::vector<Card>& hand);
 };
 #endif 
 

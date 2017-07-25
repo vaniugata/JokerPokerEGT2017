@@ -14,15 +14,21 @@ private:
 	SDL_Event* m_ptrEvent;
 	eGameState* m_ptrGameState;
 	static double m_dCredit;
-	bool m_bShowPlayButton = true;
+	bool m_bShowPlayButton;
+	int m_iTextY;
+	static int m_iStart;
 public:
 	OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState* gameState);
 	~OutroScreen();
+
+	//setters
+	static void SetTimer(int time);
+	static void SetCredit(double credit);
 
 	void Draw();
 	void Render();
 	void HandleEvent();
 	void Delay();
-	static void SetCredit(double credit);
+	void AnimText();
 };
 #endif

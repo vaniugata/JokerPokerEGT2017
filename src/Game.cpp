@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "Globals.h"
 #include "Music.h"
 #include "includesSDL2.h"
@@ -27,14 +27,14 @@ using std::cerr;
 #include <sstream>
 Game::Game() :
 	m_dCredit(0), m_eGameState(INTRO),
-	m_bIsGameOver(false), m_bIsBonus(false)
+	m_bIsGameOver(false), m_bIsBonus(false), m_bAutoHold(true), m_iOutroTime()
 {
 	InitSDL();
 
 	m_tBackground.LoadFromFile(m_renderer, "Resources/back2.png");
 
 	m_paytable = new PaytableObject(m_renderer);
-
+	m_ptrDeck = new Deck(m_renderer);
 
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0,0, INTRO_BTN_W, INTRO_BTN_H);	
@@ -46,6 +46,10 @@ Game::Game() :
 	m_btnDealDraw = new  ButtonObject();
 	m_btnDealDraw->m_texture.LoadFromFile(m_renderer, "Resources/round-button.png");
 	m_btnDealDraw->SetDimentions(DEALDRAWBTN_W, DEALDRAWBTN_H);
+
+	m_btnAutoHold = new ButtonObject();
+	m_btnAutoHold->m_texture.LoadFromFile(m_renderer, "Resources/autohold.png");
+	m_btnAutoHold->SetDimentions(INTRO_BTN_W, INTRO_BTN_H);
 
 	m_btnMusicMinus = new ButtonObject();
 	m_btnMusicMinus->m_texture.LoadFromFile(m_renderer, "Resources/DecreasesB.png");
@@ -63,7 +67,6 @@ Game::Game() :
 	m_btnMusicPause->m_texture.LoadFromFile(m_renderer, "Resources/Pause.png");
 	m_btnMusicPause->SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
-	m_ptrDeck = new Deck(m_renderer);
 	//AutoHold evaluation
 	m_vecAutoHold.push_back(new EvalJokerOnly());
 	m_vecAutoHold.push_back(new EvalKingsOrBetter());
@@ -96,6 +99,7 @@ Game::~Game()
 	delete m_paytable;
 	delete m_btnCashOut;
 	delete m_btnDealDraw;
+	delete m_btnAutoHold;
 	delete m_btnMusic;
 	delete m_btnMusicPlus;
 	delete m_btnMusicMinus;
@@ -184,6 +188,20 @@ void Game::Render()
 	m_btnMusicPlus->Render(m_renderer, &clipMusicPlus, BUTTON_VOLUME_SIZE * 2 + 26,
 		SCREEN_HEIGHT - m_btnCashOut->GetHeight() - BUTTON_VOLUME_SIZE + 8, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
+	SDL_Rect clipAutoHold{ 0,0, 2400, 944 };
+	if(m_bAutoHold == true)
+	{
+		clipAutoHold.x = 2400;
+		m_btnAutoHold->Render(m_renderer, &clipAutoHold,
+			(SCREEN_WIDTH - INTRO_BTN_W) / 2, 20, INTRO_BTN_W, INTRO_BTN_H);
+	}
+	else if(m_bAutoHold == false)
+	{
+		clipAutoHold.x = 0;
+		m_btnAutoHold->Render(m_renderer, &clipAutoHold,
+			(SCREEN_WIDTH - INTRO_BTN_W) / 2, 20, INTRO_BTN_W, INTRO_BTN_H);
+	}
+	
 	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
 	if(m_ptrDeck->GetKillCount() == 1)
 	{
@@ -326,6 +344,7 @@ void Game::ProcessMouseInput()
 	{
 		OutroScreen::SetCredit(m_dCredit);
 		Mix_PlayChannel(-1, Music::getButton(), 0);
+		OutroScreen::SetTimer(SDL_GetTicks() );
 		m_eGameState = OUTRO;
 	}
 	else if(m_paytable->m_btnBetOne.IsSelected())
@@ -370,6 +389,8 @@ void Game::ProcessMouseInput()
 			m_iCounterVolumeMusic = 10;
 		Mix_VolumeMusic(m_iCounterVolumeMusic);
 	}
+	else if(m_btnAutoHold->IsSelected() && m_bAutoHold == true) {m_bAutoHold = false; }
+	else if(m_btnAutoHold->IsSelected() && m_bAutoHold == false) { m_bAutoHold = true; }
 
 	if(m_btnDealDraw->IsSelected())
 	{
@@ -389,8 +410,7 @@ void Game::ProcessRound()
 	//Charge the fee to play a round
 	if(m_ptrDeck->GetKillCount() == 1) { m_dCredit -= m_paytable->GetBet().at(10); }
 	
-	bool  autoHold = true;
-	if (autoHold  && m_ptrDeck->GetKillCount() == 1)
+	if (m_bAutoHold && m_ptrDeck->GetKillCount() == 1)
 		{
 		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
 		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();

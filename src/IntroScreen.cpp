@@ -49,13 +49,13 @@ IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& e
 	m_btnMusicPlus.SetDimentions(m_btnNewGame.m_texture.GetWidth(),
 		m_btnNewGame.m_texture.GetHeight() / 2);
 
-	m_btnMusic.m_texture.LoadFromFile(renderer, "Resources/PlayB.png");
+	m_btnMusic.m_texture.LoadFromFile(renderer, "Resources/Pause.png");
 	m_btnMusic.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	m_btnMusicMinus.m_texture.LoadFromFile(renderer, "Resources/DecreasesB.png");
 	m_btnMusicMinus.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
-	m_btnMusicPause.m_texture.LoadFromFile(renderer, "Resources/Pause.png");
+	m_btnMusicPause.m_texture.LoadFromFile(renderer, "Resources/PlayB.png");
 	m_btnMusicPause.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 }
 

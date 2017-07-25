@@ -110,23 +110,22 @@ void BonusGame::Render()
 		BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	//render inscription Choice Win
-		RenderChoiceWin();
-}
 
+	}
+	RenderChoiceWin();
+}
 void BonusGame::HandleEvent()
 {
-	switch(m_event->type)
+	switch (m_event->type)
 	{
 	case SDL_QUIT:
-	{
 		*m_ptrGameState = QUIT;
 		break;
-	}
+
 	case SDL_MOUSEBUTTONDOWN:
 	{
 		//process event with the music buttons
 		MusicController();
-
 		if(m_buttonX2.IsSelected())
 		{
 			Mix_PlayChannel(-1, ButtonPress, 0);

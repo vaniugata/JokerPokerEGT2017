@@ -432,7 +432,7 @@ void Game::ProcessRound()
 		std::cout << m_iWinIndex << std::endl;
 
 		//Add win ammount to credit
-		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
+		if(m_iWinIndex >= 0 && m_iWinIndex < m_paytable->GetBet().size())
 		{
 			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
 

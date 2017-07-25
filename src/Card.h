@@ -67,7 +67,7 @@ public:
 	eCardPosition getCardPosition()const;
 	SDL_Rect* getCardRect();
 	bool getIsHold();
-	bool getIsGood();
+	bool getIsGood() const;
 
 	//setters
 	void setCardSuit(eCardSuit);

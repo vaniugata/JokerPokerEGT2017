@@ -84,7 +84,7 @@ void Card::setIsGood(bool isGood)
 	this->m_isGood = isGood;
 }
 
-bool Card::getIsGood()
+bool Card::getIsGood() const 
 {
 	return this->m_isGood;
 }

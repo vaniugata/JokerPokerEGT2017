@@ -233,9 +233,16 @@ void Deck::HoldSelectedCards()
 	}
 }
 
-void Deck::DimCards(SDL_Renderer * renderer)
+void Deck::DimCards(SDL_Renderer * renderer, const std::vector<Card>& hand)
 {
 	int x = (SCREEN_WIDTH - 5 * CARD_W) / 2;
-	m_tDim.Render(renderer, x + CARD_W, 350, CARD_W, CARD_H_);
+	for(int i = 1; i <= hand.size(); i++)
+	{
+		if(i == 1 || i == 2 || i == 4)
+		{
+			m_tDim.Render(renderer,x +  i * CARD_W, 350, CARD_W, CARD_H_);
+		}
+	}
+	
 }
 

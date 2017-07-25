@@ -175,7 +175,10 @@ void Game::Render()
 		m_ptrDeck->RenderStart(m_renderer);
 		RenderRound();
 	}
-	if(m_ptrDeck->GetKillCount() == 2) { m_ptrDeck->DimCards(m_renderer); }
+	if(m_ptrDeck->GetKillCount() == 2) 
+	{
+		m_ptrDeck->DimCards(m_renderer, m_ptrDeck->GetHand());
+	}
 	if(m_bIsGameOver) { RenderGameOver(); }
 
 	RenderGameInfo();
@@ -467,7 +470,8 @@ void Game::Close()
 {
 	SDL_DestroyWindow(m_window);
 	m_window = nullptr;
-
+	SDL_DestroyRenderer(m_renderer);
+	m_renderer = nullptr;
 	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();

@@ -11,9 +11,9 @@ int main(int args, char* argc[])
 {
 	Game game;
 	IntroScreen intro = IntroScreen(game.GetRenderer(), game.m_event,
-		game.m_eGameState,game.GetCredit(),game.GetBet());
-	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
-	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit() );
+		game.m_eGameState, game.GetCredit(), game.GetBet());
+	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit());
+	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit());
 	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);
 
 	Music::LoadMusic();
@@ -58,7 +58,7 @@ int main(int args, char* argc[])
 			}
 		} //event lop
 	} // run loop
-		
+
 	Music::Free();
 
 	return 0;

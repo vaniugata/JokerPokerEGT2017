@@ -220,6 +220,7 @@ void Game::RenderGameInfo()
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
+
 	ss << m_paytable->GetBet().at(10);
 
 	if(m_iBet != 0)
@@ -227,7 +228,6 @@ void Game::RenderGameInfo()
 		ss.str("");
 		ss << *GetBet();
 	}
-
 
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
@@ -298,6 +298,7 @@ void Game::ProcessMouseInput()
 	}
 	else if(m_paytable->m_btnBetOne.IsSelected())
 	{
+		m_iBet = 0;
 		m_paytable->IncreaseBet();
 		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 		Mix_PlayChannel(-1, Music::getButton(), 0);

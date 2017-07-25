@@ -16,16 +16,14 @@ PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 	
 	m_btnBetOne.m_texture.LoadFromFile(renderer, "Resources/betButtons.png");
 
-	m_btnBetOne.SetDimentions(m_btnBetOne.m_texture.GetWidth(),
-		m_btnBetOne.m_texture.GetHeight() / 2);
+	m_btnBetOne.SetDimentions(S_BETBTN_W, S_BETBTN_H);
 
 		m_btnBetOne.SetPosition(SCREEN_WIDTH - m_btnBetOne.GetWidth(), \
 	SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
 
 		m_btnBetMax.m_texture.LoadFromFile(renderer, "Resources/betButtons.png");
 
-		m_btnBetMax.SetDimentions(m_btnBetMax.m_texture.GetWidth(),
-			m_btnBetMax.m_texture.GetHeight() / 2);
+		m_btnBetMax.SetDimentions(S_BETBTN_W, S_BETBTN_H);
 
 	m_btnBetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
 		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
@@ -97,6 +95,8 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 	SDL_Color color{ 255, 255, 255 };
 	SDL_Color colorWin{ 0, 255, 0 };
 
+	static bool bSwitchColor = false;
+
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR + X_BORDER_OFFSET;
 	for(int i = 0; i < m_vecHands.size(); i++)
 	{
@@ -108,9 +108,22 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 
 		if(m_iWinnerIndex == i)
 		{
-			m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf", 
-				m_vecHands[i], colorWin, 18);
-			m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
+			if(bSwitchColor == false)
+			{
+				m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf",
+					m_vecHands[i], colorWin, 18);
+				m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
+
+				bSwitchColor = true;
+			}
+			else if(bSwitchColor == true)
+			{
+				m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf",
+					m_vecHands[i], color, 18);
+				m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
+
+				bSwitchColor = false;
+			}
 		}
 	}
 	

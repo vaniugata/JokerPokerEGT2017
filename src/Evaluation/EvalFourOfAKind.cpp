@@ -1,32 +1,77 @@
 #include "EvalFourOfAKind.h"
+#include<iostream>
 
 EvalFourOfAKind::EvalFourOfAKind()
 {
+	this->hasGoodCard = false;
 }
 
 EvalFourOfAKind::~EvalFourOfAKind()
 {
+	std::cout << "FourOfAking deleted/n";
 }
 
-int EvalFourOfAKind::EvaluateHand(std::vector<Card>& hand)
+std::vector<Card> EvalFourOfAKind::EvaluateHand(std::vector<Card> hand)
 {
-	int count = 0;
-
-	if(HasJoker(hand)) { count++; }
-	for(int i = 0; i < hand.size() - 1; i++)
+	int counter = 0;
+	eCardValue bestValue = getBestValue(hand);
+	for (int i = 0; i < hand.size()-1; i++)
 	{
-		if(hand[i].getCardValue() == hand[i + 1].getCardValue())
+		if (hand[i].getCardValue() == hand[i + 1].getCardValue() && hand[i].getCardValue()==bestValue)
 		{
-			count++;
+			counter++;
 		}
 	}
+	if (counter == 3
+		|| counter == 2 && HasJoker(hand))
+	{
+		for  (int i = 0; i < hand.size(); i++)
+		{
+			if (hand[i].getCardValue() == bestValue)
+			{
+				hand[i].setIsGood(true);
+			}
+			this->hasGoodCard = true;
+		}
+	}
+	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	return hand;
+}
 
-	if(count == 3) { return 4; }
-
-	return -1;
+bool EvalFourOfAKind::HasGoodCards()const
+{
+	return this->hasGoodCard;
 }
 
 bool EvalFourOfAKind::HasJoker(std::vector<Card>& hand)
 {
 	return Evaluation::HasJoker(hand);
+}
+
+eCardValue EvalFourOfAKind::getBestValue(vector<Card> hand)
+{
+	eCardValue bestValue = EMPTYVALUE;
+	int counter = 0;
+	int best = 0;
+	for (int i = 0; i < hand.size(); i++)
+	{
+		for (int j = i + 1; j < hand.size(); j++)
+		{
+			if (hand[i].getCardValue() == hand[j].getCardValue())
+			{
+				counter++;
+			}
+		}
+		if (counter > best)
+		{
+			best = counter;
+			bestValue = hand[i].getCardValue();
+		}
+		counter = 0;
+	}
+
+	return bestValue;
 }

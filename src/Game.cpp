@@ -12,6 +12,11 @@
 #include "Evaluation\EvalWildRoyalFlush.h"
 #include "Evaluation\EvalFiveOfAKind.h"
 #include "Evaluation\EvalNaturalRoyalFlush.h"
+#include "Evaluation\EvalThreeToRoyalFlush.h"
+#include "Evaluation\FourToStraightFlush.h"
+#include "Evaluation\EvalJokerOnly.h"
+#include "Evaluation\EvalFourToRoyalFlush.h"
+#include "Evaluation\EvalFourToFlush.h"
 
 #include <iostream>
 using std::cerr;
@@ -32,18 +37,34 @@ Game::Game() :
 
 	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
 		0,0, INTRO_BTN_W, INTRO_BTN_H);
-	//Card evaluation
-	m_vecEvaluations.push_back(new EvalKingsOrBetter() );
-	m_vecEvaluations.push_back(new EvalTwoPair() );
-	m_vecEvaluations.push_back(new EvalThreeOfKind() );
-	m_vecEvaluations.push_back(new EvalStraight() );
-	m_vecEvaluations.push_back(new EvalFlush() );
-	m_vecEvaluations.push_back(new EvalFullHouse() );
-	m_vecEvaluations.push_back(new EvalFourOfAKind() );
-	m_vecEvaluations.push_back(new EvalStraightFlush() );
-	m_vecEvaluations.push_back(new EvalWildRoyalFlush() );
-	m_vecEvaluations.push_back(new EvalFiveOfAKind() );
-	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush() );
+	
+	//AutoHold evaluation
+	m_vecAutoHold.push_back(new EvalJokerOnly());
+	m_vecAutoHold.push_back(new EvalKingsOrBetter());
+	m_vecAutoHold.push_back(new EvalThreeToRoyalFlush());
+	m_vecAutoHold.push_back(new EvalTwoPair());
+	m_vecAutoHold.push_back(new EvalFourToFlush());
+	m_vecAutoHold.push_back(new EvalStraight());
+	m_vecAutoHold.push_back(new EvalThreeOfKind());
+	m_vecAutoHold.push_back(new FourToStraightFlush());
+	m_vecAutoHold.push_back(new EvalFlush());
+	m_vecAutoHold.push_back(new EvalFourToFlush());
+	m_vecAutoHold.push_back(new EvalFourToRoyalFlush());
+	m_vecAutoHold.push_back(new EvalFourOfAKind());
+	//Evaluation
+	m_vecEvaluations.push_back(new EvalKingsOrBetter());
+	m_vecEvaluations.push_back(new EvalTwoPair());
+	m_vecEvaluations.push_back(new EvalThreeOfKind());
+	m_vecEvaluations.push_back(new EvalStraight());
+	m_vecEvaluations.push_back(new EvalFlush());
+	m_vecEvaluations.push_back(new EvalFullHouse());
+	m_vecEvaluations.push_back(new EvalFourOfAKind());
+	m_vecEvaluations.push_back(new EvalStraightFlush());
+	m_vecEvaluations.push_back(new EvalWildRoyalFlush());
+	m_vecEvaluations.push_back(new EvalFiveOfAKind());
+	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush());
+
+
 }
 
 Game::~Game()
@@ -55,6 +76,10 @@ Game::~Game()
 	for(int i = 0; i < m_vecEvaluations.size(); i++)
 	{
 		delete m_vecEvaluations[i];
+	}
+	for (int i = 0; i < m_vecAutoHold.size(); i++)
+	{
+		delete m_vecAutoHold[i];
 	}
 
 	Close();
@@ -216,20 +241,68 @@ void Game::ProcessRound()
 	if(m_ptrDeck->GetKillCount() == 1)
 	m_dCredit -= m_paytable->GetBet().at(10);
 
-	if(m_ptrDeck->GetKillCount() > 1)
+	std::cout << std::endl;
+	/*Card someCard;
+	someCard.setCardValue(KING);
+	someCard.setCardSuit(DIAMONDS);
+	m_ptrDeck->setCard(someCard, 2);
+
+	someCard.setCardValue(KING);
+	someCard.setCardSuit(HEARTS);
+	m_ptrDeck->setCard(someCard, 3);
+
+	someCard.setCardValue(FIVE);
+	someCard.setCardSuit(DIAMONDS);
+	m_ptrDeck->setCard(someCard, 0);
+
+	someCard.setCardValue(FIVE);
+	someCard.setCardSuit(HEARTS);
+	m_ptrDeck->setCard(someCard, 4);*/
+	m_ptrDeck->printDeck();
+	std::cout << "----------------"<<std::endl;
+	bool  autoHold = true;
+	if (autoHold  && m_ptrDeck->GetKillCount() == 1)
+		{
+		
+		Evaluation::setAutoHold(true);
+		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetHand();
+
+		std::vector<Evaluation*>::iterator it;
+		for (it = m_vecAutoHold.begin(); it != m_vecAutoHold.end(); it++)
+		{
+			(*it)->EvaluateHand(sorted);
+		 	if((*it)->HasGoodCards())
+				myhand = (*it)->EvaluateHand(sorted);				
+		}
+		m_ptrDeck->setHand(myhand);
+		m_ptrDeck->holdGoodCards();
+		
+    	
+
+		}
+
+	if (m_ptrDeck->GetKillCount() > 1)
 	{
+		//Evaluation::setAutoHold(false);
 		std::vector<Card> hand = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();
 		int winIndex = 11;
+		int counter = 11;
+		m_ptrDeck->setHand(hand);
 		std::vector<Evaluation*>::iterator it;
 		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
 		{
-			if((*it)->EvaluateHand(hand) < winIndex && (*it)->EvaluateHand(hand) != -1)
+			counter--;
+			(*it)->EvaluateHand(hand);	
+			if((*it)->HasGoodCards())
 			{
-				winIndex = (*it)->EvaluateHand(hand);
+				winIndex = counter;
+				myhand = (*it)->EvaluateHand(hand);
 			}
-			std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
 		}
-
+		m_ptrDeck->setHand(myhand);
+		std::cout << winIndex << std::endl;
 		//Add win ammount to credit
 		if(winIndex >= 0 && winIndex <= m_paytable->GetBet().size() - 1)
 			m_dCredit += m_paytable->GetBet().at(winIndex);
@@ -241,6 +314,7 @@ void Game::ProcessRound()
 		if(m_ptrDeck->GetKillCount() > 2)
 		{
 			delete m_ptrDeck;
+
 			m_ptrDeck = nullptr;
 			m_paytable->SetWinnerIndex(-1);
 		}

@@ -3,6 +3,7 @@
 
 EvalThreeOfKind::EvalThreeOfKind()
 {
+	this->hasGoodCard = false;
 }
 
 EvalThreeOfKind::~EvalThreeOfKind()
@@ -10,24 +11,47 @@ EvalThreeOfKind::~EvalThreeOfKind()
 	std::cout << "Deleted ThreeOfKind.\n";
 }
 
-int EvalThreeOfKind::EvaluateHand(std::vector<Card>& hand)
+std::vector<Card> EvalThreeOfKind::EvaluateHand(std::vector<Card> hand)
 {
-	for(int i = 0; i < hand.size() - 2; i++)
-	{
-		if(hand[i].getCardValue() == hand[i + 1].getCardValue() &&
-			hand[i + 1].getCardValue() == hand[i + 2].getCardValue())
-			return 8;
-	}
 
-	for(int i = 0; i < hand.size() - 1; i++)
+	if (HasJoker(hand))
 	{
-		if(hand[i].getCardValue() == hand[i + 1].getCardValue() && HasJoker(hand) == true)
+		for (int i = 0; i < hand.size() - 1; i++)
 		{
-			return 8;
+			if (hand[i].getCardValue() == hand[i + 1].getCardValue())
+			{
+				hand[i].setIsGood(true);
+				hand[i + 1].setIsGood(true);
+				this->hasGoodCard = true;
+				break;
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < hand.size() - 2; i++)
+		{
+			if (hand[i].getCardValue() == hand[i + 1].getCardValue()
+				&& hand[i].getCardValue() == hand[i + 2].getCardValue())
+			{
+				hand[i].setIsGood(true);
+				hand[i + 1].setIsGood(true);
+				hand[i + 2].setIsGood(true);
+			this->hasGoodCard = true;
+			}
 		}
 	}
 
-		return -1;
+	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	return hand;
+}
+
+bool EvalThreeOfKind::HasGoodCards()const
+{
+	return this->hasGoodCard;
 }
 
 bool EvalThreeOfKind::HasJoker(std::vector<Card>& hand)

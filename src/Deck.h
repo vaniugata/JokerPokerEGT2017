@@ -37,6 +37,7 @@ public:
 
 	const ButtonObject* GetHeldCardsButtons() const;
 	const std::vector<Card>& GetHand() const;
+	void setHand(std::vector<Card>& hand);
 	int GetKillCount() const;
 
 	std::vector<Card> GetSortedHand();
@@ -49,10 +50,19 @@ public:
 	void RenderHoldBtns(SDL_Renderer*);
 	void RenderHoldStamps(SDL_Renderer* renderer);
 	void initHoldBtns();
+	void setCard(Card& card, int index);
 
 	void HoldSelectedCards();
 
 	void render_card_from_deck(SDL_Renderer* renderer, int i);
+
+	
+
+	void holdGoodCards();
+	void holdHighCard();
+	void holdTwoPairs();
+	void holdFlush();
+
 };
 #endif 
 

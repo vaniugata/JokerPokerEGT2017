@@ -6,12 +6,15 @@
 
 class EvalFullHouse : public EvalThreeOfKind, public EvalTwoPair
 {
+private:
+	bool hasGoodCard;
 public:
 	EvalFullHouse();
 	virtual~EvalFullHouse();
 
-	int EvaluateHand(std::vector<Card>& hand);
+	std::vector<Card> EvaluateHand(std::vector<Card> hand);
 	bool HasJoker(std::vector<Card>& hand);
+	bool HasGoodCards()const;
 };
 #endif
-
+   

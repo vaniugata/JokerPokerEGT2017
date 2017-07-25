@@ -33,6 +33,15 @@ typedef enum
 	JOKERSUIT
 } eCardSuit;
 
+typedef enum
+{
+	EMPTYPOSITION,
+	FIRST,
+	SECOND,
+	THIRD,
+	FOURTH,
+	FIFTH
+} eCardPosition;
 
 
 class Card
@@ -42,10 +51,12 @@ private:
 	eCardValue m_cardValue;
 	SDL_Rect m_cardRect;
 	bool m_bIsHold;
+	bool m_isGood;
+    eCardPosition m_position;
 public:
 	Card& operator=(const Card& newcard);
 	Card();
-	Card(eCardSuit,eCardValue,SDL_Rect);
+	Card(eCardSuit,eCardValue,SDL_Rect,eCardPosition);
 	eCardSuit getCardSuit()const;
 	eCardValue getCardValue()const;
 	SDL_Rect* getCardRect();
@@ -54,6 +65,13 @@ public:
 	void setCardRect(int,int,int,int);
 	void setIsHold(bool);
 	bool getIsHold();
+
+	void setIsGood(bool);
+	bool getIsGood();
+
+	void setCardPosition(eCardPosition position);
+	eCardPosition getCardPosition()const;
+
     friend bool operator<(const Card& oldcard,const Card& newcard);
 	friend bool operator==(const Card& leftValue,const Card& rightValue);
 	

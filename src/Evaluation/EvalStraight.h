@@ -4,13 +4,18 @@
 
 class EvalStraight : public virtual Evaluation
 {
+private:
+	bool hasGoodCard;
 public:
 	EvalStraight();
 	virtual~EvalStraight();
 
-	int EvaluateHand(std::vector<Card>& hand);
+	std::vector<Card> EvaluateHand(std::vector<Card>);
 	bool HasJoker(std::vector<Card>& hand);
+	bool HasGoodCards()const;
+	std::vector<Card> getStraight(eCardValue);
 	bool HasAce(std::vector<Card>& hand);
+
 };
 #endif 
 

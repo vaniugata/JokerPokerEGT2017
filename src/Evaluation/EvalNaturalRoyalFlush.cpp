@@ -1,23 +1,36 @@
 #include "EvalNaturalRoyalFlush.h"
+#include <iostream>
 
 EvalNaturalRoyalFlush::EvalNaturalRoyalFlush()
 {
+	this->hasGoodCard = false;
 }
 
 EvalNaturalRoyalFlush::~EvalNaturalRoyalFlush()
 {
+	std::cout << "NaturalRoyalFlush deleted/n";
 }
 
-int EvalNaturalRoyalFlush::EvaluateHand(std::vector<Card>& hand)
+std::vector<Card> EvalNaturalRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
-	if(EvalStraightFlush::EvaluateHand(hand) == 3 &&
-		hand[0].getCardValue() == TEN &&
-		!HasJoker(hand))
+	if (EvalStraightFlush::HasGoodCards() && hand[0].getCardValue() == TEN && !HasJoker(hand))
 	{
-		return 0;
+		for (int i = 0; i < hand.size(); i++)
+		{
+			hand[i].setIsGood(true);
+		}
+		this->hasGoodCard = true;
 	}
+	sort(hand.begin(), hand.end(), [](const Card& left, const Card& right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	return hand;
+}
 
-	return -1;
+bool EvalNaturalRoyalFlush::HasGoodCards()const
+{
+	return this->hasGoodCard;
 }
 
 bool EvalNaturalRoyalFlush::HasJoker(std::vector<Card>& hand)

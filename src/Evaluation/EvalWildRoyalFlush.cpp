@@ -1,28 +1,39 @@
 #include "EvalWildRoyalFlush.h"
+#include <iostream>
 
 EvalWildRoyalFlush::EvalWildRoyalFlush()
 {
-
+	hasGoodCard = false;
 }
 
 EvalWildRoyalFlush::~EvalWildRoyalFlush()
 {
+	std::cout << "WildRoyalFlush deleted/n";
 }
 
-int EvalWildRoyalFlush::EvaluateHand(std::vector<Card>& hand)
+std::vector<Card> EvalWildRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
-	if(EvalStraightFlush::EvaluateHand(hand) == 3 && HasJoker(hand) && 
-		hand[0].getCardValue() == TEN || hand[0].getCardValue() == JACK)
+	if (EvalStraightFlush::HasGoodCards() && hand[0].getCardValue() == TEN)
 	{
-		return 2;
+		for (int i = 0; i < hand.size(); i++)
+		{
+			hand[i].setIsGood(true);
+		}
+		hasGoodCard = true;
 	}
+	sort(hand.begin(), hand.end(), [](const Card& left, const Card& right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	return hand;
+}
 
-	return -1;
+bool EvalWildRoyalFlush::HasGoodCards()
+{
+	return this->hasGoodCard;
 }
 
 bool EvalWildRoyalFlush::HasJoker(std::vector<Card>& hand)
 {
-	return Evaluation::HasJoker(hand);
+	return Evaluation::HasJoker(hand); 
 }
-
-

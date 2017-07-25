@@ -17,7 +17,7 @@ int main(int args, char* argc[])
 
 	//Current animation frame
 	int frame = 0;
-	while(game.m_eGameState != QUIT)
+ 	while(game.m_eGameState != QUIT)
 	{
 
 		while(SDL_PollEvent(&game.m_event) > 0)

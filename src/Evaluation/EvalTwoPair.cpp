@@ -1,28 +1,59 @@
 #include "EvalTwoPair.h"
+#include<iostream>
 
 EvalTwoPair::EvalTwoPair()
 {
+	hasGoodCard = false;
 }
 
 EvalTwoPair::~EvalTwoPair()
 {
+	std::cout << "TwoPair deleted/n";
 }
 
-int EvalTwoPair::EvaluateHand(std::vector<Card>& hand)
+
+std::vector<Card> EvalTwoPair::EvaluateHand(std::vector<Card> hand)
 {
 	int pair = 0;
-
-	for(int i = 0; i < hand.size() - 1; i++)
+	if (!HasJoker(hand))
 	{
-		if (hand[i].getCardValue() == hand[i + 1].getCardValue()) { pair++; i++; }
+		for (int i = 0; i < hand.size() - 1; i++)
+		{
+			if (hand[i].getCardValue() == hand[i + 1].getCardValue())
+			{
+				pair++;
+				i++;
+			}
+		}
 	}
-
-	if(pair == 2 && HasJoker(hand) == false) {	return 9; }
-
-	return -1;
+	if (pair == 2)
+	{
+		hasGoodCard = true;
+		for (int i = 0; i < hand.size() - 1; i++)
+		{
+			if (hand[i].getCardValue() == hand[i + 1].getCardValue())
+			{
+				hand[i].setIsGood(true);
+				hand[i + 1].setIsGood(true);
+				i++;
+			}
+		}
+	}
+	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	return hand;
 }
 
 bool EvalTwoPair::HasJoker(std::vector<Card>& hand)
 {
 	return Evaluation::HasJoker(hand);
 }
+
+bool EvalTwoPair::HasGoodCards() const
+{
+	return this->hasGoodCard;
+}
+
+

@@ -24,6 +24,7 @@ private:
 	PaytableObject* m_paytable;
 	Deck* m_ptrDeck;
 	std::vector<Evaluation*> m_vecEvaluations;
+	std::vector<Evaluation*> m_vecAutoHold;
 	ButtonObject* m_btnCashOut;
 
 public:

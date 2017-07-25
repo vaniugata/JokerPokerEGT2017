@@ -9,7 +9,6 @@ using std::stringstream;
 IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 	double* credit,int* bet) :
 	m_ptrBet(bet),
-
 	m_ptrCredit(credit),
 	Screen(renderer),
 	m_tBackgorund(),

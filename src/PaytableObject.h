@@ -35,7 +35,7 @@ private:
 	};
 
 	std::vector<int> m_vecBets {800, 130, 100, 50, 20, 7, 5, 3, 2, 1, 1};
-	Mix_Music* m_sfx[WINS];
+	Mix_Chunk* m_sfx[WINS];
 
 public:
 	PaytableObject(SDL_Renderer* renderer);

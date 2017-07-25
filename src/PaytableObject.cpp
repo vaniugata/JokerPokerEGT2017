@@ -36,7 +36,7 @@ PaytableObject::~PaytableObject()
 	std::cout << "PaytableObject deleted.\n";
 	for(int i = 0; i < WINS; i++)
 	{
-		Mix_FreeMusic(m_sfx[i]);
+		Mix_FreeChunk(m_sfx[i]);
 		m_sfx[i] = nullptr;
 	}
 	TTF_CloseFont(m_font);
@@ -58,8 +58,8 @@ void PaytableObject::LoadWinSounds()
 	std::stringstream file;
 	for(int i = 0; i < WINS; i++)
 	{
-		 file << "ResourcesMusic/pt" << i + 1 << ".ogg";
-		 m_sfx[i] = Mix_LoadMUS(file.str().c_str());
+		 file << "ResourcesMusic/pt" << i + 1 << ".wav";
+		 m_sfx[i] = Mix_LoadWAV(file.str().c_str());
 		 if(m_sfx[i] == nullptr) { std::cout << Mix_GetError() << "\n"; return; }
 		 file.str("");
 	}
@@ -162,10 +162,8 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer, int winnerIndx)
 void PaytableObject::PlaySoundEffect(int i)
 {
 	if(i < 0 || i > 10) { return; }
-	Mix_PlayMusic(m_sfx[i], 0);
+	Mix_PlayChannel(-1, m_sfx[i], 0);
 }
-
-
 
 void PaytableObject::IncreaseBet()//Увеличете залога
 {

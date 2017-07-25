@@ -160,8 +160,8 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 
 	for(int i = 0; i < 5; i++)
 	{
-		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
-		cardPlace.x += cardPlace.w;
+			RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
+						cardPlace.x += cardPlace.w;
 	}
 }
 

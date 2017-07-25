@@ -21,6 +21,27 @@ int main(int args, char* argc[])
 
 	while(game.m_eGameState != QUIT)
 	{
+		switch(game.m_eGameState)
+		{
+		case INTRO:
+			intro.Render();
+			break;
+		case PLAY:
+			game.Render();
+			break;
+		case BONUS:
+			bonus.Render();
+			break;
+		case WIN:
+			win.Render();
+			break;
+		case OUTRO:
+			outro.Render();
+			outro.Delay();
+			break;
+		}
+		game.Draw();
+
 		while(SDL_PollEvent(&game.m_event) > 0)
 		{
 			switch(game.m_eGameState)

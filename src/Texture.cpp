@@ -4,7 +4,7 @@
 #include "includesSDL2.h"
 
 
-Texture::Texture(SDL_Renderer* renderer, std::string path) : 
+Texture::Texture(SDL_Renderer* renderer, std::string path) :
 	m_texture(nullptr), m_font(nullptr), m_iWidth(100), m_iHeight(100)
 {
 }
@@ -25,16 +25,26 @@ int Texture::GetHeight() const
 	return this->m_iHeight;
 }
 
+void Texture::SetBlendMode(SDL_BlendMode bm)
+{
+	SDL_SetTextureBlendMode(m_texture, bm);
+}
+
+void Texture::SetAlpha(Uint8 a)
+{
+	SDL_SetTextureAlphaMod(m_texture, a);
+}
+
 void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str() );
 	if(surface == nullptr)
 	{
-		std::cerr << "Unable to load image" << path.c_str() << " ! SDL_image Error: " << \
-			SDL_GetError();
+		std::cerr << "Unable to load image" << path << " ! SDL_image Error: " << \
+			SDL_GetError() << "\n";
 		return;
 	}
-
+	SetBlendMode(SDL_BLENDMODE_BLEND);
 	SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 255, 0));
 
 	m_texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -46,8 +56,13 @@ void Texture::LoadFromFile(SDL_Renderer* renderer, std::string path)
 	surface = nullptr;
 }
 
-void Texture::LoadFromRendererdText(SDL_Renderer * renderer, std::string text, SDL_Color color)
+void Texture::LoadFromRendererdText(SDL_Renderer * renderer, \
+	std::string fontPath, std::string text, SDL_Color color, int fontSize)
 {
+	Free();
+
+	InitFont(fontPath, fontSize);
+
 	SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), color);
 	if(textSurface == nullptr)
 	{
@@ -68,6 +83,7 @@ void Texture::LoadFromRendererdText(SDL_Renderer * renderer, std::string text, S
 	m_iHeight = textSurface->h;
 
 	SDL_FreeSurface(textSurface);
+	textSurface = nullptr;
 }
 
 void Texture::Render(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip)

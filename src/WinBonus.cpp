@@ -1,10 +1,3 @@
-/*
- * WinBonus.cpp
- *
- *  Created on: 14.07.2017 г.
- *      Author: Rossi
- */
-
 #include "WinBonus.h"
 #include <iostream>
 using std::cerr;
@@ -32,27 +25,37 @@ void WinBonus::Draw()
 }
 
 void WinBonus::Render()
-{	//render Backgorund
+{	
+	//render Backgorund
 	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-	//render the text
+	//Play greeting sound
+	Mix_PlayChannel(-1, winning, 0);
 	SDL_Color color { 0, 0, 0 };
-	m_tText.LoadFromRendererdText(m_renderer,"New Credit is :" + DoubleToString(*m_ptrCredit), color);
-	Uint32 timerDelay = SDL_GetTicks();
-	while (SDL_GetTicks() - timerDelay < 2000 && *m_ptrGameState != QUIT)
-	{
 		int x = 300;
 		int y = SCREEN_HEIGHT - 80;
+
+	m_tText.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
+		"New Credit is :" + DoubleToString(*m_ptrCredit), color, 50);
+
+	Uint32 timerDelay = SDL_GetTicks();
+	while (SDL_GetTicks() - timerDelay < 3000 && *m_ptrGameState != QUIT)
+	{
+		//render Backgorund
+		m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		//render Text
 		m_tText.Render(m_renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
+		SDL_RenderPresent(m_renderer);
 	}
-	Mix_PlayChannel(-1, winning, 0);
+
 	*m_ptrGameState = PLAY;
 }
 
 void WinBonus::LoadMusicFiles()
 {
 	winning = Mix_LoadWAV("ResourcesMusic/Winning.wav");
-	if (winning == nullptr) {
+	if (winning == nullptr)
+	{
 		std::cout << "Failed to load scratch Winning! SDL_mixer Error:"
 				<< Mix_GetError() << std::endl;
 		return;
@@ -68,6 +71,7 @@ void WinBonus::HandleEvent()
 		break;
 	}
 }
+
 std::string WinBonus::DoubleToString(double x) const
 {
 	std::stringstream ss;
@@ -75,6 +79,7 @@ std::string WinBonus::DoubleToString(double x) const
 	std::string res = ss.str();
 	return res;
 }
+
 //Free the sound effects
 void WinBonus::Close()
 {

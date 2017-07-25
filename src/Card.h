@@ -3,7 +3,6 @@
 #include<iostream>
 #include "includesSDL2.h"
 
-
 typedef enum 
 {
 	EMPTYVALUE,
@@ -46,6 +45,10 @@ typedef enum
 
 class Card
 {
+public:
+	friend bool operator<(const Card& oldcard, const Card& newcard);
+	friend bool operator==(const Card& leftValue, const Card& rightValue);
+
 private:
 	eCardSuit m_cardSuit;
 	eCardValue m_cardValue;
@@ -55,30 +58,24 @@ private:
     eCardPosition m_position;
 public:
 	Card& operator=(const Card& newcard);
+
 	Card();
 	Card(eCardSuit,eCardValue,SDL_Rect,eCardPosition);
+	//getters
 	eCardSuit getCardSuit()const;
 	eCardValue getCardValue()const;
+	eCardPosition getCardPosition()const;
 	SDL_Rect* getCardRect();
+	bool getIsHold();
+	bool getIsGood();
+
+	//setters
 	void setCardSuit(eCardSuit);
 	void setCardValue(eCardValue);
 	void setCardRect(int,int,int,int);
 	void setIsHold(bool);
-	bool getIsHold();
-
 	void setIsGood(bool);
-	bool getIsGood();
-
 	void setCardPosition(eCardPosition position);
-	eCardPosition getCardPosition()const;
-
-    friend bool operator<(const Card& oldcard,const Card& newcard);
-	friend bool operator==(const Card& leftValue,const Card& rightValue);
-	
-
-
-
-
 };
 
 

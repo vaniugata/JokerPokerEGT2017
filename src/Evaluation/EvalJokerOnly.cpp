@@ -2,8 +2,8 @@
 #include<iostream>
 
 EvalJokerOnly::EvalJokerOnly()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalJokerOnly::~EvalJokerOnly()
@@ -13,6 +13,7 @@ EvalJokerOnly::~EvalJokerOnly()
 
 std::vector<Card> EvalJokerOnly::EvaluateHand(std::vector<Card>hand)
 {
+	this->hasGoodCard = false;
 	if (HasJoker(hand))
 	{
 		this->hasGoodCard = true;

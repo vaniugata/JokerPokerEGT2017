@@ -1,14 +1,16 @@
 #include "Deck.h"
 #include<iostream>
 
-	Deck::Deck(SDL_Renderer* renderer) :
+Deck::Deck(SDL_Renderer* renderer) :
 	m_texture(renderer),
 	m_tHold(renderer),
-	m_currentBtn(renderer, "Resources/hold-button.png")
+	m_currentBtn(renderer, "Resources/hold-button.png"),
+	m_iKillCount(0)
 {
 	m_texture.LoadFromFile(renderer, "Resources/deckOfCards.png");
 	m_tHold.LoadFromFile(renderer, "Resources/hold.png");
-
+	m_tDim.LoadFromFile(renderer, "Resources/dimCard.png");
+	m_tDim.SetAlpha(100);
 	for(int i = 0; i < 52; i++)
 	{ 
 		
@@ -59,7 +61,7 @@ Deck::~Deck()
 
 void Deck::deal()
 {
-	printDeck();
+	//printDeck();
 	for(int i = 0;i < 5;i++)
 	{
 		
@@ -86,44 +88,46 @@ void Deck::deal()
 			hand[i].setIsHold(false);
 		}
 	}
-	std::cout << "--------------------------------------" << std::endl;
 
-	int card1 = 8;
-	hand[0].setCardValue(TEN);
-	hand[0].setCardSuit(CLUBS);
-	hand[0].setCardRect(deckOfCards[card1].getCardRect()->x, deckOfCards[card1].getCardRect()->y,
-		deckOfCards[card1].getCardRect()->w, deckOfCards[card1].getCardRect()->h);
-	hand[0].setCardPosition(FIRST);
+	//std::cout << "--------------------------------------" << std::endl;
 
-	int card2 =34;
-	hand[1].setCardValue(TEN);
-	hand[1].setCardSuit(HEARTS);
-	hand[1].setCardRect(deckOfCards[card2].getCardRect()->x, deckOfCards[card2].getCardRect()->y,
-	deckOfCards[card2].getCardRect()->w, deckOfCards[card2].getCardRect()->h);
-	hand[1].setCardPosition(SECOND);
-	
-	int card3 = 32;
-	hand[2].setCardValue(EIGHT);
-	hand[2].setCardSuit(HEARTS);
-	hand[2].setCardRect(deckOfCards[card3].getCardRect()->x, deckOfCards[card3].getCardRect()->y,
-		deckOfCards[card3].getCardRect()->w, deckOfCards[card3].getCardRect()->h);
-	hand[2].setCardPosition(THIRD);
-	int card4 = 21;
-	hand[3].setCardValue(TEN);
-	hand[3].setCardSuit(DIAMONDS);
-	hand[3].setCardRect(deckOfCards[card4].getCardRect()->x, deckOfCards[card4].getCardRect()->y,
-		deckOfCards[card4].getCardRect()->w, deckOfCards[card4].getCardRect()->h);
-	hand[3].setCardPosition(FOURTH);
-	int card5 =19;
-	hand[4].setCardValue(EIGHT);
-	hand[4].setCardSuit(DIAMONDS);
-	hand[4].setCardRect(deckOfCards[card5].getCardRect()->x, deckOfCards[card5].getCardRect()->y,
-		deckOfCards[card5].getCardRect()->w, deckOfCards[card5].getCardRect()->h);
-	hand[4].setCardPosition(FIFTH);
-	printDeck();
+	//int card1 = 8;
+	//hand[0].setCardValue(TEN);
+	//hand[0].setCardSuit(CLUBS);
+	//hand[0].setCardRect(deckOfCards[card1].getCardRect()->x, deckOfCards[card1].getCardRect()->y,
+	//	deckOfCards[card1].getCardRect()->w, deckOfCards[card1].getCardRect()->h);
+	//hand[0].setCardPosition(FIRST);
 
+	//int card2 =34;
+	//hand[1].setCardValue(TEN);
+	//hand[1].setCardSuit(HEARTS);
+	//hand[1].setCardRect(deckOfCards[card2].getCardRect()->x, deckOfCards[card2].getCardRect()->y,
+	//deckOfCards[card2].getCardRect()->w, deckOfCards[card2].getCardRect()->h);
+	//hand[1].setCardPosition(SECOND);
+	//
+	//int card3 = 32;
+	//hand[2].setCardValue(EIGHT);
+	//hand[2].setCardSuit(HEARTS);
+	//hand[2].setCardRect(deckOfCards[card3].getCardRect()->x, deckOfCards[card3].getCardRect()->y,
+	//	deckOfCards[card3].getCardRect()->w, deckOfCards[card3].getCardRect()->h);
+	//hand[2].setCardPosition(THIRD);
+	//int card4 = 21;
+	//hand[3].setCardValue(TEN);
+	//hand[3].setCardSuit(DIAMONDS);
+	//hand[3].setCardRect(deckOfCards[card4].getCardRect()->x, deckOfCards[card4].getCardRect()->y,
+	//	deckOfCards[card4].getCardRect()->w, deckOfCards[card4].getCardRect()->h);
+	//hand[3].setCardPosition(FOURTH);
+	//int card5 =19;
+	//hand[4].setCardValue(EIGHT);
+	//hand[4].setCardSuit(DIAMONDS);
+	//hand[4].setCardRect(deckOfCards[card5].getCardRect()->x, deckOfCards[card5].getCardRect()->y,
+	//	deckOfCards[card5].getCardRect()->w, deckOfCards[card5].getCardRect()->h);
+	//hand[4].setCardPosition(FIFTH);
+	//printDeck();
+
+
+	std::cout << "Kill count: " << m_iKillCount << std::endl;
 	m_iKillCount++;
-
 }
 
 
@@ -153,7 +157,7 @@ Card Deck::getRandomCard()
 
 const ButtonObject* Deck::GetHeldCardsButtons() const
 {
-	return m_vecCardHold;
+	return m_arrCardHold;
 }
 
 const std::vector<Card>& Deck::GetHand() const
@@ -190,154 +194,6 @@ std::vector<Card> Deck::GetSortedHand()
 
 }
 
-int Deck::evaluateHand()
-{
-	std::vector<Card> sorted = GetSortedHand();
-
-	int royalFlush, full, fourOfAKind, straight, flush, threeOfKind, pair, KingOrBetter, fiveOfAKind;
-	fourOfAKind = royalFlush = full = straight = flush = threeOfKind = pair = KingOrBetter = fiveOfAKind = 0;
-	k = 0;
-	//checks for flush
-	while(k < 4 && sorted[k].getCardSuit() == sorted[k + 1].getCardSuit())
-
-		k++;
-	isJokerHand();
-	if(k == 4)
-		flush = 1;
-
-	//checks for straight
-	k = 0;
-
-	while(k < 4 && sorted[k].getCardValue() == sorted[k + 1].getCardValue() - 1)
-	{
-		if(sorted[0].getCardValue() == DEUCE && sorted[4].getCardValue() == ACE && k == 2)
-
-		{
-			k++;
-		}
-		k++;
-	}
-	//check for 2 3 5 A Joker
-
-	if(sorted[0].getCardValue() == DEUCE && sorted[3].getCardValue() == ACE && k == 1)
-	{
-		if(sorted[2].getCardValue() == FIVE)
-
-			k += 2;
-		isJokerHand();
-	}
-	if(k == 4)
-		straight = 1;
-	//chech for four of a kind
-	for(int i = 0; i < 2; i++)
-	{
-		k = i;
-
-		while(k < i + 3 && sorted[k].getCardValue() == sorted[k + 1].getCardValue())
-
-			k++;
-		isJokerHand();
-		if(k == i + 3)
-			fourOfAKind = 1;
-		if(k == i + 4)
-			fiveOfAKind = 1;
-	}
-	//check for three and full
-	if(!fourOfAKind) {
-		for(int i = 0; i < 3; i++)
-		{
-			k = i;
-
-			while(k < i + 2 && sorted[k].getCardValue() == sorted[k + 1].getCardValue())
-
-			{
-				k++;
-			}
-			isJokerHand();
-			if(k == i + 2)
-			{
-				threeOfKind = 1;
-				if(i == 0)
-				{
-
-					if(sorted[3].getCardValue() == sorted[4].getCardValue()) {
-
-						full = 1;
-					}
-				}
-				else if(i == 1) {
-
-					if(sorted[0].getCardValue() == sorted[4].getCardValue()) {
-
-						full = 1;
-					}
-				}
-				else {
-
-					if(sorted[0].getCardValue() == sorted[1].getCardValue())
-
-						full = 1;
-				}
-			}
-
-		}
-	}
-
-	if(straight && flush && sorted[0].getCardValue() == TEN) {
-
-		return 0;
-	}
-	else if(fiveOfAKind)
-	{
-		return 1;
-	}
-
-	else if(straight && flush && isJokerHand() && sorted[0].getCardValue() == TEN)
-
-	{
-		return 2;
-	}
-	else if(straight && flush)
-	{
-		return 3;
-	}
-	else if(fourOfAKind) {
-		return 4;
-	}
-	else if(full) {
-		return 5;
-	}
-	else if(flush) {
-		return 6;
-	}
-	else if(straight) {
-		return 7;
-	}
-	else if(threeOfKind) {
-		return 8;
-	}
-	for(k = 0; k < 4; k++) {
-
-		if(sorted[k].getCardValue() == sorted[k + 1].getCardValue())
-
-			pair++;
-	}
-	if(pair == 2) {
-		return 9;
-	}
-
-	else if (sorted[3].getCardValue() >= KING)
-	{
-		if (isJokerHand())
-			return 10;
-		if (sorted[3].getCardValue() == sorted[4].getCardValue())
-			return 10;
-		return -1;
-
-	}
-	else return -1;
-}
-
 bool Deck::isCardInHand(Card& card)
 {
 	for(int i = 0; i < hand.size(); i++)
@@ -350,6 +206,7 @@ bool Deck::isCardInHand(Card& card)
 
 bool Deck::isJokerHand()
 {
+	int k = 0;
 	if(hand[4].getCardValue() == JOKERVALUE) {
 		return true;
 	}
@@ -359,39 +216,48 @@ bool Deck::isJokerHand()
 void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destination)
 {
 	m_texture.Render(renderer, destination->x, destination->y, destination->w, destination->h, rect);
-
 }
 
 void Deck::RenderHand(SDL_Renderer * renderer)
 {
-
 	SDL_Rect cardPlace{ (SCREEN_WIDTH - 5 * CARD_W)/2,350,CARD_W,CARD_H_ };
 
 	for(int i = 0; i < 5; i++)
 	{
-		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
-		cardPlace.x += cardPlace.w;
+			RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
+						cardPlace.x += cardPlace.w;
 	}
+}
 
-	
+void Deck::RenderStart(SDL_Renderer * renderer)
+{
+	SDL_Rect cardPos{ (SCREEN_WIDTH - 5 * CARD_W) / 2,350,CARD_W,CARD_H_ };
+	for(int i = 0; i < HAND_SIZE; i++)
+	{
+		RenderCard(renderer, deckOfCards[53].getCardRect(), &cardPos);
+		cardPos.x += CARD_W;
+	}
 }
 
 void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 {
 
-	SDL_Rect  clipVisible {0,0, HOLD_W, HOLD_H / 2 };
+	SDL_Rect  clipVisible {0,0, HOLD_W, CARD_H_};
 	int x= (SCREEN_WIDTH - 5 * CARD_W) / 2;
 	int y = 350;
 
 	for (int i = 0; i <5; i++)
 	{
-		m_vecCardHold[i].SetDimentions(HOLD_W, HOLD_H /2);
-		m_vecCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
+		//set dimentions for clicking logic
+		m_arrCardHold[i].SetDimentions(HOLD_W, CARD_H_);
+		m_arrCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
 		//render the picture
 		if(hand[i].getIsHold())
 		{
+			//show golden hold stamp
 			m_tHold.Render(renderer, x, y + 50, m_tHold.GetWidth() / 2, m_tHold.GetHeight() / 2);
 		}
+		//move to the next card
 		x += HOLD_W + 2;
 	}
 }
@@ -405,7 +271,6 @@ void Deck::RenderHoldStamps(SDL_Renderer * renderer)
 	{
 		if(hand[i].getIsHold())
 		{
-			
 			x += HOLD_W + 2;
 		}
 	}
@@ -415,7 +280,7 @@ void Deck::initHoldBtns()
 {
 	for (int i = 0; i < 5; i++)
 	{
-		m_vecCardHold[i] = m_currentBtn;
+		m_arrCardHold[i] = m_currentBtn;
 	}
 }
 
@@ -426,24 +291,21 @@ void Deck::setCard(Card & card, int index)
 
 void Deck::HoldSelectedCards()
 {
-	if(m_iKillCount >= 2) {	return; }
-
 	for(int i = 0; i < 5; i++)
 	{
-		if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == false)
+		if(m_arrCardHold[i].IsSelected() && hand[i].getIsHold() == false)
 			hand[i].setIsHold(true);
-		else if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == true)
+		else if(m_arrCardHold[i].IsSelected() && hand[i].getIsHold() == true)
 			hand[i].setIsHold(false);
 		
 		std::cout << hand[i].getIsHold();
 	}
 }
 
-void Deck::render_card_from_deck(SDL_Renderer* renderer, int i)
+void Deck::DimCards(SDL_Renderer * renderer)
 {
-	SDL_Rect onscreen{ 0,0, T_CARD_WIDTH , T_CARD_HEIGHT };
-	RenderCard(renderer, deckOfCards[i].getCardRect(), &onscreen);
-	std::cout << "CURENT CARD: " << deckOfCards[i].getCardSuit() << " " << deckOfCards[i].getCardValue() << "\n";
+	int x = (SCREEN_WIDTH - 5 * CARD_W) / 2;
+	m_tDim.Render(renderer, x + CARD_W, 350, CARD_W, CARD_H_);
 }
 
 
@@ -453,65 +315,6 @@ void Deck::holdGoodCards()
 	{
 		if (hand[i].getIsGood() == true)
 			hand[i].setIsHold(true);
-	}
-}
-
-void Deck::holdHighCard()
-{
-	for (int i = 0; i < 5; i++)
-	{
-		for(int j =i+1 ;j<5 ;j++)
-		{
-			if (hand[i].getCardValue() == hand[j].getCardValue() && hand[i].getCardValue() >= KING)
-			{
-				hand[i].setIsHold(true);
-				hand[j].setIsHold(true);
-			}
-
-			else if (hand[i].getCardValue() == JOKERVALUE)
-			{
-				for (int m = 0; m < 5; m++)
-				{
-					if (hand[m].getCardValue() >= KING && m!=i)
-					{
-						hand[i].setIsHold(true);
-						hand[m].setIsHold(true);
-						return;
-					}
-				}
-			}
-			
-		}
-	}
-}
-
-void Deck::holdTwoPairs()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = i+1; j < 5; j++)
-		{
-			if (hand[i].getCardValue() == hand[j].getCardValue())
-			{
-				hand[i].setIsHold(true);
-				hand[j].setIsHold(true);
-			}
-		}
-	}
-}
-
-void Deck::holdFlush()
-{
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = i + 1; j < 5; j++)
-		{
-			if (hand[i].getCardSuit() == hand[j].getCardSuit())
-			{
-				hand[i].setIsHold(true);
-				hand[j].setIsHold(true);
-			}
-		}
 	}
 }
 

@@ -2,8 +2,8 @@
 #include<iostream>
 
 EvalFourOfAKind::EvalFourOfAKind()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalFourOfAKind::~EvalFourOfAKind()
@@ -13,6 +13,7 @@ EvalFourOfAKind::~EvalFourOfAKind()
 
 std::vector<Card> EvalFourOfAKind::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	int counter = 0;
 	eCardValue bestValue = getBestValue(hand);
 	for (int i = 0; i < hand.size()-1; i++)

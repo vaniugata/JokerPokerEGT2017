@@ -2,8 +2,8 @@
 #include<iostream>
 
 EvalStraightFlush::EvalStraightFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalStraightFlush::~EvalStraightFlush()
@@ -13,19 +13,21 @@ EvalStraightFlush::~EvalStraightFlush()
 
 std::vector<Card> EvalStraightFlush::EvaluateHand(std::vector<Card> hand)
 {
-	if (EvalFlush::HasGoodCards() && EvalStraight::HasGoodCards())
+	this->hasGoodCard = false;
+	if (EvalFlush::HasGoodCards()==true && EvalStraight::HasGoodCards()==true)
 	{
-		for (int i = 0; i < hand.size() ; i++)
+		for (int i = 0; i < hand.size(); i++)
 		{
 			hand[i].setIsGood(true);
 		}
 		this->hasGoodCard = true;
+	}
 		sort(hand.begin(), hand.end(), [](const Card& left, const Card& right)
 		{
 			return left.getCardPosition() < right.getCardPosition();
 		});
 			return hand;
-	}
+	
 }
 
 bool EvalStraightFlush::HasGoodCards()const

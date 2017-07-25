@@ -2,8 +2,8 @@
 #include<iostream>
 
 EvalThreeToRoyalFlush::EvalThreeToRoyalFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalThreeToRoyalFlush::~EvalThreeToRoyalFlush()
@@ -13,6 +13,7 @@ EvalThreeToRoyalFlush::~EvalThreeToRoyalFlush()
 
 std::vector<Card> EvalThreeToRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	int counter = 0;
 	std::vector<Card> royalFlush = getRoyalFlushHand(getbestSuit(hand));
 

@@ -2,8 +2,8 @@
 #include<iostream>
 
 EvalTwoPair::EvalTwoPair()
+	:hasGoodCard(false)
 {
-	hasGoodCard = false;
 }
 
 EvalTwoPair::~EvalTwoPair()
@@ -14,6 +14,7 @@ EvalTwoPair::~EvalTwoPair()
 
 std::vector<Card> EvalTwoPair::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	int pair = 0;
 	if (!HasJoker(hand))
 	{
@@ -28,7 +29,7 @@ std::vector<Card> EvalTwoPair::EvaluateHand(std::vector<Card> hand)
 	}
 	if (pair == 2)
 	{
-		hasGoodCard = true;
+		this->hasGoodCard = true;
 		for (int i = 0; i < hand.size() - 1; i++)
 		{
 			if (hand[i].getCardValue() == hand[i + 1].getCardValue())

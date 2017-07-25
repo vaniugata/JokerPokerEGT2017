@@ -2,8 +2,8 @@
 #include <iostream>
 
 EvalThreeOfKind::EvalThreeOfKind()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalThreeOfKind::~EvalThreeOfKind()
@@ -13,7 +13,7 @@ EvalThreeOfKind::~EvalThreeOfKind()
 
 std::vector<Card> EvalThreeOfKind::EvaluateHand(std::vector<Card> hand)
 {
-
+	this->hasGoodCard = false;
 	if (HasJoker(hand))
 	{
 		for (int i = 0; i < hand.size() - 1; i++)

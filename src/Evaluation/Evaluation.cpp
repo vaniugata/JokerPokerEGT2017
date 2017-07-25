@@ -1,7 +1,6 @@
 #include "Evaluation.h"
 #include <iostream>
 
-bool Evaluation::isAutoHold = false; 
 
 Evaluation::Evaluation()
 {
@@ -11,16 +10,6 @@ Evaluation::Evaluation()
 Evaluation::~Evaluation()
 {
 	std::cout << "Delete Evaluation.\n";
-}
-
-void Evaluation::setAutoHold(bool autoHold)
-{
-	isAutoHold = autoHold;
-}
-
-bool Evaluation::getAutoHold()
-{
-	return isAutoHold;
 }
 
 std::vector<Card> Evaluation::EvaluateHand(std::vector<Card> hand)

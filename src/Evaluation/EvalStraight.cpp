@@ -1,8 +1,8 @@
 #include "EvalStraight.h"
 #include<iostream>
 EvalStraight::EvalStraight()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalStraight::~EvalStraight()
@@ -14,6 +14,7 @@ EvalStraight::~EvalStraight()
 
 std::vector<Card> EvalStraight::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	std::vector<Card> straight = getStraight(hand[0].getCardValue());
 	int counter=0;
 	
@@ -29,7 +30,7 @@ std::vector<Card> EvalStraight::EvaluateHand(std::vector<Card> hand)
 			}
 		}
 	}
-	straight = getStraight(hand[0].getCardValue());
+//	straight = getStraight(hand[0].getCardValue());
 	
 	if (counter == 5 
 		||( counter == 4 && HasJoker(hand) )

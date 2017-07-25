@@ -1,8 +1,8 @@
 #include "EvalFullHouse.h"
 #include<iostream>
 EvalFullHouse::EvalFullHouse()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalFullHouse::~EvalFullHouse()
@@ -12,6 +12,7 @@ EvalFullHouse::~EvalFullHouse()
 
 std::vector<Card> EvalFullHouse::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	bool isFull =false;
 	if (true)//EvalThreeOfKind::HasGoodCards())
 	{

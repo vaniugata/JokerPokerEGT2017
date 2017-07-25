@@ -1,9 +1,10 @@
 #include "EvalKingsOrBetter.h"
 #include<iostream>
 
+
 EvalKingsOrBetter::EvalKingsOrBetter()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalKingsOrBetter::~EvalKingsOrBetter()
@@ -13,6 +14,7 @@ EvalKingsOrBetter::~EvalKingsOrBetter()
 
 std::vector<Card> EvalKingsOrBetter::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	if (HasJoker(hand))
 	{
 		if (hand[3].getCardValue() >= KING)
@@ -37,6 +39,7 @@ std::vector<Card> EvalKingsOrBetter::EvaluateHand(std::vector<Card> hand)
 	});
 
 	return hand;
+
 }
 
 bool EvalKingsOrBetter::HasJoker(std::vector<Card>& hand)

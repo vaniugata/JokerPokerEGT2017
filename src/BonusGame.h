@@ -8,9 +8,48 @@
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
+class BonusGame: public Screen
+{
 
-class BonusGame: public Screen {
+private:
+	static int m_win;
+	double* m_ptrCredit;
+	int m_diceResult;
+	int m_resDie1;
+	int m_resDie2;
 
+	//Texture objects
+	Texture m_tBackgorund;
+	Texture m_tChoiceWin;
+	Texture m_spriteDieTexture;
+
+	//SDL_Event object pointer
+	SDL_Event* m_event;
+
+	//enum eGameState pointer
+	eGameState* m_ptrGameState;
+
+	//SDL_Rect arrays
+	SDL_Rect m_spriteDie[6];
+	SDL_Rect m_ChoiceWin[3];
+
+	//Button objects
+	ButtonObject m_buttonX2;
+	ButtonObject m_buttonX5;
+	ButtonObject m_buttonX10;
+
+	//Button Music objects
+	ButtonObject m_btnMusic;
+	ButtonObject m_btnMusicPlus;
+	ButtonObject m_btnMusicMinus;
+	ButtonObject m_btnMusicPause;
+
+	bool m_bShowPlayButton = true;
+	int m_iCounterVolumeMusic;
+
+	//The music that will be played
+	Mix_Chunk* ButtonPress = nullptr;
+	Mix_Chunk* RollDice = nullptr;
 
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
@@ -18,11 +57,10 @@ public:
 
 	virtual ~BonusGame();
 
-	//The music that will be played
-	Mix_Chunk* ButtonPress = nullptr;
-	Mix_Chunk* RollDice = nullptr;
-
+	//GetCredit
 	double* GetCredit();
+
+	//Load Files
 	void LoadMusicFiles();
 	void LoadDieFiles();
 	void LoadChoiceWinFiles();
@@ -33,41 +71,23 @@ public:
 
 	//logic
 	void RenderChoiceWin();
-	int RandomNumberGenerator();
-	void delay(Uint32 ms);
-
 	void RenderDice();
-	int ResultDice();
-	double calculateWin(double credits, int x);
 
-	void Close();
-	int getDiceResult() const;
-	void setDiceResult(int diceResult);
+	//Utiliti function
+	void delay(Uint32 ms);
+	int RandomNumberGenerator();
+
+	//gets and sets
 	int getResDie1() const;
 	void setResDie1(int resDie1);
 	int getResDie2() const;
 	void setResDie2(int resDie2);
+	static void setWin(int);
 
-private:
-	double* m_ptrCredit;
-	int m_diceResult;
-	int m_resDie1;
-	int m_resDie2;
+	//music stuff
+	void MusicController();
 
-	Texture m_tBackgorund;
-	Texture m_tCredit;
-	SDL_Event* m_event;
-	eGameState* m_ptrGameState;
-
-	Texture m_tChoiceWin;
-	Texture m_spriteDieTexture;
-
-	SDL_Rect m_spriteDie[6];
-	SDL_Rect m_ChoiceWin[3];
-
-	ButtonObject m_buttonX2;
-	ButtonObject m_buttonX5;
-	ButtonObject m_buttonX10;
+	void Close();
 
 };
 #endif

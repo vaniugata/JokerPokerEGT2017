@@ -2,8 +2,8 @@
 #include <iostream>
 
 EvalNaturalRoyalFlush::EvalNaturalRoyalFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalNaturalRoyalFlush::~EvalNaturalRoyalFlush()
@@ -13,6 +13,7 @@ EvalNaturalRoyalFlush::~EvalNaturalRoyalFlush()
 
 std::vector<Card> EvalNaturalRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	if (EvalStraightFlush::HasGoodCards() && hand[0].getCardValue() == TEN && !HasJoker(hand))
 	{
 		for (int i = 0; i < hand.size(); i++)

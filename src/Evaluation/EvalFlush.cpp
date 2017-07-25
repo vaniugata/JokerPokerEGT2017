@@ -1,8 +1,8 @@
 #include "EvalFlush.h"
 #include<iostream>
 EvalFlush::EvalFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalFlush::~EvalFlush()
@@ -13,6 +13,7 @@ EvalFlush::~EvalFlush()
 
 std::vector<Card> EvalFlush::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	int count = 0;
 	eCardSuit bestSuit = hand[0].getCardSuit();
 	for(int i = 0; i < hand.size() - 1; i++)

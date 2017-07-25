@@ -2,8 +2,8 @@
 #include <iostream>
 
 EvalWildRoyalFlush::EvalWildRoyalFlush()
+	:hasGoodCard(false)
 {
-	hasGoodCard = false;
 }
 
 EvalWildRoyalFlush::~EvalWildRoyalFlush()
@@ -13,13 +13,14 @@ EvalWildRoyalFlush::~EvalWildRoyalFlush()
 
 std::vector<Card> EvalWildRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
-	if (EvalStraightFlush::HasGoodCards() && hand[0].getCardValue() == TEN)
+	this->hasGoodCard = false;
+	if (EvalStraightFlush::HasGoodCards() == true && hand[0].getCardValue() == TEN)
 	{
 		for (int i = 0; i < hand.size(); i++)
 		{
 			hand[i].setIsGood(true);
 		}
-		hasGoodCard = true;
+		this->hasGoodCard = true;
 	}
 	sort(hand.begin(), hand.end(), [](const Card& left, const Card& right)
 	{

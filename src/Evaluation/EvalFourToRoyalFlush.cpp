@@ -1,8 +1,8 @@
 #include "EvalFourToRoyalFlush.h"
 #include<iostream>
 EvalFourToRoyalFlush::EvalFourToRoyalFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalFourToRoyalFlush::~EvalFourToRoyalFlush()
@@ -12,6 +12,7 @@ EvalFourToRoyalFlush::~EvalFourToRoyalFlush()
 
 std::vector<Card> EvalFourToRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	int counter = 0;
 	std::vector<Card> royalFlush = getRoyalFlushHand(getbestSuit(hand));
 

@@ -2,8 +2,8 @@
 #include<iostream>
 
 EvalFiveOfAKind::EvalFiveOfAKind()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalFiveOfAKind::~EvalFiveOfAKind()
@@ -13,6 +13,7 @@ EvalFiveOfAKind::~EvalFiveOfAKind()
 
 std::vector<Card> EvalFiveOfAKind::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	int counter = 0;
 	for (int i = 0; i < hand.size()-1; i++)
 	{

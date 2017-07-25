@@ -3,8 +3,8 @@
 #include<iostream>
 
 EvalFourToFlush::EvalFourToFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 EvalFourToFlush::~EvalFourToFlush()
@@ -14,6 +14,7 @@ EvalFourToFlush::~EvalFourToFlush()
 
 std::vector<Card> EvalFourToFlush::EvaluateHand(std::vector<Card> hand)
 {
+	this->hasGoodCard = false;
 	eCardSuit bestSuit = getBestSuit(hand);
 	int counter = 0;
 	sort(hand.begin(), hand.end(), [](const Card left, const Card right)

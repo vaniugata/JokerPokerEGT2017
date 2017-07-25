@@ -8,7 +8,6 @@
 #ifndef SRC_WINBONUS_H_
 #define SRC_WINBONUS_H_
 
-
 #include "Screen.h"
 #include "Texture.h"
 #include "Globals.h"
@@ -16,12 +15,19 @@
 #include <string>
 #include <sstream>
 
-class WinBonus: public Screen {
+class WinBonus: public Screen
+{
 	double* m_ptrCredit;
+	//Texture objects
 	Texture m_tBackgorund;
 	Texture m_tText;
+
+	//SDL_Event object pointer
 	SDL_Event* m_event;
+
+	//enum eGameState pointer
 	eGameState* m_ptrGameState;
+
 	Mix_Chunk* winning = nullptr;
 
 public:

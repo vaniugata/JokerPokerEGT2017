@@ -1,8 +1,8 @@
 #include "FourToStraightFlush.h"
 #include<iostream>
 FourToStraightFlush::FourToStraightFlush()
+	:hasGoodCard(false)
 {
-	this->hasGoodCard = false;
 }
 
 FourToStraightFlush::~FourToStraightFlush()
@@ -12,6 +12,7 @@ FourToStraightFlush::~FourToStraightFlush()
 
 std::vector<Card> FourToStraightFlush::EvaluateHand(std::vector<Card>hand)
 {
+	this->hasGoodCard = false;
 	eCardSuit bestsuit = getBestSuit(hand);
 	std::vector<Card> straightFlush;
 	if (hand[0].getCardValue() == hand[1].getCardValue() - 1) {

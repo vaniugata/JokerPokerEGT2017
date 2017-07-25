@@ -8,7 +8,8 @@
 #include "ButtonObject.h"
 #include "includesSDL2.h"
 
-class BonusGame: public Screen {
+class BonusGame: public Screen
+{
 
 private:
 	static int m_win;
@@ -37,29 +38,26 @@ private:
 	ButtonObject m_buttonX5;
 	ButtonObject m_buttonX10;
 
+	//Button Music objects
 	ButtonObject m_btnMusic;
 	ButtonObject m_btnMusicPlus;
 	ButtonObject m_btnMusicMinus;
 	ButtonObject m_btnMusicPause;
 
 	bool m_bShowPlayButton = true;
-
+	int m_iCounterVolumeMusic;
 
 	//The music that will be played
 	Mix_Chunk* ButtonPress = nullptr;
 	Mix_Chunk* RollDice = nullptr;
 
 
-	Music m_mMusic;
-	int m_iCounterVolumeMusic;
 
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 			double* credit);
 
 	virtual ~BonusGame();
-
-
 
 	//GetCredit
 	double* GetCredit();
@@ -87,6 +85,9 @@ public:
 	int getResDie2() const;
 	void setResDie2(int resDie2);
 	static void setWin(int);
+
+	//music stuff
+	void MusicController();
 
 	void Close();
 

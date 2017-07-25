@@ -25,10 +25,9 @@ private:
 	Deck* m_ptrDeck;
 
 	std::vector<Evaluation*> m_vecEvaluations;
-	//Button objects
-	ButtonObject* m_btnCashOut;	//Button CashOut
-	ButtonObject* m_btnDealDraw;	//Button Deal/Draw
-
+	//Buttons
+	ButtonObject* m_btnCashOut;	
+	ButtonObject* m_btnDealDraw;	
 	ButtonObject* m_btnMusic;
 	ButtonObject* m_btnMusicPlus;
 	ButtonObject* m_btnMusicMinus;
@@ -40,8 +39,8 @@ private:
 	bool m_bShowPlayButton = true;
 
 
-	Music m_mCards;
-	Music m_mMusic;
+	//Music m_mCards;
+	//Music m_mMusic;
 	int m_iCounterVolumeMusic = 10;
 
 
@@ -53,7 +52,6 @@ public:
 	Game();
 	~Game();
 
-
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
 	int* GetBet();
@@ -63,7 +61,7 @@ public:
 
 	void Draw();
 	void Render();
-	void RenderRound(Deck* deck);
+	void RenderRound();
 	void RenderGameInfo();
 	void RenderGameOver();
 	void HandleEvent();

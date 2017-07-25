@@ -4,12 +4,10 @@ using std::cout;
 
 ButtonObject::ButtonObject(SDL_Renderer* renderer, std::string path,
 	int x, int y, int w, int h) :
-	m_texture(), m_iWidth(w), m_iHeight(h)
+	 m_iWidth(w), m_iHeight(h)
 {
-	m_texture.LoadFromFile(renderer, path);
 	m_pTopLeft.x = x;
 	m_pTopLeft.y = y;
-	m_mMusic.LoadMusic();
 }
 
 ButtonObject::~ButtonObject()
@@ -64,7 +62,7 @@ bool ButtonObject::IsSelected()
 	if( (x > m_pTopLeft.x && x < m_pTopLeft.x + m_iWidth ) && 
 		(y > m_pTopLeft.y && y < m_pTopLeft.y + m_iHeight ) )
 	{
-		Mix_PlayChannel(-1,m_mMusic.getButton(),0);
+		//Mix_PlayChannel(-1,m_mMusic.getButton(),0);
 		return true;
 	}
 

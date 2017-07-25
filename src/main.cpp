@@ -10,18 +10,14 @@
 int main(int args, char* argc[])
 {
 	Game game;
-	IntroScreen intro = IntroScreen(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit(),game.GetBet());
+	IntroScreen intro = IntroScreen(game.GetRenderer(), game.m_event,
+		game.m_eGameState,game.GetCredit(),game.GetBet());
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, game.m_eGameState,game.GetCredit() );
 	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, game.m_eGameState, game.GetCredit() );
 	OutroScreen outro = OutroScreen(game.GetRenderer(), &game.m_event, &game.m_eGameState);
 
-	Music Music;
-	Music.LoadMusic();
-
-	std::cout << "Credit: " << Recovery::Read().credit << " Bet: "
-		<< Recovery::Read().bet << " Win: "
-		<< Recovery::Read().win << "\n";
-	//Music.PlayMusic();
+	Music::LoadMusic();
+	Mix_PlayMusic(Music::getBackgraund(), -1);
 
 	while(game.m_eGameState != QUIT)
 	{
@@ -63,5 +59,7 @@ int main(int args, char* argc[])
 		} //event lop
 	} // run loop
 		
+	Music::Free();
+
 	return 0;
 }

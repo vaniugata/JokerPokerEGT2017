@@ -1,13 +1,13 @@
 /*
- * Music.h
- *
+* Music.h
+*
 <<<<<<< HEAD
- *  Created on: 18.07.2017 ã.
+*  Created on: 18.07.2017 ã.
 =======
- *  Created on: 18.07.2017 ï¿½.
+*  Created on: 18.07.2017 ï¿½.
 >>>>>>> origin/master
- *      Author: Borqna
- */
+*      Author: Borqna
+*/
 
 #ifndef SRC_MUSIC_H_
 #define SRC_MUSIC_H_
@@ -17,39 +17,31 @@ using namespace std;
 #include<iostream>
 #include <string>
 
-
-
-class Music
-{
-
+class Music {
 
 public:
 	Music();
 	virtual ~Music();
 
+	static void setBackgraund(Mix_Music* music);
+	static void setButton(Mix_Chunk* buttonMusic);
+	static void setCards(Mix_Chunk* cardsButton);
+	static void setOutro(Mix_Chunk* outroMusic);
 
+	static Mix_Music* getBackgraund();
+	static Mix_Chunk* getButton();
+	static Mix_Chunk* getCards();
+	static Mix_Chunk* getOutro();
 
-  void setBackgraund(Mix_Music* music);
-  void setButton(Mix_Chunk* buttonMusic);
-  void setCards(Mix_Chunk* cardsButton);
-  void setOutro(Mix_Chunk* outroMusic);
-
-
-  Mix_Music* getBackgraund();
-  Mix_Chunk* getButton();
-  Mix_Chunk* getCards();
-  Mix_Chunk* getOutro();
-
-  void LoadMusic();
-
+	static void LoadMusic();
+	static void Free();
 
 private:
 
-
-    Mix_Music* Backgraund = nullptr;
-	Mix_Chunk* Button = nullptr;
-	Mix_Chunk* Cards = nullptr;
-	Mix_Chunk* Outro= nullptr;
+	static Mix_Music* Backgraund;
+	static Mix_Chunk* Button;
+	static Mix_Chunk* Cards;
+	static Mix_Chunk* Outro;
 };
 
 #endif /* SRC_MUSIC_H_ */

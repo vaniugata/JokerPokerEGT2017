@@ -102,7 +102,7 @@ Card Deck::getRandomCard()
 
 const ButtonObject* Deck::GetHeldCardsButtons() const
 {
-	return m_vecCardHold;
+	return m_arrCardHold;
 }
 
 const std::vector<Card>& Deck::GetHand() const
@@ -160,8 +160,8 @@ void Deck::RenderHand(SDL_Renderer * renderer)
 
 	for(int i = 0; i < 5; i++)
 	{
-		RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
-		cardPlace.x += cardPlace.w;
+			RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
+						cardPlace.x += cardPlace.w;
 	}
 }
 
@@ -185,8 +185,8 @@ void Deck::RenderHoldBtns(SDL_Renderer * renderer)
 	for (int i = 0; i <5; i++)
 	{
 		//set dimentions for clicking logic
-		m_vecCardHold[i].SetDimentions(HOLD_W, CARD_H_);
-		m_vecCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
+		m_arrCardHold[i].SetDimentions(HOLD_W, CARD_H_);
+		m_arrCardHold[i].Render(renderer, &clipVisible, x, y, HOLD_W, HOLD_H / 2);
 		//render the picture
 		if(hand[i].getIsHold())
 		{
@@ -216,7 +216,7 @@ void Deck::initHoldBtns()
 {
 	for (int i = 0; i < 5; i++)
 	{
-		m_vecCardHold[i] = m_currentBtn;
+		m_arrCardHold[i] = m_currentBtn;
 	}
 }
 
@@ -224,9 +224,9 @@ void Deck::HoldSelectedCards()
 {
 	for(int i = 0; i < 5; i++)
 	{
-		if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == false)
+		if(m_arrCardHold[i].IsSelected() && hand[i].getIsHold() == false)
 			hand[i].setIsHold(true);
-		else if(m_vecCardHold[i].IsSelected() && hand[i].getIsHold() == true)
+		else if(m_arrCardHold[i].IsSelected() && hand[i].getIsHold() == true)
 			hand[i].setIsHold(false);
 		
 		std::cout << hand[i].getIsHold();
@@ -237,12 +237,5 @@ void Deck::DimCards(SDL_Renderer * renderer)
 {
 	int x = (SCREEN_WIDTH - 5 * CARD_W) / 2;
 	m_tDim.Render(renderer, x + CARD_W, 350, CARD_W, CARD_H_);
-}
-
-void Deck::render_card_from_deck(SDL_Renderer* renderer, int i)
-{
-	SDL_Rect onscreen{ 0,0, T_CARD_WIDTH , T_CARD_HEIGHT };
-	RenderCard(renderer, deckOfCards[i].getCardRect(), &onscreen);
-	std::cout << "CURENT CARD: " << deckOfCards[i].getCardSuit() << " " << deckOfCards[i].getCardValue() << "\n";
 }
 

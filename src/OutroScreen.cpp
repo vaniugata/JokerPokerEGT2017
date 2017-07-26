@@ -87,3 +87,4 @@ void OutroScreen::AnimText()
 	if(m_iTextY <= 50 + m_tCredit.GetHeight())
 		m_iTextY++;
 }
+

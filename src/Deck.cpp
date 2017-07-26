@@ -62,7 +62,6 @@ Deck::~Deck()
 
 void Deck::deal()
 {
-	//printDeck();
 	for(int i = 0;i < 5;i++)
 	{
 		

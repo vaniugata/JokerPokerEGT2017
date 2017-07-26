@@ -93,37 +93,37 @@ void Deck::deal()
 	//std::cout << "--------------------------------------" << std::endl;
 
 	int card1 = 8;
-	//hand[0].setCardValue(TEN);
-	//hand[0].setCardSuit(CLUBS);
-	//hand[0].setCardRect(deckOfCards[card1].getCardRect()->x, deckOfCards[card1].getCardRect()->y,
-	//	deckOfCards[card1].getCardRect()->w, deckOfCards[card1].getCardRect()->h);
-	//hand[0].setCardPosition(FIRST);
+	hand[0].setCardValue(QUEEN);
+	hand[0].setCardSuit(CLUBS);
+	hand[0].setCardRect(deckOfCards[card1].getCardRect()->x, deckOfCards[card1].getCardRect()->y,
+		deckOfCards[card1].getCardRect()->w, deckOfCards[card1].getCardRect()->h);
+	hand[0].setCardPosition(FIRST);
 
-	//int card2 =35;
-	//hand[1].setCardValue(JACK);
-	//hand[1].setCardSuit(HEARTS);
-	//hand[1].setCardRect(deckOfCards[card2].getCardRect()->x, deckOfCards[card2].getCardRect()->y,
-	//deckOfCards[card2].getCardRect()->w, deckOfCards[card2].getCardRect()->h);
-	//hand[1].setCardPosition(SECOND);
-	//
-	//int card3 = 36;
-	//hand[2].setCardValue(QUEEN);
-	//hand[2].setCardSuit(HEARTS);
-	//hand[2].setCardRect(deckOfCards[card3].getCardRect()->x, deckOfCards[card3].getCardRect()->y,
-	//	deckOfCards[card3].getCardRect()->w, deckOfCards[card3].getCardRect()->h);
-	//hand[2].setCardPosition(THIRD);
-	//int card4 = 24;
-	//hand[3].setCardValue(KING);
-	//hand[3].setCardSuit(DIAMONDS);
-	//hand[3].setCardRect(deckOfCards[card4].getCardRect()->x, deckOfCards[card4].getCardRect()->y,
-	//	deckOfCards[card4].getCardRect()->w, deckOfCards[card4].getCardRect()->h);
-	//hand[3].setCardPosition(FOURTH);
-	//int card5 =25;
-	//hand[4].setCardValue(ACE);
-	//hand[4].setCardSuit(DIAMONDS);
-	//hand[4].setCardRect(deckOfCards[card5].getCardRect()->x, deckOfCards[card5].getCardRect()->y,
-	//	deckOfCards[card5].getCardRect()->w, deckOfCards[card5].getCardRect()->h);
-	//hand[4].setCardPosition(FIFTH);
+	int card2 =35;
+	hand[1].setCardValue(KING);
+	hand[1].setCardSuit(HEARTS);
+	hand[1].setCardRect(deckOfCards[card2].getCardRect()->x, deckOfCards[card2].getCardRect()->y,
+	deckOfCards[card2].getCardRect()->w, deckOfCards[card2].getCardRect()->h);
+	hand[1].setCardPosition(SECOND);
+	
+	int card3 = 36;
+	hand[2].setCardValue(ACE);
+	hand[2].setCardSuit(HEARTS);
+	hand[2].setCardRect(deckOfCards[card3].getCardRect()->x, deckOfCards[card3].getCardRect()->y,
+		deckOfCards[card3].getCardRect()->w, deckOfCards[card3].getCardRect()->h);
+	hand[2].setCardPosition(THIRD);
+	int card4 = 24;
+	hand[3].setCardValue(ACE);
+	hand[3].setCardSuit(DIAMONDS);
+	hand[3].setCardRect(deckOfCards[card4].getCardRect()->x, deckOfCards[card4].getCardRect()->y,
+		deckOfCards[card4].getCardRect()->w, deckOfCards[card4].getCardRect()->h);
+	hand[3].setCardPosition(FOURTH);
+	int card5 =25;
+	hand[4].setCardValue(JOKERVALUE);
+	hand[4].setCardSuit(JOKERSUIT);
+	hand[4].setCardRect(deckOfCards[card5].getCardRect()->x, deckOfCards[card5].getCardRect()->y,
+		deckOfCards[card5].getCardRect()->w, deckOfCards[card5].getCardRect()->h);
+	hand[4].setCardPosition(FIFTH);
 	printDeck();
 
 

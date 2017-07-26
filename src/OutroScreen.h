@@ -17,6 +17,7 @@ private:
 	bool m_bShowPlayButton;
 	int m_iTextY;
 	static int m_iStart;
+	static int m_iCurrentTime;
 public:
 	OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState* gameState);
 	~OutroScreen();
@@ -24,6 +25,7 @@ public:
 	//setters
 	static void SetTimer(int time);
 	static void SetCredit(double credit);
+	static void setCurrentTime(int currentTime);
 
 	void Draw();
 	void Render();

@@ -8,6 +8,7 @@ using std::stringstream;
 
 double OutroScreen::m_dCredit = -1;
 int OutroScreen::m_iStart = 0;
+int OutroScreen::m_iCurrentTime = 0;
 
 OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState* gameState) :
 	Screen(renderer),
@@ -67,11 +68,12 @@ void OutroScreen::Delay()
 {
 	m_iTextY = -50 - m_tCredit.GetHeight();
 
-	while(m_iStart > SDL_GetTicks() - 5000)
+	while(m_iStart > m_iCurrentTime - 5000)
 	{
 		Render();
 		AnimText();
 		Draw();
+		m_iCurrentTime = SDL_GetTicks();
 	} 
 
 	*m_ptrGameState = INTRO;
@@ -80,6 +82,11 @@ void OutroScreen::Delay()
 void OutroScreen::SetCredit(double credit)
 {
 	m_dCredit = credit;
+}
+
+void OutroScreen::setCurrentTime(int currentTime)
+{
+	m_iCurrentTime = currentTime;
 }
 
 void OutroScreen::AnimText()

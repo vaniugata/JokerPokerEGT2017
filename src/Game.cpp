@@ -26,8 +26,8 @@
 using std::cerr;
 #include <sstream>
 Game::Game() :
-	m_dCredit(0), m_eGameState(INTRO),
-	m_bIsGameOver(false), m_bIsBonus(false), m_bAutoHold(true), m_iOutroTime()
+	m_dCredit(0), m_eGameState(INTRO), m_iBet(0),
+	m_bIsGameOver(false), m_bIsBonus(false), m_bAutoHold(true), m_iOutroTime(0)
 {
 	InitSDL();
 

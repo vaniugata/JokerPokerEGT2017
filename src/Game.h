@@ -14,6 +14,7 @@ class Game
 private:
 	double m_dCredit;
 	int m_iBet;
+	int m_iOutroTime;
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 
@@ -25,6 +26,8 @@ private:
 	Deck* m_ptrDeck;
 
 	std::vector<Evaluation*> m_vecEvaluations;
+	std::vector<Evaluation*> m_vecAutoHold;
+
 	//Buttons
 	ButtonObject* m_btnCashOut;	
 	ButtonObject* m_btnDealDraw;	
@@ -32,17 +35,15 @@ private:
 	ButtonObject* m_btnMusicPlus;
 	ButtonObject* m_btnMusicMinus;
 	ButtonObject* m_btnMusicPause;
+	ButtonObject* m_btnAutoHold;
 
 	bool m_bIsGameOver;
 	bool m_bIsBonus;
 	int m_iWinIndex;
+	bool m_bAutoHold;
 	bool m_bShowPlayButton = true;
 
-
-	//Music m_mCards;
-	//Music m_mMusic;
 	int m_iCounterVolumeMusic = 10;
-
 
 public:
 	eGameState m_eGameState;

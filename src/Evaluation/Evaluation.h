@@ -9,9 +9,10 @@ class Evaluation
 {
 public:
 	Evaluation();
-	virtual~Evaluation();
+	virtual~Evaluation();	
+	virtual bool HasGoodCards()const = 0;
 
-	virtual int EvaluateHand(std::vector<Card>& hand) = 0;
+	virtual std::vector<Card> EvaluateHand(std::vector<Card> hand) = 0;
 	virtual bool HasJoker(std::vector<Card>& hand);
 };
 #endif

@@ -1,39 +1,77 @@
 #include "EvalStraight.h"
-
+#include<iostream>
 EvalStraight::EvalStraight()
+	:hasGoodCard(false)
 {
 }
 
 EvalStraight::~EvalStraight()
 {
+	std::cout << "Deleted Straight/n";
 }
 
-int EvalStraight::EvaluateHand(std::vector<Card>& hand)
-{
-	int count = 0;
-	if(HasJoker(hand)) { count++; }
-	for(int i = 0; i < hand.size() - 1; i++)
-	{
-		if(hand[i].getCardValue() == hand[i + 1].getCardValue() - 1)
-		{
-			count++;
-		}
 
-		if(HasAce(hand) && count == 3 &&
-			(hand[0].getCardValue() == DEUCE || hand[0].getCardValue() == THREE) )
+
+std::vector<Card> EvalStraight::EvaluateHand(std::vector<Card> hand)
+{
+	this->hasGoodCard = false;
+	std::vector<Card> straight = getStraight(hand[0].getCardValue());
+	int counter=0;
+	
+	for (int i = 0; i < hand.size(); i++)
+	{
+		for (int j = 0; j <hand.size(); j++)
 		{
-			return 7;
+			if (hand[i].getCardValue() == straight[j].getCardValue())
+			{
+				counter++;
+				straight[j].setCardValue(EMPTYVALUE);
+				break;
+			}
 		}
 	}
+//	straight = getStraight(hand[0].getCardValue());
+	
+	if (counter == 5 
+		||( counter == 4 && HasJoker(hand) )
+		||( counter == 4 && HasAce(hand) && hand[3].getCardValue() <= FIVE)
+		|| (counter==3 && HasAce(hand) && hand[2].getCardValue() <= FIVE &&  HasJoker(hand)))
+	{
+		for (int i = 0; i < hand.size(); i++)
+		{
+			hand[i].setIsGood(true);
+		}
+		this->hasGoodCard = true;
+	}
 
-	if(count == 4 || (count == 3 && HasJoker(hand) ) ) { return 7; }
-
-	return -1;
+	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	
+	return hand;
 }
 
 bool EvalStraight::HasJoker(std::vector<Card>& hand)
 {
 	return Evaluation::HasJoker(hand);
+}
+
+bool EvalStraight::HasGoodCards()const
+{
+	return this->hasGoodCard;
+}
+
+std::vector<Card> EvalStraight::getStraight(eCardValue value)
+{
+	std::vector<Card> straight;
+	Card currentCard;
+	for (int i = 0; i < 5; i++)
+	{
+		currentCard.setCardValue(static_cast<eCardValue>(value + i));
+		straight.push_back(currentCard);
+	}
+	return straight;
 }
 
 bool EvalStraight::HasAce(std::vector<Card>& hand)

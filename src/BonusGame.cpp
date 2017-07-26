@@ -96,22 +96,21 @@ void BonusGame::Render()
 		BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	SDL_Rect rectMusic{ 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
-	if(m_bShowPlayButton) {
+	if(m_bShowPlayButton)
+	{
 		m_btnMusic.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5,
 			BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 	}
-	else 
+	else
 	{
 		m_btnMusicPause.Render(m_renderer, &rectMusic, SCREEN_WIDTH - 99, 5,
 			BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
-			
+	}
 	SDL_Rect rectMusicMinus{ 0, 0, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE };
 	m_btnMusicMinus.Render(m_renderer, &rectMusicMinus, SCREEN_WIDTH - 153, 5,
 		BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	//render inscription Choice Win
-
-	}
 	RenderChoiceWin();
 }
 void BonusGame::HandleEvent()
@@ -254,7 +253,7 @@ void BonusGame::LoadChoiceWinFiles()
 void BonusGame::RenderChoiceWin()
 {
 	Uint32 timerDelay = SDL_GetTicks();
-	while(SDL_GetTicks() - timerDelay < 500 && *m_ptrGameState != QUIT)
+//	while(SDL_GetTicks() - timerDelay < 500 && *m_ptrGameState != QUIT)
 	{
 		int result = (rand() % 3) + 1;
 		m_tChoiceWin.Render(m_renderer, 50, 70, 297, 40, &m_ChoiceWin[result-1]);

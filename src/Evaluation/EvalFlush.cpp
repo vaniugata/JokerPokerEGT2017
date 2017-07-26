@@ -1,32 +1,46 @@
 #include "EvalFlush.h"
-
+#include<iostream>
 EvalFlush::EvalFlush()
+	:hasGoodCard(false)
 {
-
 }
 
 EvalFlush::~EvalFlush()
 {
-
+	std::cout << "Flush deleted/n";
 }
 
-int EvalFlush::EvaluateHand(std::vector<Card>& hand)
-{
-	int count = 0;
 
+std::vector<Card> EvalFlush::EvaluateHand(std::vector<Card> hand)
+{
+	this->hasGoodCard = false;
+	int count = 0;
+	eCardSuit bestSuit = hand[0].getCardSuit();
 	for(int i = 0; i < hand.size() - 1; i++)
 	{
-		if(hand[i].getCardSuit() == hand[i + 1].getCardSuit())
+		if(hand[i].getCardSuit() == hand[i + 1].getCardSuit() && hand[i].getCardSuit()==bestSuit)
 		{
 			count++;
 		}
 	}
+	if (count == 4 || (count == 3 && HasJoker(hand)))
+	{
+		for (int i = 0; i < hand.size(); i++)
+		{
+			hand[i].setIsGood(true);
+		}
+		this->hasGoodCard = true;
+	}
+	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+		return hand;
+}
 
-	if(HasJoker(hand)) { count++; }
-
-	if(count == 4) { return 6; }
-
-	return -1;
+bool EvalFlush::HasGoodCards()const
+{
+	return this->hasGoodCard;
 }
 
 bool EvalFlush::HasJoker(std::vector<Card>& hand)

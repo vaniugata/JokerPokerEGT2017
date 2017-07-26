@@ -1,34 +1,63 @@
 #include "EvalFullHouse.h"
-
-
+#include<iostream>
 EvalFullHouse::EvalFullHouse()
+	:hasGoodCard(false)
 {
 }
 
 EvalFullHouse::~EvalFullHouse()
 {
+	std::cout << "FullHouse deleted/n";
 }
 
-int EvalFullHouse::EvaluateHand(std::vector<Card>& hand)
+std::vector<Card> EvalFullHouse::EvaluateHand(std::vector<Card> hand)
 {
-	if(EvalThreeOfKind::EvaluateHand(hand) == 8)
+	this->hasGoodCard = false;
+	bool isFull =false;
+	if (EvalThreeOfKind::HasGoodCards()==true)
 	{
-		if(hand[0].getCardValue() == hand[1].getCardValue() ||
-			hand[3].getCardValue() == hand[4].getCardValue())
+		if (hand[0].getCardValue() == hand[2].getCardValue())
 		{
-			return 5;
+			if(hand[3].getCardValue()==hand[4].getCardValue())
+			{
+				isFull = true;
+			}
 		}
-	}
-
-	else if(EvalTwoPair::EvaluateHand(hand) == 9 && HasJoker(hand))
+		else if(hand[2].getCardValue() == hand[4].getCardValue())
+		{
+			if (hand[0].getCardValue() == hand[1].getCardValue())
+			{
+				isFull = true;
+			}
+		}
+				
+    }
+	else if(EvalTwoPair::HasGoodCards() && HasJoker(hand))
 	{
-		return 5;
+		isFull = true;
 	}
-
-	return -1;
+	if (isFull)
+	{
+		for (int i = 0; i < hand.size(); i++)
+		{
+			hand[i].setIsGood(true);
+		}
+		this->hasGoodCard = true;
+	}
+	sort(hand.begin(), hand.end(), [](const Card left, const Card right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	return hand;
 }
 
 bool EvalFullHouse::HasJoker(std::vector<Card>& hand)
 {
 	return Evaluation::HasJoker(hand);
 }
+
+bool EvalFullHouse::HasGoodCards()const
+{
+	return this->hasGoodCard;
+}
+

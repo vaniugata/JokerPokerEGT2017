@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "Globals.h"
 #include "Music.h"
 #include "includesSDL2.h"
@@ -13,21 +13,32 @@
 #include "Evaluation\EvalWildRoyalFlush.h"
 #include "Evaluation\EvalFiveOfAKind.h"
 #include "Evaluation\EvalNaturalRoyalFlush.h"
+#include "Evaluation\EvalThreeToRoyalFlush.h"
+#include "Evaluation\FourToStraightFlush.h"
+#include "Evaluation\EvalJokerOnly.h"
+#include "Evaluation\EvalFourToRoyalFlush.h"
+#include "Evaluation\EvalFourToFlush.h"
 #include "OutroScreen.h"
 #include "Recovery.h"
+
 
 #include <iostream>
 using std::cerr;
 #include <sstream>
 Game::Game() :
 	m_dCredit(0), m_eGameState(INTRO),
-	m_bIsGameOver(false), m_bIsBonus(false)
+	m_bIsGameOver(false), m_bIsBonus(false), m_bAutoHold(true), m_iOutroTime(),
+	m_iBet(0)
 {
 	InitSDL();
 
 	m_tBackground.LoadFromFile(m_renderer, "Resources/back2.png");
 
 	m_paytable = new PaytableObject(m_renderer);
+	m_ptrDeck = new Deck(m_renderer);
+
+	m_btnCashOut = new  ButtonObject(m_renderer, "Resources/cash-out-btn.png",
+		0,0, INTRO_BTN_W, INTRO_BTN_H);	
 
 	m_btnCashOut = new  ButtonObject();
 	m_btnCashOut->m_texture.LoadFromFile(m_renderer, "Resources/cash-out-btn.png");
@@ -36,6 +47,10 @@ Game::Game() :
 	m_btnDealDraw = new  ButtonObject();
 	m_btnDealDraw->m_texture.LoadFromFile(m_renderer, "Resources/round-button.png");
 	m_btnDealDraw->SetDimentions(DEALDRAWBTN_W, DEALDRAWBTN_H);
+
+	m_btnAutoHold = new ButtonObject();
+	m_btnAutoHold->m_texture.LoadFromFile(m_renderer, "Resources/autohold.png");
+	m_btnAutoHold->SetDimentions(INTRO_BTN_W, INTRO_BTN_H);
 
 	m_btnMusicMinus = new ButtonObject();
 	m_btnMusicMinus->m_texture.LoadFromFile(m_renderer, "Resources/DecreasesB.png");
@@ -53,7 +68,19 @@ Game::Game() :
 	m_btnMusicPause->m_texture.LoadFromFile(m_renderer, "Resources/Pause.png");
 	m_btnMusicPause->SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
-	m_ptrDeck = new Deck(m_renderer);
+	//AutoHold evaluation
+	m_vecAutoHold.push_back(new EvalJokerOnly());
+	m_vecAutoHold.push_back(new EvalKingsOrBetter());
+	m_vecAutoHold.push_back(new EvalThreeToRoyalFlush());
+	m_vecAutoHold.push_back(new EvalTwoPair());
+	m_vecAutoHold.push_back(new EvalFourToFlush());
+	m_vecAutoHold.push_back(new EvalStraight());
+	m_vecAutoHold.push_back(new EvalThreeOfKind());
+	m_vecAutoHold.push_back(new FourToStraightFlush());
+	m_vecAutoHold.push_back(new EvalFlush());
+	m_vecAutoHold.push_back(new EvalFourToFlush());
+	m_vecAutoHold.push_back(new EvalFourToRoyalFlush());
+	m_vecAutoHold.push_back(new EvalFourOfAKind());
 	//Card evaluation
 	m_vecEvaluations.push_back(new EvalKingsOrBetter());
 	m_vecEvaluations.push_back(new EvalTwoPair());
@@ -73,6 +100,7 @@ Game::~Game()
 	delete m_paytable;
 	delete m_btnCashOut;
 	delete m_btnDealDraw;
+	delete m_btnAutoHold;
 	delete m_btnMusic;
 	delete m_btnMusicPlus;
 	delete m_btnMusicMinus;
@@ -84,6 +112,11 @@ Game::~Game()
 	{
 		delete m_vecEvaluations[i];
 		m_vecEvaluations.pop_back();
+	}
+	for (int i = 0; i < m_vecAutoHold.size(); i++)
+	{
+		delete m_vecAutoHold[i];
+		m_vecAutoHold.pop_back();
 	}
 
 	Close();
@@ -156,9 +189,24 @@ void Game::Render()
 	m_btnMusicPlus->Render(m_renderer, &clipMusicPlus, BUTTON_VOLUME_SIZE * 2 + 26,
 		SCREEN_HEIGHT - m_btnCashOut->GetHeight() - BUTTON_VOLUME_SIZE + 8, BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
+	SDL_Rect clipAutoHold{ 0,0, 2400, 944 };
+	if(m_bAutoHold == true)
+	{
+		clipAutoHold.x = 2400;
+		m_btnAutoHold->Render(m_renderer, &clipAutoHold,
+			(SCREEN_WIDTH - INTRO_BTN_W) / 2, 20, INTRO_BTN_W, INTRO_BTN_H);
+	}
+	else if(m_bAutoHold == false)
+	{
+		clipAutoHold.x = 0;
+		m_btnAutoHold->Render(m_renderer, &clipAutoHold,
+			(SCREEN_WIDTH - INTRO_BTN_W) / 2, 20, INTRO_BTN_W, INTRO_BTN_H);
+	}
+	
 	SDL_Rect clipDealDraw{ 0, 0,DEAL_W, DEAL_H / 2 };
 	if(m_ptrDeck->GetKillCount() == 1)
 	{
+		m_ptrDeck->holdGoodCards(m_renderer);
 		clipDealDraw.x += DEAL_W;
 	}
 	else if(m_ptrDeck->GetKillCount() == 2 &&
@@ -175,7 +223,10 @@ void Game::Render()
 		m_ptrDeck->RenderStart(m_renderer);
 		RenderRound();
 	}
-	if(m_ptrDeck->GetKillCount() == 2) { m_ptrDeck->DimCards(m_renderer); }
+	if(m_ptrDeck->GetKillCount() == 2) 
+	{
+		m_ptrDeck->DimCards(m_renderer);
+	}
 	if(m_bIsGameOver) { RenderGameOver(); }
 
 	RenderGameInfo();
@@ -220,6 +271,7 @@ void Game::RenderGameInfo()
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	iTextW = m_tCredit.GetWidth();
 	ss.str("");
+
 	ss << m_paytable->GetBet().at(10);
 
 	if(m_iBet != 0)
@@ -227,7 +279,6 @@ void Game::RenderGameInfo()
 		ss.str("");
 		ss << *GetBet();
 	}
-
 
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
 		ss.str(), clrCredit, 28);
@@ -294,10 +345,12 @@ void Game::ProcessMouseInput()
 	{
 		OutroScreen::SetCredit(m_dCredit);
 		Mix_PlayChannel(-1, Music::getButton(), 0);
+		OutroScreen::SetTimer(SDL_GetTicks() );
 		m_eGameState = OUTRO;
 	}
 	else if(m_paytable->m_btnBetOne.IsSelected())
 	{
+		m_iBet = 0;
 		m_paytable->IncreaseBet();
 		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 		Mix_PlayChannel(-1, Music::getButton(), 0);
@@ -337,6 +390,8 @@ void Game::ProcessMouseInput()
 			m_iCounterVolumeMusic = 10;
 		Mix_VolumeMusic(m_iCounterVolumeMusic);
 	}
+	else if(m_btnAutoHold->IsSelected() && m_bAutoHold == true) {m_bAutoHold = false; }
+	else if(m_btnAutoHold->IsSelected() && m_bAutoHold == false) { m_bAutoHold = true; }
 
 	if(m_btnDealDraw->IsSelected())
 	{
@@ -355,23 +410,49 @@ void Game::ProcessRound()
 	Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 	//Charge the fee to play a round
 	if(m_ptrDeck->GetKillCount() == 1) { m_dCredit -= m_paytable->GetBet().at(10); }
+	
+	if (m_bAutoHold && m_ptrDeck->GetKillCount() == 1)
+		{
+		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();
 
-	if(m_ptrDeck->GetKillCount() == 2)
+		std::vector<Evaluation*>::iterator it;
+		for (it = m_vecAutoHold.begin(); it != m_vecAutoHold.end(); it++)
+		{
+			(*it)->EvaluateHand(sorted);
+		 	if((*it)->HasGoodCards())
+				myhand = (*it)->EvaluateHand(sorted);				
+		}
+		m_ptrDeck->setHand(myhand);
+		
+		}
+
+	if (m_ptrDeck->GetKillCount() == 2)
 	{
-		//Evaluate hand
+		//Evaluation::setAutoHold(false);
+		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();
+		
+		int counter = 11;
 		m_iWinIndex = 11;
-		std::vector<Card> hand = m_ptrDeck->GetSortedHand();
+		m_ptrDeck->setHand(sorted);
 		std::vector<Evaluation*>::iterator it;
 		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
 		{
-			if((*it)->EvaluateHand(hand) < m_iWinIndex && (*it)->EvaluateHand(hand) != -1)
+			counter--;
+			(*it)->EvaluateHand(sorted);	
+			if((*it)->HasGoodCards())
 			{
-				m_iWinIndex = (*it)->EvaluateHand(hand);
+				m_iWinIndex = counter;
+				myhand = (*it)->EvaluateHand(sorted);
 			}
-			std::cout << "Evaluated hand: " << (*it)->EvaluateHand(hand) << "\n";
 		}
+		m_ptrDeck->setHand(myhand);
+
+		std::cout << m_iWinIndex << std::endl;
+
 		//Add win ammount to credit
-		if(m_iWinIndex >= 0 && m_iWinIndex <= m_paytable->GetBet().size() - 1)
+		if(m_iWinIndex >= 0 && m_iWinIndex < m_paytable->GetBet().size())
 		{
 			m_dCredit += m_paytable->GetBet().at(m_iWinIndex);
 
@@ -466,7 +547,8 @@ void Game::Close()
 {
 	SDL_DestroyWindow(m_window);
 	m_window = nullptr;
-
+	SDL_DestroyRenderer(m_renderer);
+	m_renderer = nullptr;
 	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();

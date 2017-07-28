@@ -22,6 +22,7 @@ private:
 	ButtonObject m_btnResumeGame;
 	ButtonObject m_btnCashIn;
 	ButtonObject m_btnInfo;
+
 	ButtonObject m_btnMusic;
 	ButtonObject m_btnMusicPlus;
 	ButtonObject m_btnMusicMinus;

@@ -49,24 +49,17 @@ BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 
 	m_btnMusicPause.m_texture.LoadFromFile(renderer, "Resources/Pause.png");
 	m_btnMusicPause.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
-	//------BUTTONS--------------------------
-	
-	this->m_renderer = renderer;
-	this->m_resDie1 = m_resDie1;
-	this->m_resDie2 = m_resDie2;
-	this->m_diceResult = m_diceResult;
-	this->m_win = m_win;
 
 	m_tBackgorund.LoadFromFile(renderer, "Resources/DoubleUpDice2.jpg");
-	LoadMusicFiles();
+
 	LoadDieFiles();
-	LoadChoiceWinFiles();
+	LoadChooseWinFiles();
 }
 
 BonusGame::~BonusGame() 
 {
 	std::cerr << "BonusGame Object deleted.\n";
-	Close();
+
 }
 
 void BonusGame::Draw() 
@@ -111,7 +104,7 @@ void BonusGame::Render()
 		BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	//render inscription Choice Win
-	RenderChoiceWin();
+	RenderChooseWin();
 }
 void BonusGame::HandleEvent()
 {
@@ -127,8 +120,8 @@ void BonusGame::HandleEvent()
 		MusicController();
 		if(m_buttonX2.IsSelected())
 		{
-			Mix_PlayChannel(-1, ButtonPress, 0);
-			Mix_PlayChannel(-1, RollDice, 0);
+			Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
+			Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
 			m_diceResult = getResDie1() + getResDie2();
 			SDL_Delay(2000);
@@ -146,8 +139,8 @@ void BonusGame::HandleEvent()
 		}
 		else if(m_buttonX5.IsSelected())
 		{
-			Mix_PlayChannel(-1, ButtonPress, 0);
-			Mix_PlayChannel(-1, RollDice, 0);
+			Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
+			Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
 			m_diceResult = getResDie1() + getResDie2();
 			SDL_Delay(2000);
@@ -165,8 +158,8 @@ void BonusGame::HandleEvent()
 		}
 		else if(m_buttonX10.IsSelected())
 		{
-			Mix_PlayChannel(-1, ButtonPress, 0);
-			Mix_PlayChannel(-1, RollDice, 0);
+		Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
+		Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
 			m_diceResult = getResDie1() + getResDie2();
 			SDL_Delay(2000);
@@ -187,24 +180,7 @@ void BonusGame::HandleEvent()
 	} //switch event type
 }//handle event
 
-void BonusGame::LoadMusicFiles() 
-{
-	ButtonPress = Mix_LoadWAV("ResourcesMusic/ButtonPress.wav");
-	if(ButtonPress == nullptr) 
-	{
-		std::cout << "Failed to load scratch ButtonPress! SDL_mixer Error:"
-			<< Mix_GetError() << std::endl;
-		return;
-	}
 
-	RollDice = Mix_LoadWAV("ResourcesMusic/RollDice.wav");
-	if(RollDice == nullptr) 
-	{
-		std::cout << "Failed to load scratch RollDice! SDL_mixer Error:"
-			<< Mix_GetError() << std::endl;
-		return;
-	}
-}
 
 void BonusGame::LoadDieFiles() 
 {
@@ -235,9 +211,9 @@ void BonusGame::RenderDice()
 		&m_spriteDie[getResDie2() - 1]);
 }
 
-void BonusGame::LoadChoiceWinFiles() 
+void BonusGame::LoadChooseWinFiles()
 {
-	m_tChoiceWin.LoadFromFile(m_renderer, "Resources/ChoiseWin.png");
+	m_tChooseWin.LoadFromFile(m_renderer, "Resources/ChooseWin.png");
 	//Load sprite sheet texture
 	int w = 297;
 	int h = 40;
@@ -250,13 +226,13 @@ void BonusGame::LoadChoiceWinFiles()
 	}
 }
 
-void BonusGame::RenderChoiceWin()
+void BonusGame::RenderChooseWin()
 {
+	int result = (rand() % 3) + 1;
 	Uint32 timerDelay = SDL_GetTicks();
-//	while(SDL_GetTicks() - timerDelay < 500 && *m_ptrGameState != QUIT)
+	while(SDL_GetTicks() - timerDelay < 300 && *m_ptrGameState != QUIT)
 	{
-		int result = (rand() % 3) + 1;
-		m_tChoiceWin.Render(m_renderer, 50, 70, 297, 40, &m_ChoiceWin[result-1]);
+		m_tChooseWin.Render(m_renderer, 50, 70, 297, 40, &m_ChoiceWin[result-1]);
 		SDL_RenderPresent(m_renderer);
 	}
 }
@@ -295,7 +271,7 @@ void BonusGame::MusicController()
 		if(m_iCounterVolumeMusic > 100)
 			m_iCounterVolumeMusic = 100;
 		Mix_VolumeMusic(m_iCounterVolumeMusic);
-		cout << m_iCounterVolumeMusic << endl;
+		std::cout << m_iCounterVolumeMusic << std::endl;
 	}
 	else if(m_btnMusicMinus.IsSelected())
 	{
@@ -304,13 +280,6 @@ void BonusGame::MusicController()
 			m_iCounterVolumeMusic = 10;
 		Mix_VolumeMusic(m_iCounterVolumeMusic);
 	}
-}
-
-void BonusGame::Close() 
-{
-	//Free the sound effects
-	Mix_FreeChunk(RollDice);
-	Mix_FreeChunk(ButtonPress);
 }
 
 int BonusGame::getResDie1() const 

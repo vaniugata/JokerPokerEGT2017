@@ -20,7 +20,7 @@ private:
 
 	//Texture objects
 	Texture m_tBackgorund;
-	Texture m_tChoiceWin;
+	Texture m_tChooseWin;
 	Texture m_spriteDieTexture;
 
 	//SDL_Event object pointer
@@ -47,10 +47,6 @@ private:
 	bool m_bShowPlayButton = true;
 	int m_iCounterVolumeMusic;
 
-	//The music that will be played
-	Mix_Chunk* ButtonPress = nullptr;
-	Mix_Chunk* RollDice = nullptr;
-
 public:
 	BonusGame(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
 			double* credit);
@@ -61,16 +57,15 @@ public:
 	double* GetCredit();
 
 	//Load Files
-	void LoadMusicFiles();
 	void LoadDieFiles();
-	void LoadChoiceWinFiles();
+	void LoadChooseWinFiles();
 
 	void Draw();
 	void Render();
 	void HandleEvent();
 
 	//logic
-	void RenderChoiceWin();
+	void RenderChooseWin();
 	void RenderDice();
 
 	//Utiliti function
@@ -86,8 +81,5 @@ public:
 
 	//music stuff
 	void MusicController();
-
-	void Close();
-
 };
 #endif

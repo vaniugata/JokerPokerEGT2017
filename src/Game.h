@@ -68,6 +68,7 @@ public:
 	void HandleEvent();
 	void ProcessKeyInput();
 	void ProcessMouseInput();
+	static bool SwitchFrame(int time);
 	//game logic
 	void ProcessRound();
 

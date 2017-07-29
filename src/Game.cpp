@@ -151,9 +151,10 @@ void Game::Render()
 {
 	//draw background
 	m_tBackground.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	
 	//draw paytable
 	m_paytable->Render(m_renderer);
+
 	//draw buttons
 	SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
 	m_paytable->m_btnBetOne.Render(m_renderer, &clip1,
@@ -355,7 +356,7 @@ void Game::ProcessMouseInput()
 		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
 		Mix_PlayChannel(-1, Music::getButton(), 0);
 	}
-	else if(m_paytable->m_btnBetMax.IsSelected())
+	else if(m_paytable->m_btnBetMax.IsSelected() && m_dCredit > m_iBet)
 	{
 		m_paytable->SetMaxBet();
 		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
@@ -399,8 +400,20 @@ void Game::ProcessMouseInput()
 		Mix_PlayChannel(-1, Music::getCards(), 0);
 		ProcessRound();
 	}
-	
-	if (m_dCredit < m_iBet) { m_eGameState = OUTRO; }
+}
+
+bool Game::SwitchFrame(int iTimeGap)
+{
+	static bool bSwitchFrame = false;
+	static int iCurrentTime = SDL_GetTicks();
+	if(iCurrentTime <= SDL_GetTicks() - iTimeGap)
+	{
+		iCurrentTime = SDL_GetTicks();
+		if(bSwitchFrame == false) { bSwitchFrame = true; }
+		else { bSwitchFrame = false; }
+	}
+
+	return bSwitchFrame;
 }
 
 void Game::ProcessRound()
@@ -464,7 +477,7 @@ void Game::ProcessRound()
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);
 			//play winning sound
-			m_paytable->PlaySoundEffect(m_iWinIndex);
+			Music::PlayPaytableSoundEffect(m_iWinIndex);
 		}
 		//Check for bonus state
 		if(m_iWinIndex >= 5 && m_iWinIndex <= 10) { m_bIsBonus = true; }

@@ -69,7 +69,7 @@ std::vector<Card> EvalStraight::getStraight(eCardValue value)
 	for (int i = 0; i < 5; i++)
 	{
 		currentCard.setCardValue(static_cast<eCardValue>(value + i));
-		if (currentCard.getCardValue() > ACE);
+		if (currentCard.getCardValue() > ACE)
 		{
 			currentCard.setCardValue(EMPTYVALUE);
 		}

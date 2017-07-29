@@ -8,6 +8,7 @@ using std::stringstream;
 
 double OutroScreen::m_dCredit = -1;
 int OutroScreen::m_iStart = 0;
+int OutroScreen::m_iCurrentTime = 0;
 
 OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState* gameState) :
 	Screen(renderer),
@@ -18,8 +19,6 @@ OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState
 	m_iTextY(0)
 {
 	m_tBackground.LoadFromFile(renderer, "Resources/outropictures.png");
-//	m_tCredit.InitFont("Resources/font.ttf", 22);
-
 }
 
 OutroScreen::~OutroScreen() {
@@ -44,7 +43,7 @@ void OutroScreen::Render() {
 	std::stringstream ss;
 	ss << "Congratulations you have won: " << m_dCredit * DENOM << " BGN";
 	m_tCredit.LoadFromRendererdText(m_renderer, "Resources/font.ttf",
-		ss.str().c_str(), SDL_Color{ 255, 255, 200 }, 24);
+		ss.str().c_str(), SDL_Color{ 255, 255, 200 }, 35);
 	m_tCredit.Render(m_renderer, (SCREEN_WIDTH - m_tCredit.GetWidth()) / 2, m_iTextY,
 		m_tCredit.GetWidth(), m_tCredit.GetHeight());
 	ss.str();
@@ -67,11 +66,12 @@ void OutroScreen::Delay()
 {
 	m_iTextY = -50 - m_tCredit.GetHeight();
 
-	while(m_iStart > SDL_GetTicks() - 5000)
+	while(m_iStart > m_iCurrentTime - 5000)
 	{
 		Render();
 		AnimText();
 		Draw();
+		m_iCurrentTime = SDL_GetTicks();
 	} 
 
 	*m_ptrGameState = INTRO;
@@ -82,8 +82,14 @@ void OutroScreen::SetCredit(double credit)
 	m_dCredit = credit;
 }
 
+void OutroScreen::setCurrentTime(int currentTime)
+{
+	m_iCurrentTime = currentTime;
+}
+
 void OutroScreen::AnimText()
 {
 	if(m_iTextY <= 50 + m_tCredit.GetHeight())
 		m_iTextY++;
 }
+

@@ -345,6 +345,7 @@ void Game::ProcessMouseInput()
 		OutroScreen::SetCredit(m_dCredit);
 		Mix_PlayChannel(-1, Music::getButton(), 0);
 		OutroScreen::SetTimer(SDL_GetTicks() );
+		OutroScreen::setCurrentTime(SDL_GetTicks() - 5);
 		m_eGameState = OUTRO;
 	}
 	else if(m_paytable->m_btnBetOne.IsSelected())
@@ -392,15 +393,19 @@ void Game::ProcessMouseInput()
 	else if(m_btnAutoHold->IsSelected() && m_bAutoHold == true) {m_bAutoHold = false; }
 	else if(m_btnAutoHold->IsSelected() && m_bAutoHold == false) { m_bAutoHold = true; }
 
-	if(m_btnDealDraw->IsSelected())
+	if(m_btnDealDraw->IsSelected() && m_dCredit >= m_iBet )
 	{
+
 		Mix_PlayChannel(-1, Music::getCards(), 0);
 		ProcessRound();
 	}
+	
+	if (m_dCredit < m_iBet) { m_eGameState = OUTRO; }
 }
 
 void Game::ProcessRound()
 {
+
 	m_bIsGameOver = false;
 
 	//Deal 5 cards on the screen

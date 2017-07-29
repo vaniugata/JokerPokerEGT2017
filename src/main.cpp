@@ -37,8 +37,6 @@ int main(int args, char* argc[])
 			break;
 		case OUTRO:
 			outro.Render();
-			//outro.AnimText();
-			//outro.Delay();
 			break;
 		}
 		game.Draw();

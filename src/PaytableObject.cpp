@@ -78,17 +78,6 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 	SDL_Color color{ 255, 255, 255 };
 	SDL_Color colorWin{ 0, 255, 0 };
 
-	static bool bSwitchColor = false;
-	static int time = SDL_GetTicks();
-	if(time <= SDL_GetTicks() - 500)
-	{
-		time = SDL_GetTicks();
-		if(bSwitchColor == false) { bSwitchColor = true; }
-		else { bSwitchColor = false; }
-	}
-
-	std::cout << "Switch color: " << bSwitchColor << "\n";
-
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR + X_BORDER_OFFSET;
 	for(int i = 0; i < m_vecHands.size(); i++)
 	{

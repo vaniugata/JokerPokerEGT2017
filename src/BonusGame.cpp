@@ -240,10 +240,10 @@ void BonusGame::RenderChooseWin()
 
 //Delay
 void BonusGame::delay(Uint32 ms) {
+	Render();
 	Uint32 timerDelay = SDL_GetTicks();
 	while(SDL_GetTicks() - timerDelay < ms && *m_ptrGameState != QUIT) 
 	{
-		Render();
 		RenderDice();
 		SDL_RenderPresent(m_renderer);
 	}

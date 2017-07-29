@@ -95,7 +95,11 @@ void Music::LoadMusic()
 		{
 			file << "ResourcesMusic/pt" << i + 1 << ".wav";
 			m_paytableSfx[i] = Mix_LoadWAV(file.str().c_str());
-			if(m_paytableSfx[i] == nullptr) { std::cout << Mix_GetError() << "\n"; return; }
+			if(m_paytableSfx[i] == nullptr) 
+			{
+				std::cout << Mix_GetError() << file.str() << "\n";
+				return;
+			}
 			file.str("");
 		}
 	}

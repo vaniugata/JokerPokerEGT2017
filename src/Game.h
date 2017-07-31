@@ -23,8 +23,10 @@ private:
 	Texture m_tCredit;
 	Texture m_tGameOver;
 	PaytableObject* m_paytable;
+public:
 	Deck* m_ptrDeck;
 
+private:
 	std::vector<Evaluation*> m_vecEvaluations;
 	std::vector<Evaluation*> m_vecAutoHold;
 
@@ -53,10 +55,12 @@ public:
 	Game();
 	~Game();
 
+	//getters
 	SDL_Renderer* GetRenderer() const;
 	double* GetCredit();
 	int* GetBet();
 
+	//setters
 	void SetBetFromRecovery(); // only if game returns form recovery state
 	void SetGameState(eGameState gs);
 

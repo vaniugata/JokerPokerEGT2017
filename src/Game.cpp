@@ -234,7 +234,12 @@ void Game::Render()
 
 void Game::RenderRound()
 {
-	m_ptrDeck->RenderHand(m_renderer);
+	if(Recovery::Read().hand.empty() == false)
+	{
+		m_ptrDeck->RenderHand(m_renderer, Recovery::Read().hand);
+	}
+
+	m_ptrDeck->RenderHand(m_renderer,m_ptrDeck->GetHand());
 	m_ptrDeck->RenderHoldBtns(m_renderer);
 	m_ptrDeck->RenderHoldStamps(m_renderer);
 }
@@ -399,6 +404,11 @@ void Game::ProcessMouseInput()
 
 		Mix_PlayChannel(-1, Music::getCards(), 0);
 		ProcessRound();
+		if(std::vector<Card>* hand = dynamic_cast<std::vector<Card>*>(&m_ptrDeck->GetHand()))
+		{
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10),
+				0, hand);
+		}
 	}
 }
 

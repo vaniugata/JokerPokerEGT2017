@@ -26,14 +26,15 @@ Card::Card()
 	this->m_isGood = false;
 }
 
-Card::Card(eCardSuit cardSuit,eCardValue cardValue,SDL_Rect rect,eCardPosition position)
+Card::Card(eCardSuit cardSuit,eCardValue cardValue,SDL_Rect rect,eCardPosition position,
+	bool isHold, bool isGood)
 {
 	    this->m_cardSuit = cardSuit;
 		this->m_cardValue = cardValue;
 		this->m_cardRect = rect;
 		this->m_position = position;
-		this->m_bIsHold = false;
-
+		this->m_bIsHold = isHold;
+		this->m_isGood = isGood;
 }
 
 eCardSuit Card::getCardSuit()const
@@ -44,11 +45,6 @@ eCardSuit Card::getCardSuit()const
 eCardValue Card::getCardValue()const
 {
 	return this->m_cardValue;
-}
-
-SDL_Rect* Card::getCardRect() 
-{
-	return &m_cardRect;
 }
 
 void Card::setCardSuit(eCardSuit suit)
@@ -74,7 +70,7 @@ void Card::setIsHold(bool isHold)
 	this->m_bIsHold = isHold;
 }
 
-bool Card::getIsHold()
+bool Card::getIsHold() const
 {
 	return this->m_bIsHold;
 }

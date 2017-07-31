@@ -7,9 +7,10 @@ using std::cout;
 using std::stringstream;
 
 IntroScreen::IntroScreen(SDL_Renderer* renderer, SDL_Event& event, eGameState& eGameState,
-	double* credit,int* bet) :
+	double* credit,int* bet, std::vector<Card>* hand) :
 	m_ptrBet(bet),
 	m_ptrCredit(credit),
+	m_ptrHand(hand),
 	Screen(renderer),
 	m_tBackgorund(),
 	m_tInfo(),
@@ -126,7 +127,6 @@ void IntroScreen::HandleEvent()
 			*m_ptrGameState = PLAY;
 
 		}
-
 		else if(m_btnResumeGame.IsSelected())
 		{
 			Mix_PlayChannel(-1, Music::getButton(), 0);

@@ -162,7 +162,7 @@ const ButtonObject* Deck::GetHeldCardsButtons() const
 	return m_arrCardHold;
 }
 
-const std::vector<Card>& Deck::GetHand() const
+std::vector<Card>& Deck::GetHand()
 {
 	return this->hand;
 }
@@ -220,13 +220,13 @@ void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destina
 	m_texture.Render(renderer, destination->x, destination->y, destination->w, destination->h, rect);
 }
 
-void Deck::RenderHand(SDL_Renderer * renderer)
+void Deck::RenderHand(SDL_Renderer* renderer, std::vector<Card>& hand)
 {
 	SDL_Rect cardPlace{ (SCREEN_WIDTH - 5 * CARD_W)/2,350,CARD_W,CARD_H_ };
 
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < HAND_SIZE; i++)
 	{
-			RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
+			RenderCard(renderer, &hand[i].m_cardRect, &cardPlace);
 						cardPlace.x += cardPlace.w;
 	}
 }
@@ -236,7 +236,7 @@ void Deck::RenderStart(SDL_Renderer * renderer)
 	SDL_Rect cardPos{ (SCREEN_WIDTH - 5 * CARD_W) / 2,350,CARD_W,CARD_H_ };
 	for(int i = 0; i < HAND_SIZE; i++)
 	{
-		RenderCard(renderer, deckOfCards[53].getCardRect(), &cardPos);
+		RenderCard(renderer, &deckOfCards[53].m_cardRect, &cardPos);
 		cardPos.x += CARD_W;
 	}
 }

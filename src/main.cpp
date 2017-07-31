@@ -11,7 +11,7 @@ int main(int args, char* argc[])
 {
 	Game game;
 	IntroScreen intro = IntroScreen(game.GetRenderer(), game.m_event, \
-		game.m_eGameState, game.GetCredit(), game.GetBet());
+		game.m_eGameState, game.GetCredit(), game.GetBet(), &game.m_ptrDeck->GetHand());
 	BonusGame bonus = BonusGame(game.GetRenderer(), game.m_event, \
 		game.m_eGameState, game.GetCredit());
 	WinBonus win = WinBonus(game.GetRenderer(), game.m_event, \

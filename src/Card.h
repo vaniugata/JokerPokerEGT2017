@@ -52,7 +52,9 @@ public:
 private:
 	eCardSuit m_cardSuit;
 	eCardValue m_cardValue;
+public:
 	SDL_Rect m_cardRect;
+private:
 	bool m_bIsHold;
 	bool m_isGood;
     eCardPosition m_position;
@@ -60,13 +62,12 @@ public:
 	Card& operator=(const Card& newcard);
 
 	Card();
-	Card(eCardSuit,eCardValue,SDL_Rect,eCardPosition);
+	Card(eCardSuit,eCardValue,SDL_Rect,eCardPosition, bool isHold, bool isGood);
 	//getters
 	eCardSuit getCardSuit()const;
 	eCardValue getCardValue()const;
 	eCardPosition getCardPosition()const;
-	SDL_Rect* getCardRect();
-	bool getIsHold();
+	bool getIsHold() const;
 	bool getIsGood() const;
 
 	//setters

@@ -81,17 +81,17 @@ Game::Game() :
 	m_vecAutoHold.push_back(new EvalFourToRoyalFlush());
 	m_vecAutoHold.push_back(new EvalFourOfAKind());
 	//Card evaluation
-	m_vecEvaluations.push_back(new EvalKingsOrBetter());
-	m_vecEvaluations.push_back(new EvalTwoPair());
-	m_vecEvaluations.push_back(new EvalThreeOfKind());
-	m_vecEvaluations.push_back(new EvalStraight());
-	m_vecEvaluations.push_back(new EvalFlush());
-	m_vecEvaluations.push_back(new EvalFullHouse());
-	m_vecEvaluations.push_back(new EvalFourOfAKind());
-	m_vecEvaluations.push_back(new EvalStraightFlush());
-	m_vecEvaluations.push_back(new EvalWildRoyalFlush());
-	m_vecEvaluations.push_back(new EvalFiveOfAKind());
-	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush());
+	m_vecEvaluations.push_back(new EvalNaturalRoyalFlush());//0
+	m_vecEvaluations.push_back(new EvalFiveOfAKind());//1
+	m_vecEvaluations.push_back(new EvalWildRoyalFlush());//2
+	m_vecEvaluations.push_back(new EvalStraightFlush());//3
+	m_vecEvaluations.push_back(new EvalFourOfAKind());//4
+	m_vecEvaluations.push_back(new EvalFullHouse());//5
+	m_vecEvaluations.push_back(new EvalFlush());//6
+	m_vecEvaluations.push_back(new EvalStraight());//7
+	m_vecEvaluations.push_back(new EvalThreeOfKind());//8
+	m_vecEvaluations.push_back(new EvalTwoPair());//9
+	m_vecEvaluations.push_back(new EvalKingsOrBetter());//10
 }
 
 Game::~Game()
@@ -346,6 +346,7 @@ void Game::ProcessKeyInput()
 void Game::ProcessMouseInput()
 {
 	int countIsSelected = 0;
+
 	if(m_btnCashOut->IsSelected())
 	{
 		OutroScreen::SetCredit(m_dCredit);
@@ -354,18 +355,22 @@ void Game::ProcessMouseInput()
 		OutroScreen::setCurrentTime(SDL_GetTicks() - 5);
 		m_eGameState = OUTRO;
 	}
-	else if(m_paytable->m_btnBetOne.IsSelected())
+
+	if (m_ptrDeck->GetKillCount() == 0)
 	{
-		m_iBet = 0;
-		m_paytable->IncreaseBet();
-		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
-		Mix_PlayChannel(-1, Music::getButton(), 0);
-	}
-	else if(m_paytable->m_btnBetMax.IsSelected() && m_dCredit > m_iBet)
-	{
-		m_paytable->SetMaxBet();
-		Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
-		Mix_PlayChannel(-1, Music::getButton(), 0);
+		if (m_paytable->m_btnBetOne.IsSelected())
+		{
+			m_iBet = 0;
+			m_paytable->IncreaseBet();
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
+			Mix_PlayChannel(-1, Music::getButton(), 0);
+		}
+		else if (m_paytable->m_btnBetMax.IsSelected())
+		{
+			m_paytable->SetMaxBet();
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10));
+			Mix_PlayChannel(-1, Music::getButton(), 0);
+		}
 	}
 	else if(m_ptrDeck != nullptr && m_ptrDeck->GetKillCount() == 1)
 	{
@@ -409,6 +414,13 @@ void Game::ProcessMouseInput()
 			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10),
 				0, hand);
 		}
+	}
+	if (m_dCredit < m_iBet)
+	{
+		OutroScreen::SetTimer(SDL_GetTicks());
+		OutroScreen::setCurrentTime(SDL_GetTicks() - 5);	
+		m_eGameState = OUTRO; 
+		
 	}
 }
 
@@ -458,20 +470,21 @@ void Game::ProcessRound()
 	{
 		//Evaluation::setAutoHold(false);
 		std::vector<Card> sorted = m_ptrDeck->GetSortedHand();
-		std::vector<Card> myhand = m_ptrDeck->GetSortedHand();
+		std::vector<Card> myhand = m_ptrDeck->GetHand();
 		
-		int counter = 11;
+		int counter = -1;
 		m_iWinIndex = 11;
 		m_ptrDeck->setHand(sorted);
 		std::vector<Evaluation*>::iterator it;
-		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
+ 		for(it = m_vecEvaluations.begin(); it != m_vecEvaluations.end(); it++)
 		{
-			counter--;
+			counter++;
 			(*it)->EvaluateHand(sorted);	
-			if((*it)->HasGoodCards())
+			if((*it)->HasGoodCards()==true)
 			{
 				m_iWinIndex = counter;
 				myhand = (*it)->EvaluateHand(sorted);
+				break;
 			}
 		}
 		m_ptrDeck->setHand(myhand);

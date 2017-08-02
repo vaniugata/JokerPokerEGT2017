@@ -14,7 +14,8 @@ EvalWildRoyalFlush::~EvalWildRoyalFlush()
 std::vector<Card> EvalWildRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
 	this->hasGoodCard = false;
-	if (EvalStraightFlush::HasGoodCards() == true && hand[0].getCardValue() == TEN)
+	EvalStraightFlush::EvaluateHand(hand);
+	if (EvalStraightFlush::HasGoodCards() == true && hand[0].getCardValue() == TEN && HasJoker(hand))
 	{
 		for (int i = 0; i < hand.size(); i++)
 		{

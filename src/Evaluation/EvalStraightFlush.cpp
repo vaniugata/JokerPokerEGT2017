@@ -14,6 +14,8 @@ EvalStraightFlush::~EvalStraightFlush()
 std::vector<Card> EvalStraightFlush::EvaluateHand(std::vector<Card> hand)
 {
 	this->hasGoodCard = false;
+	EvalFlush::EvaluateHand(hand);
+	EvalStraight::EvaluateHand(hand);
 	if (EvalFlush::HasGoodCards()==true && EvalStraight::HasGoodCards()==true)
 	{
 		for (int i = 0; i < hand.size(); i++)

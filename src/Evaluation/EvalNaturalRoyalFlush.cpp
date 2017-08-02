@@ -14,14 +14,26 @@ EvalNaturalRoyalFlush::~EvalNaturalRoyalFlush()
 std::vector<Card> EvalNaturalRoyalFlush::EvaluateHand(std::vector<Card> hand)
 {
 	this->hasGoodCard = false;
-	if (EvalStraightFlush::HasGoodCards()==true && hand[0].getCardValue() == TEN && !HasJoker(hand))
+	int counter = 0;
+	for (int i = 0; i < hand.size()-1; i++)
 	{
+		if (hand[i].getCardValue() == hand[i + 1].getCardValue()
+			&& hand[i].getCardSuit() == hand[i + 1].getCardSuit()
+			&& hand[0].getCardValue()==TEN
+			&& hand[4].getCardValue()==ACE)
+		{
+			counter++;
+		}
+	}
+	if (counter == 4 && !HasJoker(hand)) {
 		for (int i = 0; i < hand.size(); i++)
 		{
 			hand[i].setIsGood(true);
 		}
 		this->hasGoodCard = true;
 	}
+		
+	
 	sort(hand.begin(), hand.end(), [](const Card& left, const Card& right)
 	{
 		return left.getCardPosition() < right.getCardPosition();

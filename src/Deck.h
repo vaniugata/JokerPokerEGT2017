@@ -19,6 +19,7 @@ private:
 	Texture m_tHold;
 	Texture m_tDim;
 	Texture m_tArrow;
+	std::vector<Card> deck;
 	Card deckOfCards[54];
 	std::vector<Card> hand;
 public:
@@ -36,7 +37,9 @@ public:
 	Card getRandomCard();
 
 	const ButtonObject* GetHeldCardsButtons() const;
+
 	std::vector<Card>& GetHand();
+
 	void setHand(std::vector<Card>& hand);
 	int GetKillCount() const;
 
@@ -54,6 +57,7 @@ public:
 	void HoldSelectedCards();
 	void DimCards(SDL_Renderer* renderer);
 	void holdGoodCards(SDL_Renderer*);
+	std::vector<Card> getUsualHand();
 };
 #endif 
 

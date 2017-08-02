@@ -1,4 +1,5 @@
 #include "Deck.h"
+#include "Game.h"
 #include<iostream>
 
 Deck::Deck(SDL_Renderer* renderer) :
@@ -122,6 +123,8 @@ void Deck::deal()
 	//	deck[card5].getCardRect()->w, deck[card5].getCardRect()->h);
 	//hand[4].setCardPosition(FIFTH);
 	//printDeck();
+
+	std::cout << "Kill count: " << m_iKillCount << std::endl;
 	m_iKillCount++;
 }
 
@@ -155,18 +158,9 @@ const ButtonObject* Deck::GetHeldCardsButtons() const
 	return m_arrCardHold;
 }
 
-const std::vector<Card> Deck::GetHand() const
+std::vector<Card>& Deck::GetHand()
 {
-	std::vector<Card> usualHand = hand;
-	sort(usualHand.begin(), usualHand.begin() + 5,[](const Card& left,const Card& right)
-	{
-		return left.getCardPosition() < right.getCardPosition();
-	});
-	for (int i = 0; i < hand.size(); i++)
-	{
-		usualHand[i].setIsGood(false);
-	}
-	return usualHand;
+	return this->hand;
 }
 
 void Deck::setHand(std::vector<Card>& hand)
@@ -222,13 +216,13 @@ void Deck::RenderCard(SDL_Renderer * renderer, SDL_Rect* rect, SDL_Rect* destina
 	m_texture.Render(renderer, destination->x, destination->y, destination->w, destination->h, rect);
 }
 
-void Deck::RenderHand(SDL_Renderer * renderer)
+void Deck::RenderHand(SDL_Renderer* renderer, std::vector<Card>& hand)
 {
 	SDL_Rect cardPlace{ (SCREEN_WIDTH - 5 * CARD_W)/2,350,CARD_W,CARD_H_ };
 
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < HAND_SIZE; i++)
 	{
-			RenderCard(renderer, hand[i].getCardRect(), &cardPlace);
+			RenderCard(renderer, &hand[i].m_cardRect, &cardPlace);
 						cardPlace.x += cardPlace.w;
 	}
 }
@@ -238,7 +232,8 @@ void Deck::RenderStart(SDL_Renderer * renderer)
 	SDL_Rect cardPos{ (SCREEN_WIDTH - 5 * CARD_W) / 2,350,CARD_W,CARD_H_ };
 	for(int i = 0; i < HAND_SIZE; i++)
 	{
-		RenderCard(renderer, deck[deck.size()-1].getCardRect(), &cardPos);
+		RenderCard(renderer, &deck[(deck.size()-1)].m_cardRect, &cardPos);
+
 		cardPos.x += CARD_W;
 	}
 }
@@ -322,25 +317,32 @@ void Deck::DimCards(SDL_Renderer * renderer)
 
 void Deck::holdGoodCards(SDL_Renderer* renderer)
 {
-	static bool switchArrow = false;
 	SDL_Rect clip{ 0,0,300,150 };
 	int x = ((SCREEN_WIDTH - 5 * CARD_W) / 2 + CARD_W / 2);
 	for (int i = 0; i <hand.size(); i++)
 	{
 		if (hand[i].getIsGood() == true)
 		{
-			if (switchArrow == true)
-			{
+			if (Game::SwitchFrame(250) == true)
 				m_tArrow.Render(renderer, x + i*CARD_W-50, 320, 100, 25, &clip);
-				switchArrow = false;
-			}
-			else if (switchArrow == false)
-			{
-				m_tArrow.Render(renderer, x + i*CARD_W-50 , 310, 100, 25, &clip);
-				switchArrow = true;
-			}
+			else
+				m_tArrow.Render(renderer, x + i*CARD_W - 50, 310, 100, 25, &clip);
 		}
 			
 	}
+}
+
+std::vector<Card>Deck::getUsualHand()
+{
+	std::vector<Card> usualHand = hand;
+	sort(usualHand.begin(), usualHand.begin() + 5, [](const Card& left, const Card& right)
+	{
+		return left.getCardPosition() < right.getCardPosition();
+	});
+	for (int i = 0; i < hand.size(); i++)
+	{
+		usualHand[i].setIsGood(false);
+	}
+	return usualHand;
 }
 

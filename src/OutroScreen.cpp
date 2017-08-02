@@ -19,8 +19,6 @@ OutroScreen::OutroScreen(SDL_Renderer* renderer, SDL_Event* ptrEvent, eGameState
 	m_iTextY(0)
 {
 	m_tBackground.LoadFromFile(renderer, "Resources/outropictures.png");
-//	m_tCredit.InitFont("Resources/font.ttf", 22);
-
 }
 
 OutroScreen::~OutroScreen() {

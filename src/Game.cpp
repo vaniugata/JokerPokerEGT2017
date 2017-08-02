@@ -26,9 +26,8 @@
 using std::cerr;
 #include <sstream>
 Game::Game() :
-	m_dCredit(0), m_eGameState(INTRO),
-	m_bIsGameOver(false), m_bIsBonus(false), m_bAutoHold(true), m_iOutroTime(),
-	m_iBet(0)
+	m_dCredit(0), m_eGameState(INTRO), m_iBet(0),
+	m_bIsGameOver(false), m_bIsBonus(false), m_bAutoHold(true), m_iOutroTime(0)
 {
 	InitSDL();
 
@@ -152,9 +151,10 @@ void Game::Render()
 {
 	//draw background
 	m_tBackground.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	
 	//draw paytable
 	m_paytable->Render(m_renderer);
+
 	//draw buttons
 	SDL_Rect clip1{ T_BTN_W_BET, 0, T_BTN_W_BET, T_BTN_H_BET };
 	m_paytable->m_btnBetOne.Render(m_renderer, &clip1,
@@ -234,7 +234,12 @@ void Game::Render()
 
 void Game::RenderRound()
 {
-	m_ptrDeck->RenderHand(m_renderer);
+	if(Recovery::Read().hand.empty() == false)
+	{
+		m_ptrDeck->RenderHand(m_renderer, Recovery::Read().hand);
+	}
+
+	m_ptrDeck->RenderHand(m_renderer,m_ptrDeck->GetHand());
 	m_ptrDeck->RenderHoldBtns(m_renderer);
 	m_ptrDeck->RenderHoldStamps(m_renderer);
 }
@@ -350,6 +355,7 @@ void Game::ProcessMouseInput()
 		OutroScreen::setCurrentTime(SDL_GetTicks() - 5);
 		m_eGameState = OUTRO;
 	}
+
 	if (m_ptrDeck->GetKillCount() == 0)
 	{
 		if (m_paytable->m_btnBetOne.IsSelected())
@@ -403,8 +409,12 @@ void Game::ProcessMouseInput()
 
 		Mix_PlayChannel(-1, Music::getCards(), 0);
 		ProcessRound();
+		if(std::vector<Card>* hand = dynamic_cast<std::vector<Card>*>(&m_ptrDeck->GetHand()))
+		{
+			Recovery::Save(m_dCredit, m_paytable->GetBet().at(10),
+				0, hand);
+		}
 	}
-	
 	if (m_dCredit < m_iBet)
 	{
 		OutroScreen::SetTimer(SDL_GetTicks());
@@ -412,6 +422,20 @@ void Game::ProcessMouseInput()
 		m_eGameState = OUTRO; 
 		
 	}
+}
+
+bool Game::SwitchFrame(int iTimeGap)
+{
+	static bool bSwitchFrame = false;
+	static int iCurrentTime = SDL_GetTicks();
+	if(iCurrentTime <= SDL_GetTicks() - iTimeGap)
+	{
+		iCurrentTime = SDL_GetTicks();
+		if(bSwitchFrame == false) { bSwitchFrame = true; }
+		else { bSwitchFrame = false; }
+	}
+
+	return bSwitchFrame;
 }
 
 void Game::ProcessRound()
@@ -476,7 +500,7 @@ void Game::ProcessRound()
 			//set the current win in the paytable
 			m_paytable->SetWinnerIndex(m_iWinIndex);
 			//play winning sound
-			m_paytable->PlaySoundEffect(m_iWinIndex);
+			Music::PlayPaytableSoundEffect(m_iWinIndex);
 		}
 		//Check for bonus state
 		if(m_iWinIndex >= 5 && m_iWinIndex <= 10) { m_bIsBonus = true; }

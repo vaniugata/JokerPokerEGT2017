@@ -1,5 +1,6 @@
 #include "PaytableObject.h"
 #include "Globals.h"
+#include "Game.h"
 #include <iostream>
 using std::cout;
 #include <sstream>
@@ -27,18 +28,12 @@ PaytableObject::PaytableObject(SDL_Renderer* renderer) :
 
 	m_btnBetMax.SetPosition(SCREEN_WIDTH - 2 * m_btnBetOne.GetWidth(), \
 		SCREEN_HEIGHT - m_btnBetOne.GetHeight() );
-	
-	LoadWinSounds();
 }
 
 PaytableObject::~PaytableObject()
 {
 	std::cout << "PaytableObject deleted.\n";
-	for(int i = 0; i < WINS; i++)
-	{
-		Mix_FreeChunk(m_sfx[i]);
-		m_sfx[i] = nullptr;
-	}
+
 	TTF_CloseFont(m_font);
 	m_font = nullptr;
 }
@@ -51,18 +46,6 @@ const std::vector<int>& PaytableObject::GetBet() const
 void PaytableObject::SetWinnerIndex(int index)
 {
 	this->m_iWinnerIndex = index;
-}
-
-void PaytableObject::LoadWinSounds()
-{
-	std::stringstream file;
-	for(int i = 0; i < WINS; i++)
-	{
-		 file << "ResourcesMusic/pt" << i + 1 << ".wav";
-		 m_sfx[i] = Mix_LoadWAV(file.str().c_str());
-		 if(m_sfx[i] == nullptr) { std::cout << Mix_GetError() << "\n"; return; }
-		 file.str("");
-	}
 }
 
 void PaytableObject::InitFont(std::string path)
@@ -95,8 +78,6 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 	SDL_Color color{ 255, 255, 255 };
 	SDL_Color colorWin{ 0, 255, 0 };
 
-	static bool bSwitchColor = false;
-
 	int x = SCREEN_WIDTH - m_texture.GetWidth() * PAYTABLE_TEXTURE_SCALE_FACTOR + X_BORDER_OFFSET;
 	for(int i = 0; i < m_vecHands.size(); i++)
 	{
@@ -108,21 +89,17 @@ void PaytableObject::RenderCardCombinations(SDL_Renderer * renderer)
 
 		if(m_iWinnerIndex == i)
 		{
-			if(bSwitchColor == false)
+			if(Game::SwitchFrame(500) == false)
 			{
 				m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf",
 					m_vecHands[i], colorWin, 18);
 				m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
-
-				bSwitchColor = true;
 			}
-			else if(bSwitchColor == true)
+			else if(Game::SwitchFrame(500) == true)
 			{
 				m_tText.LoadFromRendererdText(renderer, "Resources/font.ttf",
 					m_vecHands[i], color, 18);
 				m_tText.Render(renderer, x, y, m_tText.GetWidth(), m_tText.GetHeight());
-
-				bSwitchColor = false;
 			}
 		}
 	}
@@ -159,13 +136,7 @@ void PaytableObject::RenderBetList(SDL_Renderer * renderer, int winnerIndx)
 	}
 }
 
-void PaytableObject::PlaySoundEffect(int i)
-{
-	if(i < 0 || i > 10) { return; }
-	Mix_PlayChannel(-1, m_sfx[i], 0);
-}
-
-void PaytableObject::IncreaseBet()//Увеличете залога
+void PaytableObject::IncreaseBet()
 {
 	for(int i = 0; i < m_vecBets.size(); i++)
 	{
@@ -197,4 +168,3 @@ void PaytableObject::SetMaxBet()
 	m_iNextBetCoef = 11;
 	m_iPrevBetCoef = 10;
 }
-

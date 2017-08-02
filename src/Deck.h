@@ -37,7 +37,9 @@ public:
 	Card getRandomCard();
 
 	const ButtonObject* GetHeldCardsButtons() const;
-	const std::vector<Card> GetHand() const;
+
+	std::vector<Card>& GetHand();
+
 	void setHand(std::vector<Card>& hand);
 	int GetKillCount() const;
 
@@ -46,7 +48,7 @@ public:
 	bool isCardInHand(Card& card);
 	bool isJokerHand();
 	void RenderCard(SDL_Renderer*,SDL_Rect*,SDL_Rect*);
-	void RenderHand(SDL_Renderer*);
+	void RenderHand(SDL_Renderer* renderer, std::vector<Card>& hand);
 	void RenderStart(SDL_Renderer* renderer);
 	void RenderHoldBtns(SDL_Renderer*);
 	void RenderHoldStamps(SDL_Renderer* renderer);
@@ -55,6 +57,7 @@ public:
 	void HoldSelectedCards();
 	void DimCards(SDL_Renderer* renderer);
 	void holdGoodCards(SDL_Renderer*);
+	std::vector<Card> getUsualHand();
 };
 #endif 
 

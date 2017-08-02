@@ -10,13 +10,11 @@ WinBonus::WinBonus(SDL_Renderer* renderer, SDL_Event& event,
 	this->m_renderer = renderer;
 	m_tBackgorund.LoadFromFile(renderer, "Resources/win.png");
 	m_tText.InitFont("Resources/font.ttf", 50);
-	LoadMusicFiles();
 }
 
 WinBonus::~WinBonus()
 {
 	std::cerr << "BonusGame Object deleted.\n";
-	Close();
 }
 
 void WinBonus::Draw()
@@ -26,10 +24,8 @@ void WinBonus::Draw()
 
 void WinBonus::Render()
 {	
-	//render Backgorund
-	m_tBackgorund.Render(m_renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	//Play greeting sound
-	Mix_PlayChannel(-1, winning, 0);
+	Mix_PlayChannel(-1, Music::getWinning(), 0);
 	SDL_Color color { 0, 0, 0 };
 		int x = 300;
 		int y = SCREEN_HEIGHT - 80;
@@ -51,17 +47,6 @@ void WinBonus::Render()
 	*m_ptrGameState = PLAY;
 }
 
-void WinBonus::LoadMusicFiles()
-{
-	winning = Mix_LoadWAV("ResourcesMusic/Winning.wav");
-	if (winning == nullptr)
-	{
-		std::cout << "Failed to load scratch Winning! SDL_mixer Error:"
-				<< Mix_GetError() << std::endl;
-		return;
-	}
-}
-
 void WinBonus::HandleEvent()
 {
 	switch (m_event->type)
@@ -80,9 +65,3 @@ std::string WinBonus::DoubleToString(double x) const
 	return res;
 }
 
-//Free the sound effects
-void WinBonus::Close()
-{
-	Mix_FreeChunk(winning);
-
-}

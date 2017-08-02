@@ -35,7 +35,6 @@ private:
 	};
 
 	std::vector<int> m_vecBets {800, 130, 100, 50, 20, 7, 5, 3, 2, 1, 1};
-	Mix_Chunk* m_sfx[WINS];
 
 public:
 	PaytableObject(SDL_Renderer* renderer);
@@ -46,14 +45,12 @@ public:
 
 	//setters
 	void SetWinnerIndex(int index);
-	void LoadWinSounds();
 
 	void InitFont(std::string path);
 	void Render(SDL_Renderer* renderer);
 	void RenderCardCombinations(SDL_Renderer* renderer);
 	void RenderBetList(SDL_Renderer* renderer, int index);
 
-	void PlaySoundEffect(int i);
 	//logic
 	void IncreaseBet();
 	void SetMaxBet();

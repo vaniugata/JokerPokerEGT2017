@@ -19,6 +19,7 @@ private:
 	Texture m_tHold;
 	Texture m_tDim;
 	Texture m_tArrow;
+	std::vector<Card> deck;
 	Card deckOfCards[54];
 	std::vector<Card> hand;
 public:
@@ -36,7 +37,7 @@ public:
 	Card getRandomCard();
 
 	const ButtonObject* GetHeldCardsButtons() const;
-	const std::vector<Card>& GetHand() const;
+	const std::vector<Card> GetHand() const;
 	void setHand(std::vector<Card>& hand);
 	int GetKillCount() const;
 

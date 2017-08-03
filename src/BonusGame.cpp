@@ -52,7 +52,9 @@ BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 	m_btnMusicPause.SetDimentions(BUTTON_VOLUME_SIZE, BUTTON_VOLUME_SIZE);
 
 	m_tBackgorund.LoadFromFile(renderer, "Resources/DoubleUpDice2.jpg");
-
+	setResDie1(m_resDie1);
+	setResDie2(m_resDie2);
+	setDiceResult(m_diceResult);
 	LoadDieFiles();
 	LoadChooseWinFiles();
 }
@@ -124,9 +126,9 @@ void BonusGame::HandleEvent()
 			Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
 			Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
-			m_diceResult = getResDie1() + getResDie2();
+			setDiceResult(getResDie1() + getResDie2());
 			SDL_Delay(2000);
-			if(m_diceResult < 5)
+			if(getDiceResult() < 5)
 			{
 				*m_ptrCredit += m_win * 2;
 				Recovery::Save(*m_ptrCredit, 0, m_win);
@@ -143,9 +145,10 @@ void BonusGame::HandleEvent()
 			Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
 			Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
-			m_diceResult = getResDie1() + getResDie2();
+			setDiceResult(getResDie1() + getResDie2());
+			cout<<getResDie1()<<"?"<<getResDie2()<<std::endl;
 			SDL_Delay(2000);
-			if(m_diceResult > 4 && m_diceResult < 10)
+			if(getDiceResult()> 4 && getDiceResult() < 10)
 			{
 				*m_ptrCredit += m_win * 5;
 				Recovery::Save(*m_ptrCredit, 0, m_win);
@@ -162,9 +165,9 @@ void BonusGame::HandleEvent()
 		Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
 		Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
-			m_diceResult = getResDie1() + getResDie2();
+			setDiceResult(getResDie1() + getResDie2());
 			SDL_Delay(2000);
-			if(m_diceResult > 9 && m_diceResult < 13)
+			if(getDiceResult() > 9 && getDiceResult() < 13)
 			{
 				*m_ptrCredit += m_win * 10;
 				Recovery::Save(*m_ptrCredit, 0, m_win);
@@ -289,9 +292,9 @@ int BonusGame::getResDie1() const
 	return m_resDie1;
 }
 
-void BonusGame::setResDie1(int resDie1) 
+void BonusGame::setResDie1(int res)
 {
-	m_resDie1 = resDie1;
+	m_resDie1 = res;
 }
 
 int BonusGame::getResDie2() const 
@@ -299,7 +302,15 @@ int BonusGame::getResDie2() const
 	return m_resDie2;
 }
 
-void BonusGame::setResDie2(int resDie2) 
+void BonusGame::setResDie2(int resD)
 {
-	m_resDie2 = resDie2;
+	m_resDie2 = resD;
+}
+
+int BonusGame::getDiceResult() const {
+	return m_diceResult;
+}
+
+void BonusGame::setDiceResult(int diceRes) {
+	m_diceResult = diceRes;
 }

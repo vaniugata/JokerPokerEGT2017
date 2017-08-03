@@ -8,7 +8,6 @@
 #include "WinBonus.h"
 #include "Deck.h"
 #include "Evaluation\Evaluation.h"
-
 class Game
 {
 private:

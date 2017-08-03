@@ -5,6 +5,7 @@
 #include "includesSDL2.h"
 #include <vector>
 
+
 class PaytableObject 
 {
 private:

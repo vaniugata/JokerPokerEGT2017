@@ -2,7 +2,6 @@
 #define SRC_MUSIC_H_
 #include "includesSDL2.h"
 #include "Globals.h"
-
 #include<iostream>
 
 class Music

@@ -7,7 +7,6 @@
 #include "Globals.h"
 #include "ButtonObject.h"
 #include "includesSDL2.h"
-
 class BonusGame: public Screen
 {
 
@@ -81,5 +80,7 @@ public:
 
 	//music stuff
 	void MusicController();
+	int getDiceResult() const;
+	void setDiceResult(int diceResult);
 };
 #endif

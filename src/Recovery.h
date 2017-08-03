@@ -4,7 +4,6 @@
 #include "Card.h"
 #include <vector>
 using std::vector;
-
 struct Recover
 {
 	double credit;

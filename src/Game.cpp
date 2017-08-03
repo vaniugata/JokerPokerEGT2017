@@ -236,7 +236,8 @@ void Game::RenderRound()
 {
 	if(Recovery::Read().hand.empty() == false)
 	{
-		m_ptrDeck->RenderHand(m_renderer, Recovery::Read().hand);
+		vector<Card> readHand = Recovery::Read().hand;
+		m_ptrDeck->RenderHand(m_renderer, readHand);
 	}
 
 	m_ptrDeck->RenderHand(m_renderer,m_ptrDeck->GetHand());

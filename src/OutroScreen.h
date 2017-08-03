@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "ButtonObject.h"
 #include "Music.h"
-
 class OutroScreen : public Screen
 {
 private:

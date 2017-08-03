@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<recovery>
+	<credit>28</credit>
+	<bet>1</bet>
+	<win>0</win>
+	<hand>
+		<card />
+		<card />
+		<card />
+		<card />
+		<card />
+	</hand>
+</recovery>

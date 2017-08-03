@@ -13,7 +13,6 @@
 #include "Globals.h"
 #include <string>
 #include <sstream>
-
 class WinBonus: public Screen
 {
 	double* m_ptrCredit;

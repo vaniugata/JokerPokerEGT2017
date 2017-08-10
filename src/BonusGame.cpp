@@ -55,6 +55,11 @@ BonusGame::BonusGame(SDL_Renderer* renderer, SDL_Event& event,
 	setResDie1(m_resDie1);
 	setResDie2(m_resDie2);
 	setDiceResult(m_diceResult);
+	this->m_renderer = renderer;
+	this->m_resDie1 = m_resDie1;
+	this->m_resDie2 = m_resDie2;
+	this->m_diceResult = m_diceResult;
+	this->m_win = m_win;
 	LoadDieFiles();
 	LoadChooseWinFiles();
 }
@@ -126,9 +131,11 @@ void BonusGame::HandleEvent()
 			Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
 			Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
-			setDiceResult(getResDie1() + getResDie2());
+
+			m_diceResult = m_resDie1 + m_resDie2;
+			cout<<m_diceResult<<"?"<<std::endl;
 			SDL_Delay(2000);
-			if(getDiceResult() < 5)
+			if(m_diceResult < 5)
 			{
 				*m_ptrCredit += m_win * 2;
 				Recovery::Save(*m_ptrCredit, 0, m_win);
@@ -145,10 +152,11 @@ void BonusGame::HandleEvent()
 			Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
 			Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
-			setDiceResult(getResDie1() + getResDie2());
-			cout<<getResDie1()<<"?"<<getResDie2()<<std::endl;
+
+			m_diceResult = m_resDie1 + m_resDie2;
+			cout<<m_diceResult<<"?"<<std::endl;
 			SDL_Delay(2000);
-			if(getDiceResult()> 4 && getDiceResult() < 10)
+			if(m_diceResult> 4 && m_diceResult < 10)
 			{
 				*m_ptrCredit += m_win * 5;
 				Recovery::Save(*m_ptrCredit, 0, m_win);
@@ -165,9 +173,11 @@ void BonusGame::HandleEvent()
 		Mix_PlayChannel(-1, Music::getButtonBonus(), 0);
 		Mix_PlayChannel(-1, Music::getRollDice(), 0);
 			delay(3000);
-			setDiceResult(getResDie1() + getResDie2());
+
+			m_diceResult = m_resDie1 + m_resDie2;
+			cout<<m_diceResult<<"?"<<std::endl;
 			SDL_Delay(2000);
-			if(getDiceResult() > 9 && getDiceResult() < 13)
+			if(m_diceResult > 9 && m_diceResult < 13)
 			{
 				*m_ptrCredit += m_win * 10;
 				Recovery::Save(*m_ptrCredit, 0, m_win);
@@ -201,20 +211,19 @@ void BonusGame::LoadDieFiles()
 
 int BonusGame::RandomNumberGenerator() 
 {
-	int dieResult = rand() % 6;
+	int dieResult = (rand() % 6) + 1;
 	return dieResult;
 }
 
 void BonusGame::RenderDice() 
 {
-	setResDie1(RandomNumberGenerator());
-	setResDie2(RandomNumberGenerator());
+	m_resDie1=RandomNumberGenerator();
+	m_resDie2=RandomNumberGenerator();
 	m_spriteDieTexture.Render(m_renderer, 480, 450, 155, 148,
-		&m_spriteDie[getResDie1()]);
+		&m_spriteDie[m_resDie1 - 1]);
 	m_spriteDieTexture.Render(m_renderer, 680, 400, 155, 148,
-		&m_spriteDie[getResDie2()]);
+		&m_spriteDie[m_resDie2 - 1]);
 }
-
 void BonusGame::LoadChooseWinFiles()
 {
 	m_tChooseWin.LoadFromFile(m_renderer, "Resources/ChooseWin.png");

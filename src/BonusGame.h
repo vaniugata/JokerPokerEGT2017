@@ -7,9 +7,9 @@
 #include "Globals.h"
 #include "ButtonObject.h"
 #include "includesSDL2.h"
+
 class BonusGame: public Screen
 {
-
 private:
 	static int m_win;
 	double* m_ptrCredit;
